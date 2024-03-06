@@ -10,7 +10,7 @@ class GeometricalBackground extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     final borderSize =
-        size.width / 10; // Este es el tamaño para colocar 10 elementos
+        size.width / 7; // Este es el tamaño para colocar 10 elementos
 
     final shapeWidgets = [
       _Circle(borderSize),

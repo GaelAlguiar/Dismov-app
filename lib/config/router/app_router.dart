@@ -1,9 +1,10 @@
+import 'package:dismov_app/app/menu/screen/menu_screen.dart';
 import 'package:dismov_app/auth/screens/login_screen.dart';
 import 'package:dismov_app/auth/screens/register_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/',
   routes: [
     ///* Auth Routes
     GoRoute(
@@ -15,10 +16,10 @@ final appRouter = GoRouter(
       builder: (context, state) => const RegisterScreen(),
     ),
 
-    // ///* Product Routes
-    // GoRoute(
-    //   path: '/',
-    //   builder: (context, state) => const ProductsScreen(),
-    // ),
+    ///* Menu Route
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const MenuScreen(),
+    ),
   ],
 );
