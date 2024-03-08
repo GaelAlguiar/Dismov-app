@@ -17,11 +17,11 @@ class MenuScreen extends StatelessWidget {
         ],
       ),
       body: const _MenuView(),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   label: const Text(''),
-      //   icon: const Icon(Icons.add),
-      //   onPressed: () {},
-      // ),
+      floatingActionButton: FloatingActionButton.extended(
+        label: const Text(''),
+        icon: const Icon(Icons.add),
+        onPressed: () {},
+      ),
     );
   }
 }

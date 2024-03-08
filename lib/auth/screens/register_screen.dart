@@ -1,18 +1,15 @@
-import 'package:dismov_app/auth/db/db.dart';
+import 'package:dismov_app/Json/users.dart';
+import 'package:dismov_app/auth/db/sqlite.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
 
+// RegisterScreen
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
-    final textStyles = Theme.of(context).textTheme;
-    final dbHelper = DatabaseHelper();
-
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -27,35 +24,38 @@ class RegisterScreen extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        if (!context.canPop()) return;
-                        context.pop();
-                      },
-                      icon: const Icon(Icons.arrow_back_rounded,
-                          size: 40, color: Colors.white),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: IconButton(
+                        onPressed: () {
+                          context.go("/login");
+                        },
+                        icon: const Icon(Icons.arrow_back_rounded,
+                            size: 40, color: Colors.white),
+                      ),
                     ),
                     const Spacer(flex: 1),
-                    Text('Crear cuenta',
-                        style: textStyles.titleLarge
-                            ?.copyWith(color: Colors.white)),
+                    Text(
+                      'Crear cuenta',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: Colors.white,
+                          ),
+                    ),
                     const Spacer(flex: 2),
                   ],
                 ),
-
                 const SizedBox(height: 50),
-
                 Container(
-                  height:
-                      size.height - 260, // 80 los dos sizebox y 100 el ícono
+                  height: MediaQuery.of(context).size.height - 260,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: scaffoldBackgroundColor,
-                    borderRadius:
-                        const BorderRadius.only(topLeft: Radius.circular(100)),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(100),
+                    ),
                   ),
-                  child: _RegisterForm(dbHelper: dbHelper),
-                )
+                  child: const _RegisterForm(),
+                ),
               ],
             ),
           ),
@@ -65,15 +65,20 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatelessWidget {
-  final DatabaseHelper dbHelper;
+class _RegisterForm extends StatefulWidget {
+  const _RegisterForm();
 
-  _RegisterForm({required this.dbHelper});
-  final TextEditingController _fullNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _repeatPasswordController =
-      TextEditingController();
+  @override
+  _RegisterFormState createState() => _RegisterFormState();
+}
+
+class _RegisterFormState extends State<_RegisterForm> {
+  final username = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final confirmPassword = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -83,36 +88,53 @@ class _RegisterForm extends StatelessWidget {
         children: [
           const SizedBox(height: 50),
           const SizedBox(height: 50),
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Nombre completo',
             keyboardType: TextInputType.emailAddress,
+            controller: username,
           ),
           const SizedBox(height: 30),
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
+            controller: email,
           ),
           const SizedBox(height: 30),
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
+            controller: password,
           ),
           const SizedBox(height: 30),
-          const CustomTextFormField(
+          CustomTextFormField(
             label: 'Repita la contraseña',
             obscureText: true,
+            controller: confirmPassword,
           ),
           const SizedBox(height: 30),
           SizedBox(
             width: double.infinity,
             height: 60,
             child: CustomFilledButton(
-              text: 'Crear',
-              buttonColor: Colors.purple[900],
-              onPressed: () {
-                _handleRegistration(context);
-              },
-            ),
+                text: 'Crear',
+                buttonColor: Colors.purple[300],
+                onPressed: () async {
+                  final currentContext = context;
+
+                  if (formKey.currentState!.validate()) {
+                    final db = DatabaseHelper();
+                    try {
+                      await db.signup(Users(
+                          userName: username.text,
+                          userPassword: password.text));
+                      if (context.mounted) {
+                        currentContext.go("/login");
+                      }
+                    } catch (e) {
+                      debugPrint("Error durante el registro: $e");
+                    }
+                  }
+                }),
           ),
           const Spacer(flex: 2),
           Row(
@@ -121,9 +143,6 @@ class _RegisterForm extends StatelessWidget {
               const Text('¿Ya tienes cuenta?'),
               TextButton(
                 onPressed: () {
-                  if (context.canPop()) {
-                    return context.pop();
-                  }
                   context.go('/login');
                 },
                 child: const Text('Ingresa aquí'),
@@ -134,48 +153,5 @@ class _RegisterForm extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _handleRegistration(BuildContext context) async {
-    // Obtén los valores de los campos de entrada
-    final fullName = _fullNameController.text.trim();
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
-    final repeatPassword = _repeatPasswordController.text.trim();
-
-    // Verifica si las contraseñas coinciden
-    if (password != repeatPassword) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Las contraseñas no coinciden',
-            style: TextStyle(fontSize: 14),
-          ),
-          backgroundColor: Color.fromARGB(255, 158, 34, 25),
-        ),
-      );
-      return;
-    }
-
-    // Crea un mapa con los datos del usuario
-    final user = {
-      'fullName': fullName,
-      'email': email,
-      'password': password,
-    };
-
-    // Guarda los datos del usuario en la base de datos
-    final dbHelper = DatabaseHelper();
-    await dbHelper.insertUser(user);
-
-    // Muestra un mensaje de éxito
-    if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Usuario creado exitosamente')),
-      );
-
-      // Navega a la pantalla de inicio de sesión
-      context.go('/');
-    }
   }
 }

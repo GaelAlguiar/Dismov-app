@@ -1,18 +1,15 @@
+import 'package:dismov_app/Json/users.dart';
+import 'package:dismov_app/auth/db/sqlite.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
-import 'package:dismov_app/auth/db/db.dart';
 
+// LoginScreen
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final scaffoldBackgroundColor = Theme.of(context).scaffoldBackgroundColor;
-
-    final DatabaseHelper dbHelper = DatabaseHelper();
-
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -26,25 +23,24 @@ class LoginScreen extends StatelessWidget {
                 // Icon Banner
                 IconButton(
                   icon: Image.asset(
-                    'assets/images/logo_Blanco.png',
-                    width: 150,
-                    height: 150,
+                    'assets/images/image.png',
+                    width: 220,
+                    height: 170,
                   ),
                   onPressed: () => {},
                 ),
                 const SizedBox(height: 45),
-
                 Container(
-                  height:
-                      size.height - 260, // 80 los dos sizebox y 100 el ícono
+                  height: MediaQuery.of(context).size.height - 260,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: scaffoldBackgroundColor,
-                    borderRadius:
-                        const BorderRadius.only(topLeft: Radius.circular(100)),
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(100),
+                    ),
                   ),
-                  child: _LoginForm(dbHelper: dbHelper),
-                )
+                  child: _LoginForm(),
+                ),
               ],
             ),
           ),
@@ -54,17 +50,39 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class _LoginForm extends StatelessWidget {
-  final DatabaseHelper dbHelper;
+class _LoginForm extends StatefulWidget {
+  @override
+  _LoginFormState createState() => _LoginFormState();
+}
 
-  const _LoginForm({required this.dbHelper});
+class _LoginFormState extends State<_LoginForm> {
+  final username = TextEditingController();
+  final password = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  bool isLoginTrue = false;
+
+  final db = DatabaseHelper();
+
+  Future<void> login() async {
+    var response = await db.login(
+      Users(userName: username.text, userPassword: password.text),
+    );
+    if (response == true) {
+      //If login is correct, then goto notes
+      if (!mounted) return;
+      context.go("/");
+    } else {
+      //If not, true the bool value to show error message
+      setState(() {
+        isLoginTrue = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
-
-    final TextEditingController usernameController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
@@ -76,13 +94,13 @@ class _LoginForm extends StatelessWidget {
           CustomTextFormField(
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
-            controller: usernameController,
+            controller: username,
           ),
           const SizedBox(height: 30),
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
-            controller: passwordController,
+            controller: password,
           ),
           const SizedBox(height: 30),
           SizedBox(
@@ -90,10 +108,11 @@ class _LoginForm extends StatelessWidget {
             height: 60,
             child: CustomFilledButton(
               text: 'Ingresar',
-              buttonColor: Colors.purple[900],
+              buttonColor: Colors.purple[300],
               onPressed: () {
-                _handleLogin(
-                    context, usernameController.text, passwordController.text);
+                if (formKey.currentState!.validate()) {
+                  login();
+                }
               },
             ),
           ),
@@ -112,47 +131,5 @@ class _LoginForm extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _handleLogin(
-      BuildContext context, String username, String password) async {
-    List<Map<String, dynamic>> users = await dbHelper.getUsers();
-    bool isAuthenticated = false;
-
-    for (var user in users) {
-      if (user['username'] == username && user['password'] == password) {
-        isAuthenticated = true;
-        break;
-      }
-    }
-
-    BuildContext scaffoldContext = context;
-
-    if (isAuthenticated) {
-      if (scaffoldContext.mounted) {
-        ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Sesión iniciada exitosamente',
-              style: TextStyle(fontSize: 14),
-            ),
-            backgroundColor: Color.fromARGB(255, 25, 158, 60),
-          ),
-        );
-        GoRouter.of(scaffoldContext).go('/');
-      }
-    } else {
-      if (scaffoldContext.mounted) {
-        ScaffoldMessenger.of(scaffoldContext).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Información Incorrecta',
-              style: TextStyle(fontSize: 14),
-            ),
-            backgroundColor: Color.fromARGB(255, 158, 34, 25),
-          ),
-        );
-      }
-    }
   }
 }
