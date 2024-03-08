@@ -4,7 +4,7 @@ import 'package:dismov_app/auth/screens/register_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/login',
   routes: [
     ///* Auth Routes
     GoRoute(

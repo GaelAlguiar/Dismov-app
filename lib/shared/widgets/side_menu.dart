@@ -58,3 +58,18 @@ class _SideMenuState extends State<SideMenu> {
         ]);
   }
 }
+
+class AuthProvider extends ChangeNotifier {
+  bool _isLoggedIn = false;
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  // Método para cerrar sesión
+  void logout() {
+    // Aquí limpias los datos de autenticación
+    // Por ejemplo, podrías cambiar el estado isLoggedIn a false
+    _isLoggedIn = false;
+    // Notificar a los oyentes (widgets) que el estado ha cambiado
+    notifyListeners();
+  }
+}

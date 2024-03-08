@@ -8,9 +8,10 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final TextEditingController? controller; // Agregar controller
 
   const CustomTextFormField({
-    super.key,
+    super.key, // Corregir el nombre del parámetro de la superclase
     this.label,
     this.hint,
     this.errorMessage,
@@ -18,7 +19,8 @@ class CustomTextFormField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.onChanged,
     this.validator,
-  });
+    this.controller, // Agregar controller
+  }); // Corregir la inicialización de la superclase
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,6 @@ class CustomTextFormField extends StatelessWidget {
     const borderRadius = Radius.circular(15);
 
     return Container(
-      // padding: const EdgeInsets.only(bottom: 0, top: 15),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: const BorderRadius.only(
@@ -45,14 +46,17 @@ class CustomTextFormField extends StatelessWidget {
                 offset: const Offset(0, 5))
           ]),
       child: TextFormField(
+        controller: controller, // Utilizar controller
         onChanged: onChanged,
         validator: validator,
         obscureText: obscureText,
         keyboardType: keyboardType,
-        style: const TextStyle(fontSize: 20, color: Colors.black54),
+        style: const TextStyle(fontSize: 16, color: Colors.black54),
         decoration: InputDecoration(
-          floatingLabelStyle: const TextStyle(
-              color: Colors.brown, fontWeight: FontWeight.bold, fontSize: 18),
+          floatingLabelStyle: TextStyle(
+              color: Colors.purple[900],
+              fontWeight: FontWeight.bold,
+              fontSize: 15),
           enabledBorder: border,
           focusedBorder: border,
           errorBorder: border.copyWith(
@@ -64,7 +68,6 @@ class CustomTextFormField extends StatelessWidget {
           hintText: hint,
           errorText: errorMessage,
           focusColor: colors.primary,
-          // icon: Icon( Icons.supervised_user_circle_outlined, color: colors.primary, )
         ),
       ),
     );
