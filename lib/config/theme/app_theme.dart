@@ -1,7 +1,8 @@
+import 'package:dismov_app/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const colorSeed = Color.fromARGB(255, 54, 7, 85);
+const colorSeed = AppColor.yellow;
 const scaffoldBackgroundColor = Color(0xFFF8F7F7);
 
 class AppTheme {

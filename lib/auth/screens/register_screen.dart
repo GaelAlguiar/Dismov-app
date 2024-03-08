@@ -1,5 +1,6 @@
 import 'package:dismov_app/Json/users.dart';
 import 'package:dismov_app/auth/db/sqlite.dart';
+import 'package:dismov_app/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
@@ -117,7 +118,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             height: 60,
             child: CustomFilledButton(
                 text: 'Crear',
-                buttonColor: Colors.purple[300],
+                buttonColor: AppColor.yellowCustom,
                 onPressed: () async {
                   final currentContext = context;
 
@@ -126,6 +127,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     try {
                       await db.signup(Users(
                           userName: username.text,
+                          userEmail: email.text,
                           userPassword: password.text));
                       if (context.mounted) {
                         currentContext.go("/login");

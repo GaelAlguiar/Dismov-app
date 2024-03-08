@@ -18,44 +18,54 @@ class _SideMenuState extends State<SideMenu> {
     final hasNotch = MediaQuery.of(context).viewPadding.top > 35;
     final textStyles = Theme.of(context).textTheme;
 
-    return NavigationDrawer(
-        elevation: 1,
-        selectedIndex: navDrawerIndex,
-        onDestinationSelected: (value) {
-          setState(() {
-            navDrawerIndex = value;
-          });
+    return Stack(children: [
+      NavigationDrawer(
+          elevation: 5,
+          selectedIndex: navDrawerIndex,
+          onDestinationSelected: (value) {
+            setState(() {
+              navDrawerIndex = value;
+            });
 
-          // final menuItem = appMenuItems[value];
-          // context.push( menuItem.link );
-          widget.scaffoldKey.currentState?.closeDrawer();
-        },
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(20, hasNotch ? 0 : 20, 16, 0),
-            child: Text('Menu Principal', style: textStyles.titleMedium),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 30, 16, 10),
-            child: Text('Opciones', style: textStyles.titleSmall),
-          ),
-          const NavigationDrawerDestination(
-            icon: Icon(Icons.home_outlined),
-            label: Text('Inicio'),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(28, 36, 28, 10),
-            child: Divider(),
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(28, 10, 16, 10),
-            child: Text('Otras opciones'),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: CustomFilledButton(onPressed: () {}, text: 'Cerrar sesión'),
-          ),
-        ]);
+            // final menuItem = appMenuItems[value];
+            // context.push( menuItem.link );
+            widget.scaffoldKey.currentState?.closeDrawer();
+          },
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(20, hasNotch ? 0 : 20, 16, 0),
+              child: Text('Menu Principal', style: textStyles.titleMedium),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 30, 16, 10),
+              child: Text('Opciones', style: textStyles.titleSmall),
+            ),
+            const NavigationDrawerDestination(
+              icon: Icon(Icons.home_outlined),
+              label: Text('Inicio'),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(28, 36, 28, 10),
+              child: Divider(),
+            ),
+            const SizedBox(
+              height: 430,
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(28, 36, 28, 10),
+              child: Divider(),
+            ),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(28, 10, 16, 10),
+              child: Text('Salir'),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child:
+                  CustomFilledButton(onPressed: () {}, text: 'Cerrar sesión'),
+            ),
+          ]),
+    ]);
   }
 }
 

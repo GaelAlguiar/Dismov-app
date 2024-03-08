@@ -1,3 +1,4 @@
+import 'package:dismov_app/config/config.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -53,8 +54,8 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: keyboardType,
         style: const TextStyle(fontSize: 16, color: Colors.black54),
         decoration: InputDecoration(
-          floatingLabelStyle: TextStyle(
-              color: Colors.purple[300],
+          floatingLabelStyle: const TextStyle(
+              color: AppColor.yellow,
               fontWeight: FontWeight.bold,
               fontSize: 15),
           enabledBorder: border,

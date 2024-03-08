@@ -1,5 +1,6 @@
 import 'package:dismov_app/Json/users.dart';
 import 'package:dismov_app/auth/db/sqlite.dart';
+import 'package:dismov_app/config/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
@@ -108,10 +109,11 @@ class _LoginFormState extends State<_LoginForm> {
             height: 60,
             child: CustomFilledButton(
               text: 'Ingresar',
-              buttonColor: Colors.purple[300],
+              buttonColor: AppColor.yellowCustom,
               onPressed: () {
                 if (formKey.currentState!.validate()) {
                   login();
+                  context.go("/Menu");
                 }
               },
             ),

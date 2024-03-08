@@ -1,4 +1,5 @@
 import 'dart:math' show pi;
+import 'package:dismov_app/config/config.dart';
 import 'package:flutter/material.dart';
 
 class GeometricalBackground extends StatelessWidget {
@@ -29,8 +30,8 @@ class GeometricalBackground extends StatelessWidget {
           // Background with shapes
           Container(
               height: size.height * 0.7,
-              decoration: BoxDecoration(
-                color: Colors.purple[400],
+              decoration: const BoxDecoration(
+                color: AppColor.yellowCustom,
               ),
               child: Column(
                 children: [
