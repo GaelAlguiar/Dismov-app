@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 
+//Firebase Services
+import 'package:dismov_app/services/firebase_service.dart';
+
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
@@ -14,16 +17,35 @@ class MenuScreen extends StatelessWidget {
     return Scaffold(
       drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
-        title: const Text('Menu'),
+          title: const Text('Menu'),
         backgroundColor: AppColor.yellow,
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
-        ],
-      ),
+        actions: [IconButton(onPressed: () {},
+            icon: const Icon(Icons.search_rounded))],),
       body: const _MenuView(),
     );
   }
 }
+
+//Función para extraer datos de la bd
+/*
+FutureBuilder(
+        future: getUser(),
+        builder: ( (context, snapshot) {
+          if (snapshot.hasData){
+            return ListView.builder(
+              itemCount: snapshot.data?.length,
+              itemBuilder: (context, index) {
+                return Text(snapshot.data?[index]['name']);
+              },
+
+            );
+          }else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }) ),
+*/
 
 class _MenuView extends StatefulWidget {
   const _MenuView();

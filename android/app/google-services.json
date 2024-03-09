@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "497881747557",
+    "project_id": "petappdb-5f982",
+    "storage_bucket": "petappdb-5f982.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497881747557:android:6e899edfc09e8319e0768c",
+        "android_client_info": {
+          "package_name": "com.example.dismov_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmbTDViDDRKkDgbL4bpsdtD4lRFSdcNCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
