@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dismov_app/Json/users.dart';
 import 'package:dismov_app/auth/db/sqlite.dart';
 import 'package:dismov_app/config/theme/color.dart';
@@ -153,6 +155,19 @@ class _LoginFormState extends State<_LoginForm> {
               },
             ),
           ),
+          const SizedBox(height: 10),
+          //Login with Google Button
+          SizedBox(
+            width: double.infinity,
+            height: 30,
+            child: CustomFilledButton(
+              text: "Cerrar Sesión",
+              buttonColor: AppColor.darker,
+              onPressed: () async {
+                await signOutGoogle();
+              },
+            ),
+          ),
           const Spacer(flex: 1),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -189,4 +204,9 @@ Future<UserCredential> signInWithGoogle() async {
   return await FirebaseAuth.instance.signInWithCredential(credential);
 }
 
+//signOutGoogle
+Future<void> signOutGoogle() async{
+  await GoogleSignIn().signOut();
 
+
+}
