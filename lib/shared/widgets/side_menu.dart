@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
+import 'package:go_router/go_router.dart';
+//LoginGoogle
+import 'package:dismov_app/utils/loginGoogleUtils.dart';
 
 class SideMenu extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -49,7 +52,7 @@ class _SideMenuState extends State<SideMenu> {
               child: Divider(),
             ),
             const SizedBox(
-              height: 430,
+              height: 350,
             ),
             const Padding(
               padding: EdgeInsets.fromLTRB(28, 36, 28, 10),
@@ -62,7 +65,11 @@ class _SideMenuState extends State<SideMenu> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child:
-                  CustomFilledButton(onPressed: () {}, text: 'Cerrar sesión'),
+                  CustomFilledButton(onPressed: () async {
+                    await LoginGoogleUtils().signOutGoogle();
+                    await LoginGoogleUtils().singOutWithEmail();
+                    context.go("/login");
+                  }, text: 'Cerrar sesión'),
             ),
           ]),
     ]);

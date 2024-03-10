@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
 //Utils for Google Login
 import 'package:dismov_app/utils/loginGoogleUtils.dart';
 
@@ -124,6 +125,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                 buttonColor: AppColor.yellowCustom,
                 onPressed: () async {
                   await LoginGoogleUtils().createUserWithEmail(email.text,password.text);
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    context.go("/Root");
+                  }
                 },
                 ),
           ),
