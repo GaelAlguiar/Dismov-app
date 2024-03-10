@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
 
+//Google Services for login
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 // RegisterScreen
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -120,6 +124,24 @@ class _RegisterFormState extends State<_RegisterForm> {
                 text: 'Crear',
                 buttonColor: AppColor.yellowCustom,
                 onPressed: () async {
+                  //await FirebaseAuth.instance.signOut();
+                  try {
+                    final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: email.text,
+                      password: password.text,
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'weak-password') {
+                      //print('The password provided is too weak.');
+                    } else if (e.code == 'email-already-in-use') {
+                      //print('The account already exists for that email.');
+                    }
+                  } catch (e) {
+                    //print(e);
+                  }
+                }
+
+              /*() async {
                   final currentContext = context;
 
                   if (formKey.currentState!.validate()) {
@@ -136,7 +158,8 @@ class _RegisterFormState extends State<_RegisterForm> {
                       debugPrint("Error durante el registro: $e");
                     }
                   }
-                }),
+                }*/
+                ),
           ),
           const Spacer(flex: 2),
           Row(

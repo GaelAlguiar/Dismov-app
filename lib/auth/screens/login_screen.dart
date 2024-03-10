@@ -5,9 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
 
+//Firebase Services
+import 'package:dismov_app/services/firebase_service.dart';
+//Google Services for login
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
+
 // LoginScreen
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,15 +120,40 @@ class _LoginFormState extends State<_LoginForm> {
             child: CustomFilledButton(
               text: 'Ingresar',
               buttonColor: AppColor.yellowCustom,
-              onPressed: () {
+              onPressed: () async {
                 if (formKey.currentState!.validate()) {
-                  login();
-                  context.go("/Menu");
+                  try {
+                    print("Entró");
+                    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: username.text,
+                        password: password.text,
+                    );
+                    //context.go("/Menu");
+                  } on FirebaseAuthException catch (e) {
+                    if (e.code == 'user-not-found') {
+                      //print('No user found for that email.');
+                    } else if (e.code == 'wrong-password') {
+                      //print('Wrong password provided for that user.');
+                    }
+                  };
                 }
               },
             ),
           ),
-          const Spacer(flex: 2),
+          const SizedBox(height: 10),
+          //Login with Google Button
+          SizedBox(
+            width: double.infinity,
+            height: 60,
+            child: CustomFilledButton(
+              text: "Iniciar Sesion con Google",
+              buttonColor: AppColor.darker,
+              onPressed: () async {
+                await signInWithGoogle();
+              },
+            ),
+          ),
+          const Spacer(flex: 1),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -135,3 +170,23 @@ class _LoginFormState extends State<_LoginForm> {
     );
   }
 }
+
+//Login with Google
+Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  // Obtain the auth details from the request
+  final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+  // Create a new credential
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth?.accessToken,
+    idToken: googleAuth?.idToken,
+  );
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithCredential(credential);
+}
+
+
