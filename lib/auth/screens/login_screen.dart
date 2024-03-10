@@ -1,17 +1,17 @@
 import 'dart:math';
 
 import 'package:dismov_app/Json/users.dart';
-import 'package:dismov_app/auth/db/sqlite.dart';
+//import 'package:dismov_app/auth/db/sqlite.dart';
 import 'package:dismov_app/config/theme/color.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
 
 //Firebase Services
 import 'package:dismov_app/services/firebase_service.dart';
-//Google Services for login
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+//Utils for Google Login
+import 'package:dismov_app/utils/loginGoogleUtils.dart';
 
 
 
@@ -23,42 +23,56 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: GeometricalBackground(
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 45),
-                // Icon Banner
-                IconButton(
-                  icon: Image.asset(
-                    'assets/images/image.png',
-                    width: 220,
-                    height: 170,
-                  ),
-                  onPressed: () => {},
-                ),
-                const SizedBox(height: 45),
-                Container(
-                  height: MediaQuery.of(context).size.height - 260,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(100),
+    return FutureBuilder(
+        future: LoginGoogleUtils().isUserLoggedIn(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return CircularProgressIndicator();
+          }else{
+            if (snapshot.data==true) {
+              context.go("/Root");
+              return Container();
+            }else{
+              return GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: Scaffold(
+                  body: GeometricalBackground(
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 45),
+                          // Icon Banner
+                          IconButton(
+                            icon: Image.asset(
+                              'assets/images/image.png',
+                              width: 220,
+                              height: 170,
+                            ),
+                            onPressed: () => {},
+                          ),
+                          const SizedBox(height: 45),
+                          Container(
+                            height: MediaQuery.of(context).size.height - 260,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(100),
+                              ),
+                            ),
+                            child: _LoginForm(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  child: _LoginForm(),
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              );
+            }
+          }
+        }
     );
   }
 }
@@ -72,7 +86,7 @@ class _LoginFormState extends State<_LoginForm> {
   final username = TextEditingController();
   final password = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
+/*
   bool isLoginTrue = false;
 
   final db = DatabaseHelper();
@@ -91,7 +105,7 @@ class _LoginFormState extends State<_LoginForm> {
         isLoginTrue = true;
       });
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -123,21 +137,9 @@ class _LoginFormState extends State<_LoginForm> {
               text: 'Ingresar',
               buttonColor: AppColor.yellowCustom,
               onPressed: () async {
-                if (formKey.currentState!.validate()) {
-                  try {
-                    print("Entró");
-                    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: username.text,
-                        password: password.text,
-                    );
-                    //context.go("/Menu");
-                  } on FirebaseAuthException catch (e) {
-                    if (e.code == 'user-not-found') {
-                      //print('No user found for that email.');
-                    } else if (e.code == 'wrong-password') {
-                      //print('Wrong password provided for that user.');
-                    }
-                  };
+                UserCredential? credentials = await LoginGoogleUtils().loginUserWithEmail(username.text,password.text);
+                if (credentials.user != null ){
+                  context.go("/Root");
                 }
               },
             ),
@@ -151,7 +153,11 @@ class _LoginFormState extends State<_LoginForm> {
               text: "Iniciar Sesion con Google",
               buttonColor: AppColor.darker,
               onPressed: () async {
-                await signInWithGoogle();
+                await LoginGoogleUtils().signInWithGoogle();
+                //if is there a currentUser signed, we will go to the root
+                if (FirebaseAuth.instance.currentUser != null) {
+                  context.go("/Root");
+                }
               },
             ),
           ),
@@ -164,7 +170,8 @@ class _LoginFormState extends State<_LoginForm> {
               text: "Cerrar Sesión",
               buttonColor: AppColor.darker,
               onPressed: () async {
-                await signOutGoogle();
+                await LoginGoogleUtils().signOutGoogle();
+                await LoginGoogleUtils().singOutWithEmail();
               },
             ),
           ),
@@ -186,27 +193,6 @@ class _LoginFormState extends State<_LoginForm> {
   }
 }
 
-//Login with Google
-Future<UserCredential> signInWithGoogle() async {
-  // Trigger the authentication flow
-  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-  // Obtain the auth details from the request
-  final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-
-  // Create a new credential
-  final credential = GoogleAuthProvider.credential(
-    accessToken: googleAuth?.accessToken,
-    idToken: googleAuth?.idToken,
-  );
-
-  // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance.signInWithCredential(credential);
-}
-
-//signOutGoogle
-Future<void> signOutGoogle() async{
-  await GoogleSignIn().signOut();
 
 
-}
+
