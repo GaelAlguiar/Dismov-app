@@ -1,3 +1,4 @@
+import 'package:dismov_app/app/menu/screen/Pet/pet.dart';
 import 'package:dismov_app/app/menu/screen/menu_screen.dart';
 import 'package:dismov_app/app/menu/screen/root_menu.dart';
 import 'package:dismov_app/auth/screens/login_screen.dart';
@@ -21,6 +22,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/menu',
       builder: (context, state) => const MenuScreen(),
+    ),
+    GoRoute(
+      path: '/pets',
+      builder:(context, state) => const PetPage()
     ),
 
     ///* Route App

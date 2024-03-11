@@ -1,3 +1,4 @@
+import 'package:dismov_app/app/menu/screen/Pet/pet.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
 import 'package:dismov_app/app/menu/screen/menu_screen.dart';
 import 'package:dismov_app/app/utils/animation_duration.dart';
@@ -24,9 +25,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
     {
       "icon": "assets/icons/pet-border.svg",
       "active_icon": "assets/icons/pet.svg",
-      "page": const Center(
-        child: Text("Pet Page"),
-      ),
+      "page": const PetPage(),
     },
     {
       "icon": "assets/icons/chat-border.svg",
