@@ -1,6 +1,6 @@
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:dismov_app/shared/shared.dart';
-import 'package:dismov_app/shared/widgets/chatItem.dart';
+import 'package:dismov_app/shared/widgets/chat_item.dart';
 import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
