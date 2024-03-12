@@ -18,15 +18,13 @@ class PetProfilePage extends StatelessWidget {
         children: [
           // Expanded image
           Positioned.fill(
-            child: Positioned(
-              height: 100,
-              child: Image.network(
-                pet['image'],
-                fit: BoxFit.cover,
-              ),
-              )
-
-          ),
+              child: Positioned(
+            height: 100,
+            child: Image.network(
+              pet['image'],
+              fit: BoxFit.cover,
+            ),
+          )),
           // Container for pet information
           Positioned(
             left: 0,
@@ -51,142 +49,161 @@ class PetProfilePage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0), // Spacing between containers
                     Center(
-
                       child: Row(
+                        children: [
+                          const SizedBox(
+                              width: 10.0), // Spacing between containers
 
-                      children: [
-                        const SizedBox(width: 10.0), // Spacing between containers
-
-                        Container(
-                          height: 100.0, // Adjust as needed
-                          width: 100.0,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 0.32),
-                            borderRadius: BorderRadius.circular(7.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.07),
-                                offset: const Offset(2.0, 2.0),
-                                blurRadius: 4.0,
-                                spreadRadius: 0.0,
-                              )
-                            ],
-                            // Ensure square dimensions
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Text with value from pet data
-                              Text(
-                                '${pet['age']}', // Access data from your pet structure
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold, // Make text bold
-                                  color: AppColor.yellowCustom,
+                          Container(
+                            height: 100.0, // Adjust as needed
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.grey, width: 0.32),
+                              borderRadius: BorderRadius.circular(7.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.07),
+                                  offset: const Offset(2.0, 2.0),
+                                  blurRadius: 4.0,
+                                  spreadRadius: 0.0,
+                                )
+                              ],
+                              // Ensure square dimensions
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Text with value from pet data
+                                Text(
+                                  '${pet['age']}', // Access data from your pet structure
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight:
+                                        FontWeight.bold, // Make text bold
+                                    color: AppColor.yellowCustom,
+                                  ),
+                                  textAlign: TextAlign
+                                      .center, // Center text horizontally
                                 ),
-                                textAlign: TextAlign.center, // Center text horizontally
-                              ),
-                              const SizedBox(height: 5.0), // Add spacing between texts
-                              // Text for "Edad"
-                              Text(
-                                "Edad",
-                                style: const TextStyle(
-                                  fontSize: 16, // Adjust font size as needed
-                                  fontWeight: FontWeight.normal, // Adjust font weight if desired
-                                  color: Colors.grey, // Adjust color if desired
+                                const SizedBox(
+                                    height: 5.0), // Add spacing between texts
+                                // Text for "Edad"
+                                const Text(
+                                  "Edad",
+                                  style: TextStyle(
+                                    fontSize: 16, // Adjust font size as needed
+                                    fontWeight: FontWeight
+                                        .normal, // Adjust font weight if desired
+                                    color:
+                                        Colors.grey, // Adjust color if desired
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 10.0), // Spacing between containers
-                        Container(
-                          height: 100.0, // Adjust as needed
-                          width: 100.0,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 0.32),
-                            borderRadius: BorderRadius.circular(7.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.07),
-                                offset: const Offset(2.0, 2.0),
-                                blurRadius: 4.0,
-                                spreadRadius: 0.0,
-                              )
-                            ],
-                            // Ensure square dimensions
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Text with value from pet data
-                              Text(
-                                '${pet['sex']}', // Access data from your pet structure
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold, // Make text bold
-                                  color: AppColor.yellowCustom,
+                          const SizedBox(
+                              width: 10.0), // Spacing between containers
+                          Container(
+                            height: 100.0, // Adjust as needed
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.grey, width: 0.32),
+                              borderRadius: BorderRadius.circular(7.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.07),
+                                  offset: const Offset(2.0, 2.0),
+                                  blurRadius: 4.0,
+                                  spreadRadius: 0.0,
+                                )
+                              ],
+                              // Ensure square dimensions
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Text with value from pet data
+                                Text(
+                                  '${pet['sex']}', // Access data from your pet structure
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight:
+                                        FontWeight.bold, // Make text bold
+                                    color: AppColor.yellowCustom,
+                                  ),
+                                  textAlign: TextAlign
+                                      .center, // Center text horizontally
                                 ),
-                                textAlign: TextAlign.center, // Center text horizontally
-                              ),
-                              const SizedBox(height: 5.0), // Add spacing between texts
-                              // Text for "Edad"
-                              Text(
-                                "Sexo",
-                                style: const TextStyle(
-                                  fontSize: 16, // Adjust font size as needed
-                                  fontWeight: FontWeight.normal, // Adjust font weight if desired
-                                  color: Colors.grey, // Adjust color if desired
+                                const SizedBox(
+                                    height: 5.0), // Add spacing between texts
+                                // Text for "Edad"
+                                const Text(
+                                  "Sexo",
+                                  style: TextStyle(
+                                    fontSize: 16, // Adjust font size as needed
+                                    fontWeight: FontWeight
+                                        .normal, // Adjust font weight if desired
+                                    color:
+                                        Colors.grey, // Adjust color if desired
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 10.0), // Spacing between containers
-                        Container(
-                          height: 100.0, // Adjust as needed
-                          width: 100.0,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 0.32),
-                            borderRadius: BorderRadius.circular(7.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.07),
-                                offset: const Offset(2.0, 2.0),
-                                blurRadius: 4.0,
-                                spreadRadius: 0.0,
-                              )
-                            ],
-                            // Ensure square dimensions
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Text with value from pet data
-                              Text(
-                                '${pet['color']}', // Access data from your pet structure
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold, // Make text bold
-                                  color: AppColor.yellowCustom,
+                          const SizedBox(
+                              width: 10.0), // Spacing between containers
+                          Container(
+                            height: 100.0, // Adjust as needed
+                            width: 100.0,
+                            decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.grey, width: 0.32),
+                              borderRadius: BorderRadius.circular(7.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.07),
+                                  offset: const Offset(2.0, 2.0),
+                                  blurRadius: 4.0,
+                                  spreadRadius: 0.0,
+                                )
+                              ],
+                              // Ensure square dimensions
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Text with value from pet data
+                                Text(
+                                  '${pet['color']}', // Access data from your pet structure
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight:
+                                        FontWeight.bold, // Make text bold
+                                    color: AppColor.yellowCustom,
+                                  ),
+                                  textAlign: TextAlign
+                                      .center, // Center text horizontally
                                 ),
-                                textAlign: TextAlign.center, // Center text horizontally
-                              ),
-                              const SizedBox(height: 5.0), // Add spacing between texts
-                              // Text for "Edad"
-                              Text(
-                                "Color",
-                                style: const TextStyle(
-                                  fontSize: 16, // Adjust font size as needed
-                                  fontWeight: FontWeight.normal, // Adjust font weight if desired
-                                  color: Colors.grey, // Adjust color if desired
+                                const SizedBox(
+                                    height: 5.0), // Add spacing between texts
+                                // Text for "Edad"
+                                const Text(
+                                  "Color",
+                                  style: TextStyle(
+                                    fontSize: 16, // Adjust font size as needed
+                                    fontWeight: FontWeight
+                                        .normal, // Adjust font weight if desired
+                                    color:
+                                        Colors.grey, // Adjust color if desired
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                     ),
 
                     Column(
@@ -194,33 +211,35 @@ class PetProfilePage extends StatelessWidget {
                         Row(
                           children: [
                             Column(
-
                               children: [
                                 const SizedBox(height: 20.0),
-
                                 Positioned(
                                   // Adjust top and left positions as needed
                                   top: 10.0, // Adjust top position
                                   left: 10.0, // Adjust left position
                                   child: ClipOval(
                                     child: SizedBox(
-                                      height: 50.0, // Adjust image size (width will be the same)
-                                      width: 50.0, // Adjust image size (height will be the same)
+                                      height:
+                                          50.0, // Adjust image size (width will be the same)
+                                      width:
+                                          50.0, // Adjust image size (height will be the same)
                                       child: Image.network(
                                         pet['owner_photo'],
-                                        fit: BoxFit.cover, // Maintain aspect ratio within the circle
+                                        fit: BoxFit
+                                            .cover, // Maintain aspect ratio within the circle
                                       ),
                                     ),
                                   ),
                                 ),
                                 Text(
-                                  style: const TextStyle(
-                                      fontSize: 16, // Adjust font size as needed
-                                      fontWeight: FontWeight.normal, // Adjust font weight if desired
+                                    style: const TextStyle(
+                                      fontSize:
+                                          16, // Adjust font size as needed
+                                      fontWeight: FontWeight
+                                          .normal, // Adjust font weight if desired
                                       color: Colors.black,
-                                  ),
-                                    '${pet['owner_name']}'
-                                ),
+                                    ),
+                                    '${pet['owner_name']}'),
                               ],
                             )
                           ],

@@ -27,7 +27,7 @@ class AppColor {
   static const red = Color(0xFFf77080);
   static const orange = Color(0xFFf5ba92);
   static const sky = Color(0xFFABDEE6);
-  static const blue = Color(0xFF509BE4);
+  static const blue = Color.fromARGB(255, 46, 124, 202);
   static const yellowCustom = Color.fromARGB(186, 168, 131, 6);
 
   static const listColors = [

@@ -1,7 +1,7 @@
 import 'package:dismov_app/app/menu/screen/Pet/pet.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
 import 'package:dismov_app/app/menu/screen/menu_screen.dart';
-import 'package:dismov_app/app/menu/screen/userSettingsPage/userSettingsScreen.dart';
+import 'package:dismov_app/app/menu/screen/userSettingsPage/user_settings_screen.dart';
 import 'package:dismov_app/app/utils/animation_duration.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/shared/widgets/bottombar.dart';
