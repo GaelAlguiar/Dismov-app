@@ -151,13 +151,19 @@ class _RegisterFormState extends State<_RegisterForm> {
               buttonColor: AppColor.blue,
               icon: MdiIcons.fromString("google"),
               onPressed: () async {
-                await LoginGoogleUtils().signInWithGoogle();
-                //if is there a currentUser signed, we will go to the root
-                if (FirebaseAuth.instance.currentUser != null) {
-                  if (context.mounted) {
-                    context.go("/Root");
+                try{
+                  await LoginGoogleUtils().signInWithGoogle();
+                  //if is there a currentUser signed, we will go to the root
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    if (context.mounted) {
+                      context.go("/Root");
+                    }
                   }
+
+                }catch(e){
+                  print(e);
                 }
+
               },
             ),
           ),
