@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 import '../../../../config/theme/color.dart';
 
-
 class PetPage extends StatelessWidget {
   const PetPage({super.key});
 
+  @override
   Widget build(BuildContext context) {
-    final scaffoldKey = GlobalKey<ScaffoldState>();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Pets'),
@@ -23,7 +21,6 @@ class PetPage extends StatelessWidget {
     );
   }
 }
-
 
 class SearchPets extends StatefulWidget {
   const SearchPets({super.key});
@@ -43,13 +40,17 @@ class _SearchPetsState extends State<SearchPets> {
     super.initState();
     petsSelected = pets; // Assign pets from data.dart
   }
-  void filterPets(String searchText, List<String> selectedSpecies, List<String> selectedSizes) {
+
+  void filterPets(String searchText, List<String> selectedSpecies,
+      List<String> selectedSizes) {
     setState(() {
-      pets = pets.where((pet) =>
-      pet.name.contains(searchText) &&
-          (selectedSpecies.isEmpty || selectedSpecies.contains(pet.species)) &&
-          (selectedSizes.isEmpty || selectedSizes.contains(pet.size))
-      ).toList();
+      pets = pets
+          .where((pet) =>
+              pet.name.contains(searchText) &&
+              (selectedSpecies.isEmpty ||
+                  selectedSpecies.contains(pet.species)) &&
+              (selectedSizes.isEmpty || selectedSizes.contains(pet.size)))
+          .toList();
     });
   }
 
@@ -57,7 +58,7 @@ class _SearchPetsState extends State<SearchPets> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Buscar Mascotas"),
+        title: const Text("Buscar Mascotas"),
       ),
       body: Column(
         children: [
@@ -73,26 +74,28 @@ class _SearchPetsState extends State<SearchPets> {
               itemCount: pets.length,
               itemBuilder: (context, index) {
                 return Center(
-                  child: GestureDetector(
-                    onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PetProfilePage(key: UniqueKey(), pet: pets[index]),
-                    ),
-                  );
-                },
-                    child: PetItem(
-                      data: pets[index],
-                      height: 300,
-                      width:380, // Adjust width as needed
-                      onTap: null,
-                      onFavoriteTap: () {
-                        setState(() {
-                          pets[index].isFavorited = !pets[index].isFavorited;
-                        });
-                  },
-                )));
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PetProfilePage(
+                                  key: UniqueKey(), pet: pets[index]),
+                            ),
+                          );
+                        },
+                        child: PetItem(
+                          data: pets[index],
+                          height: 300,
+                          width: 380, // Adjust width as needed
+                          onTap: null,
+                          onFavoriteTap: () {
+                            setState(() {
+                              pets[index].isFavorited =
+                                  !pets[index].isFavorited;
+                            });
+                          },
+                        )));
               },
             ),
           ),
@@ -101,4 +104,3 @@ class _SearchPetsState extends State<SearchPets> {
     );
   }
 }
-

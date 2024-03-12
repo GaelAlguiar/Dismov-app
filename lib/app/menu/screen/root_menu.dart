@@ -91,6 +91,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
 
   Widget _buildPage() {
     return IndexedStack(
+      index: _activeTab,
       children: List.generate(
         barItems.length,
         (index) => _buildAnimatedPage(barItems[index]["page"]),

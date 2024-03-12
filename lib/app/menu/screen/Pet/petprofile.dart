@@ -1,8 +1,8 @@
-import 'package:dismov_app/app/utils/data.dart'; // Assuming data.dart has getData function
-import 'package:dismov_app/shared/shared.dart'; // Assuming shared.dart has PetItem widget
+// import 'package:dismov_app/app/utils/data.dart'; // Assuming data.dart has getData function
+// import 'package:dismov_app/shared/shared.dart'; // Assuming shared.dart has PetItem widget
 import 'package:flutter/material.dart';
-import 'package:dismov_app/app/menu/screen/Pet/pet.dart';
-import '../../../../config/theme/color.dart';
+// import 'package:dismov_app/app/menu/screen/Pet/pet.dart';
+// import '../../../../config/theme/color.dart';
 
 class PetProfilePage extends StatelessWidget {
   final pet;
@@ -27,65 +27,78 @@ class PetProfilePage extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: ClipRRect(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0),
               ),
               child: Container(
                 color: Colors.white,
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Show pet information
-                        Container(
-                            child: Text(
-                              '${pet['name']}',
-                              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                        )
+                    Text(
+                      '${pet['name']}',
+                      style: const TextStyle(
+                          fontSize: 40, fontWeight: FontWeight.bold),
                     ),
                     Row(
                       children: [
-                        Container(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey, width: 1.0), // Border configuration
-                              borderRadius: BorderRadius.circular(5.0), // Rounded corners (optional)
-                              boxShadow: [BoxShadow( // Shadow definition
-                                color: Colors.grey.withOpacity(0.5), // Shadow color (with transparency)
-                                offset: Offset(2.0, 2.0), // Shadow offset (horizontal, vertical)
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0), // Border configuration
+                            borderRadius: BorderRadius.circular(
+                                5.0), // Rounded corners (optional)
+                            boxShadow: [
+                              BoxShadow(
+                                // Shadow definition
+                                color: Colors.grey.withOpacity(
+                                    0.5), // Shadow color (with transparency)
+                                offset: const Offset(2.0,
+                                    2.0), // Shadow offset (horizontal, vertical)
                                 blurRadius: 4.0, // Shadow blur radius
-                                spreadRadius: 0.0, // Shadow spread radius (optional)
-                              )],
-                            ),
-                            child: Text(
-                              'Edad: ${pet['age']}',
-                              style: TextStyle(fontSize: 20),
-                            ),
+                                spreadRadius:
+                                    0.0, // Shadow spread radius (optional)
+                              )
+                            ],
+                          ),
+                          child: Text(
+                            'Edad: ${pet['age']}',
+                            style: const TextStyle(fontSize: 20),
                           ),
                         ),
-                        SizedBox(width: 10.0), // Add spacing between containers
-                        Container(
-                          child: DecoratedBox(
+                        const SizedBox(
+                            width: 10.0), // Add spacing between containers
+                        DecoratedBox(
                           decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey, width: 0.5), // Border configuration
-                          borderRadius: BorderRadius.circular(5.0), // Rounded corners (optional)
-                          boxShadow: [BoxShadow( // Shadow definition
-                          color: Colors.grey.withOpacity(0.05), // Shadow color (with transparency)
-                          offset: Offset(2.0, 2.0), // Shadow offset (horizontal, vertical)
-                          blurRadius: 4.0, // Shadow blur radius
-                          spreadRadius: 0.0, // Shadow spread radius (optional)
-                          )],
+                            border: Border.all(
+                                color: Colors.grey,
+                                width: 0.5), // Border configuration
+                            borderRadius: BorderRadius.circular(
+                                5.0), // Rounded corners (optional)
+                            boxShadow: [
+                              BoxShadow(
+                                // Shadow definition
+                                color: Colors.grey.withOpacity(
+                                    0.05), // Shadow color (with transparency)
+                                offset: const Offset(2.0,
+                                    2.0), // Shadow offset (horizontal, vertical)
+                                blurRadius: 4.0, // Shadow blur radius
+                                spreadRadius:
+                                    0.0, // Shadow spread radius (optional)
+                              )
+                            ],
                           ),
                           child: Text(
                             'Raza: ${pet['breed']}',
-                            style: TextStyle(fontSize: 20),
+                            style: const TextStyle(fontSize: 20),
                           ),
-                        ),
                         )
                       ],
                     ),
-
 
                     // Add more details as needed
                   ],
@@ -98,7 +111,7 @@ class PetProfilePage extends StatelessWidget {
             top: 20.0,
             left: 20.0,
             child: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.pop(context),
               color: Colors.black,
             ),
