@@ -5,6 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+//Utils for Google Login
+import 'package:dismov_app/utils/loginGoogleUtils.dart';
+
+
 // RegisterScreen
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -120,23 +125,11 @@ class _RegisterFormState extends State<_RegisterForm> {
                 text: 'Crear',
                 buttonColor: AppColor.yellowCustom,
                 onPressed: () async {
-                  final currentContext = context;
-
-                  if (formKey.currentState!.validate()) {
-                    final db = DatabaseHelper();
-                    try {
-                      await db.signup(Users(
-                          userName: username.text,
-                          userEmail: email.text,
-                          userPassword: password.text));
-                      if (context.mounted) {
-                        currentContext.go("/login");
-                      }
-                    } catch (e) {
-                      debugPrint("Error durante el registro: $e");
-                    }
+                  await LoginGoogleUtils().createUserWithEmail(email.text,password.text);
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    context.go("/Root");
                   }
-                }),
+                },),
           ),
           const Spacer(flex: 2),
           Row(

@@ -1,6 +1,7 @@
 import 'package:dismov_app/app/menu/screen/Pet/pet.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
 import 'package:dismov_app/app/menu/screen/menu_screen.dart';
+import 'package:dismov_app/app/menu/screen/userSettingsPage/userSettingsScreen.dart';
 import 'package:dismov_app/app/utils/animation_duration.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/shared/widgets/bottombar.dart';
@@ -35,9 +36,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
     {
       "icon": "assets/icons/setting-border.svg",
       "active_icon": "assets/icons/setting.svg",
-      "page": const Center(
-        child: Text("Setting Page"),
-      ),
+      "page": const UserSettingsScreen(),
     },
   ];
 
