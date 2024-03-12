@@ -47,6 +47,13 @@ dependencies:
   flutter_svg: ^0.22.0
   glassmorphism_ui: ^0.2.0
 
+  #Firebase Dependencies
+  firebase_core: ^2.27.0
+  cloud_firestore: ^4.15.8
+  #Google Dependencies
+  google_sign_in: ^6.2.1
+  firebase_auth: ^4.17.8
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
