@@ -91,7 +91,6 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
 
   Widget _buildPage() {
     return IndexedStack(
-      index: _activeTab,
       children: List.generate(
         barItems.length,
         (index) => _buildAnimatedPage(barItems[index]["page"]),
@@ -100,34 +99,36 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
   }
 
   Widget _buildBottomBar() {
-    return Container(
-      height: 55,
-      width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 0),
-      decoration: BoxDecoration(
-        color: AppColor.yellow,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColor.shadowColor.withOpacity(0.1),
-            blurRadius: 1,
-            spreadRadius: 1,
-            offset: const Offset(0, 1),
-          )
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: List.generate(
-          barItems.length,
-          (index) => BottomBarItem(
-            _activeTab == index
-                ? barItems[index]["active_icon"]
-                : barItems[index]["icon"],
-            isActive: _activeTab == index,
-            activeColor: AppColor.primary,
-            onTap: () => onPageChanged(index),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Container(
+        height: 60,
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+        decoration: BoxDecoration(
+          color: AppColor.yellow,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: AppColor.shadowColor.withOpacity(0.1),
+              blurRadius: 1,
+              spreadRadius: 1,
+              offset: const Offset(0, 1),
+            )
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: List.generate(
+            barItems.length,
+            (index) => BottomBarItem(
+              _activeTab == index
+                  ? barItems[index]["active_icon"]
+                  : barItems[index]["icon"],
+              isActive: _activeTab == index,
+              activeColor: AppColor.primary,
+              onTap: () => onPageChanged(index),
+            ),
           ),
         ),
       ),

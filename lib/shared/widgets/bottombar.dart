@@ -34,11 +34,14 @@ class BottomBarItem extends StatelessWidget {
                 ? AppColor.primary.withOpacity(.1)
                 : Colors.transparent,
           ),
-          child: SvgPicture.asset(
-            icon,
-            color: isActive ? activeColor : color,
-            width: 25,
-            height: 25,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 0.0),
+            child: SvgPicture.asset(
+              icon,
+              color: isActive ? activeColor : color,
+              width: 25,
+              height: 25,
+            ),
           ),
         ),
       ),
