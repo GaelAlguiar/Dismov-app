@@ -127,15 +127,13 @@ class _RegisterFormState extends State<_RegisterForm> {
               buttonColor: AppColor.yellowCustom,
               icon: MdiIcons.fromString("account-multiple-plus"),
               onPressed: () async {
-                await LoginGoogleUtils()
-                    .createUserWithEmail(email.text, password.text);
+                await LoginGoogleUtils().createUserWithEmail(email.text, password.text);
                 if (FirebaseAuth.instance.currentUser != null) {
-                  FirebaseAuth.instance.currentUser
-                      ?.updateDisplayName(username.text);
+                  FirebaseAuth.instance.currentUser?.updateDisplayName(username.text);
                   addPeople(username.text, email.text);
-                  if (context.mounted) {
+                  //if (context.mounted) {
                     context.go("/Root");
-                  }
+                  //}
                 }
               },
             ),
