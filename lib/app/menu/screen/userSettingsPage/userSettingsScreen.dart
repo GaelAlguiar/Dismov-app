@@ -40,6 +40,8 @@ class _UserSettingsView extends StatefulWidget {
 }
 
 class __UserSettingsState extends State<_UserSettingsView> {
+  bool mostrarFavoritos = false;
+  bool mostrarPreferencias = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,18 +106,29 @@ class __UserSettingsState extends State<_UserSettingsView> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else {
-          String? email = FirebaseAuth.instance.currentUser?.email;
+          /*String? email = FirebaseAuth.instance.currentUser?.email;
           String? name = FirebaseAuth.instance.currentUser?.displayName;
           String? profilePhoto = FirebaseAuth.instance.currentUser?.photoURL;
-            Future<List> users = getUser(email);
+            Future<List> users = getUser(email);*/
             return SingleChildScrollView(
+
               child: Padding(
                 padding: const EdgeInsets.only(top: 0, bottom: 10),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center, children: [
-                  Text(name.toString()),
+                  /*Text(name.toString()),
                   colocarImagen(profilePhoto.toString()),
-                  Text(email.toString()),
+                  Text(email.toString()),*/
+                  ListView(
+                    children: [
+                      ExpansionPanelList(
+                        elevation: 1,
+                        expansionCallback: (int index, bool isExpanded){
+                          
+                        },
+                      )
+                    ],
+                  ),
 
                   const SizedBox(
                     height: 25,
