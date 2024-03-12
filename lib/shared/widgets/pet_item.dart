@@ -7,14 +7,13 @@ import 'custom_image.dart';
 
 class PetItem extends StatelessWidget {
   const PetItem(
-      {Key? key,
+      {super.key,
       required this.data,
       this.width = 350,
       this.height = 400,
       this.radius = 40,
       this.onTap,
-      this.onFavoriteTap})
-      : super(key: key);
+      this.onFavoriteTap});
   final Map<String, dynamic> data;
   final double width;
   final double height;

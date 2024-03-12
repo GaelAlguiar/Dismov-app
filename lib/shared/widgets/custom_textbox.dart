@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class CustomTextBox extends StatelessWidget {
   const CustomTextBox({
-    Key? key,
+    super.key,
     this.hint = "",
     this.prefix,
     this.suffix,
     this.controller,
     this.readOnly = false,
-  }) : super(key: key);
+  });
 
   final String hint;
   final Widget? prefix;

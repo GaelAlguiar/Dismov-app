@@ -4,11 +4,11 @@ import 'custom_image.dart';
 class ChatItem extends StatelessWidget {
   const ChatItem(
     this.chatData, {
-    Key? key,
+    super.key,
     this.onTap,
     this.isNotified = true,
     this.profileSize = 50,
-  }) : super(key: key);
+  });
 
   final Map<String, dynamic> chatData;
   final bool isNotified;

@@ -4,11 +4,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class CategoryItem extends StatelessWidget {
   const CategoryItem({
-    Key? key,
+    super.key,
     required this.data,
     this.selected = false,
     this.onTap,
-  }) : super(key: key);
+  });
 
   final Map<String, dynamic> data;
   final bool selected;
@@ -43,7 +43,6 @@ class CategoryItem extends StatelessWidget {
               data["icon"],
               width: 35,
               height: 35,
-              color: selected ? Colors.white : Colors.black,
             ),
             const SizedBox(
               height: 8,

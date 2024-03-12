@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 // import '../../../../config/theme/color.dart';
 
 class PetProfilePage extends StatelessWidget {
-  final pet;
+  final Map<String, dynamic> pet;
 
-  const PetProfilePage({required Key key, this.pet}) : super(key: key);
+  const PetProfilePage({required Key key, required this.pet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

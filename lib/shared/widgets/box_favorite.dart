@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 
 class FavoriteBox extends StatelessWidget {
   const FavoriteBox({
-    Key? key,
+    super.key,
     this.bgColor = AppColor.red,
     this.onTap,
     this.isFavorited = false,
     this.borderColor = Colors.transparent,
     this.radius = 50,
     this.size = 20,
-  }) : super(key: key);
+  });
 
   final Color borderColor;
   final Color? bgColor;

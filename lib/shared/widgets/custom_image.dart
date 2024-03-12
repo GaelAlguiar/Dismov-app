@@ -59,8 +59,8 @@ class CustomImage extends StatelessWidget {
   Widget _buildNetworkImage() {
     return CachedNetworkImage(
       imageUrl: image,
-      placeholder: (context, url) => BlankImageWidget(),
-      errorWidget: (context, url, error) => BlankImageWidget(),
+      placeholder: (context, url) => const BlankImageWidget(),
+      errorWidget: (context, url, error) => const BlankImageWidget(),
       imageBuilder: (context, imageProvider) => Container(
         decoration: BoxDecoration(
           borderRadius: borderRadius ?? BorderRadius.circular(radius),

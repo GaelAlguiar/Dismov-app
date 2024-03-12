@@ -38,7 +38,6 @@ class BottomBarItem extends StatelessWidget {
             padding: const EdgeInsets.only(top: 0.0),
             child: SvgPicture.asset(
               icon,
-              color: isActive ? activeColor : color,
               width: 25,
               height: 25,
             ),
