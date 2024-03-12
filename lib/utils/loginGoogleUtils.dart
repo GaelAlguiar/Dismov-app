@@ -67,6 +67,10 @@ class LoginGoogleUtils{
     return user != null;
   }
 
+  Future<void> userInfo() async {
+
+  }
+
 
 
 }
