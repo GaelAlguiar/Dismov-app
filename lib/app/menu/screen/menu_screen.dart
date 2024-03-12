@@ -11,7 +11,7 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final scaffoldKey = GlobalKey<ScaffoldState>();
-
+    /*
     String? fullName = FirebaseAuth.instance.currentUser?.displayName;
     String? firstName;
     String? lastName;
@@ -25,13 +25,14 @@ class MenuScreen extends StatelessWidget {
       }
     }
 
-    String nameToShow =
-        lastName != null ? "$firstName $lastName" : firstName ?? "Usuario";
+    String nameToShow = lastName != null ? "$firstName $lastName" : firstName ?? "Usuario";
+    */
     return Scaffold(
       // drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
         title: Text(
-          "Bienvenido! $nameToShow",
+          //"Bienvenido! $nameToShow",
+          "Menu",
           style: const TextStyle(
             fontSize: 19,
           ),

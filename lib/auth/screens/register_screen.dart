@@ -119,6 +119,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             controller: confirmPassword,
           ),
           const SizedBox(height: 40),
+          //Button to create user using email and password
           SizedBox(
             width: double.infinity,
             height: 60,
@@ -127,13 +128,15 @@ class _RegisterFormState extends State<_RegisterForm> {
               buttonColor: AppColor.yellowCustom,
               icon: MdiIcons.fromString("account-multiple-plus"),
               onPressed: () async {
-                await LoginGoogleUtils().createUserWithEmail(email.text, password.text);
-                if (FirebaseAuth.instance.currentUser != null) {
-                  FirebaseAuth.instance.currentUser?.updateDisplayName(username.text);
-                  addPeople(username.text, email.text);
-                  //if (context.mounted) {
+                try{
+                  await LoginGoogleUtils().createUserWithEmail(email.text, password.text);
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    FirebaseAuth.instance.currentUser?.updateDisplayName(username.text);
+                    addPeople(username.text, email.text);
                     context.go("/Root");
-                  //}
+                  }
+                }catch (e) {
+                  print(e);
                 }
               },
             ),
