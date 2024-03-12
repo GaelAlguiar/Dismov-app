@@ -1,9 +1,13 @@
-import 'package:dismov_app/Json/users.dart';
-import 'package:dismov_app/auth/db/sqlite.dart';
+// import 'package:dismov_app/Json/users.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dismov_app/config/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
+
+//Utils for Google Login
+import 'package:dismov_app/utils/login_google_utils.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // LoginScreen
 class LoginScreen extends StatelessWidget {
@@ -11,43 +15,56 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        body: GeometricalBackground(
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 45),
-                // Icon Banner
-                IconButton(
-                  icon: Image.asset(
-                    'assets/images/image.png',
-                    width: 220,
-                    height: 170,
-                  ),
-                  onPressed: () => {},
-                ),
-                const SizedBox(height: 45),
-                Container(
-                  height: MediaQuery.of(context).size.height - 260,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(100),
+    return FutureBuilder(
+        future: LoginGoogleUtils().isUserLoggedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else {
+            if (snapshot.data == true) {
+              context.go("/Root");
+              return Container();
+            } else {
+              return GestureDetector(
+                onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+                child: Scaffold(
+                  body: GeometricalBackground(
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 45),
+                          // Icon Banner
+                          IconButton(
+                            icon: Image.asset(
+                              'assets/images/image.png',
+                              width: 220,
+                              height: 170,
+                            ),
+                            onPressed: () => {},
+                          ),
+                          const SizedBox(height: 45),
+                          Container(
+                            height: MediaQuery.of(context).size.height - 260,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(100),
+                              ),
+                            ),
+                            child: _LoginForm(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  child: _LoginForm(),
                 ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+              );
+            }
+          }
+        });
   }
 }
 
@@ -60,7 +77,7 @@ class _LoginFormState extends State<_LoginForm> {
   final username = TextEditingController();
   final password = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
+/*
   bool isLoginTrue = false;
 
   final db = DatabaseHelper();
@@ -80,7 +97,7 @@ class _LoginFormState extends State<_LoginForm> {
       });
     }
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
@@ -90,8 +107,11 @@ class _LoginFormState extends State<_LoginForm> {
       child: Column(
         children: [
           const SizedBox(height: 50),
-          Text('Iniciar Sesión', style: textStyles.titleLarge),
-          const SizedBox(height: 90),
+          Text(
+            'Iniciar Sesión',
+            style: textStyles.titleLarge,
+          ),
+          const SizedBox(height: 70),
           CustomTextFormField(
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
@@ -110,15 +130,20 @@ class _LoginFormState extends State<_LoginForm> {
             child: CustomFilledButton(
               text: 'Ingresar',
               buttonColor: AppColor.yellowCustom,
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  login();
-                  context.go("/Menu");
+              icon: MdiIcons.fromString("account"),
+              onPressed: () async {
+                UserCredential? credentials = await LoginGoogleUtils()
+                    .loginUserWithEmail(username.text, password.text);
+                if (credentials.user != null) {
+                  if (context.mounted) {
+                    context.go("/Root");
+                  }
                 }
               },
             ),
           ),
-          const Spacer(flex: 2),
+          const SizedBox(height: 10),
+          const Spacer(flex: 1),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

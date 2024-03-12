@@ -9,10 +9,10 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scaffoldKey = GlobalKey<ScaffoldState>();
+    // final scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      drawer: SideMenu(scaffoldKey: scaffoldKey),
+      // drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
         title: const Text('Menu'),
         backgroundColor: AppColor.yellow,
