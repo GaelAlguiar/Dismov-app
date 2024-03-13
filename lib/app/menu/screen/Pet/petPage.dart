@@ -177,7 +177,7 @@ class __PetViewState extends State<_PetView> {
     );
   }
 
-  //Widget to build list of pets
+  //Widget to build list of shelters
   _buildShelters() {
     double height = MediaQuery.of(context).size.height * .80;
     return Align(

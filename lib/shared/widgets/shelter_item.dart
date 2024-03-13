@@ -32,9 +32,10 @@ class ShelterItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        alignment: Alignment.center,
         width: width,
         height: height,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 60),
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
         ),
