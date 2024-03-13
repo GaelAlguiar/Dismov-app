@@ -21,7 +21,7 @@ class MenuScreen extends StatelessWidget {
       firstName = nameParts.first; // Obtener el nombre
 
       if (nameParts.length > 1) {
-        lastName = nameParts[2]; // Obtener el apellido
+        lastName = nameParts.last; // Obtener el apellido
       }
     }
 
@@ -33,7 +33,7 @@ class MenuScreen extends StatelessWidget {
         title: Text(
           "Bienvenido! $nameToShow",
           style: const TextStyle(
-            fontSize: 19,
+            fontSize: 20,
           ),
         ),
         backgroundColor: AppColor.yellow,
