@@ -40,7 +40,7 @@ class ShelterItem extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            _buildPets(),
+            _buildPets(context),
             Positioned(
               bottom: 0,
               child: _buildInfoGlass(),
@@ -52,7 +52,7 @@ class ShelterItem extends StatelessWidget {
   }
 
 //Widget to build list of pets
-  _buildPets() {
+  _buildPets(BuildContext context) {
     double height = 500;
     return Align(
       alignment: Alignment.center,
@@ -72,12 +72,22 @@ class ShelterItem extends StatelessWidget {
             child: PetItem(
               data: pets[index],
               height: height,
-              onTap: null, /*() {
-                var param1 = "param1";
-                context.go("/Root");
-                context.go("sample", queryParameters: {'id1': param1});
-                // context.go("/sample?id1=$param1&id2=$param2"); 👈 or like this.
-              },*/
+              onTap: (){
+                Navigator.push(context,
+                  MaterialPageRoute(
+                    builder: (context) => PetProfilePage(
+                        key: UniqueKey(), pet: pets[index]),
+                  ),
+                );
+              }
+
+              /*() {
+                String name = pets[index]["name"];
+                String location = pets[index]["location"];
+
+                context.goNamed("sample", queryParameters: {'name': name, 'location': location});
+
+              },*/,
 
               onFavoriteTap: () {
 

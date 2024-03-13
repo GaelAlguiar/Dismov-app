@@ -32,7 +32,8 @@ final appRouter = GoRouter(
       name: "sample",
       path: "/sample",
       builder: (context, state) => SampleWidget(
-        id1: state.uri.queryParameters['id1'],
+        name: state.uri.queryParameters['name'],
+        location: state.uri.queryParameters['location'],
       ),
     ),
     ///* Route App
