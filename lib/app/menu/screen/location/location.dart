@@ -10,11 +10,11 @@ class GeolocationApp extends StatefulWidget {
 }
 
 class _GeolocationAppState extends State<GeolocationApp> {
-  Position? _currentLocation;
+  Position? currentLocation;
   late bool servicePermission = false;
   late LocationPermission permission;
 
-  String _currentAdress = "";
+  String currentAdress = "";
   @override
   Widget build(BuildContext context) {
     Future<Position> getCurrentLocation() async {
@@ -33,12 +33,12 @@ class _GeolocationAppState extends State<GeolocationApp> {
     getAdressFromCoordinates() async {
       try {
         List<Placemark> placemark = await placemarkFromCoordinates(
-            _currentLocation!.latitude, _currentLocation!.longitude);
+            currentLocation!.latitude, currentLocation!.longitude);
 
         Placemark place = placemark[0];
 
         setState(() {
-          _currentAdress = "${place.locality}, ${place.country}";
+          currentAdress = "${place.locality}, ${place.country}";
         });
       } catch (e) {
         debugPrint("$e");
@@ -80,16 +80,16 @@ class _GeolocationAppState extends State<GeolocationApp> {
             const SizedBox(
               height: 6,
             ),
-            Text(_currentAdress),
+            Text(currentAdress),
             const SizedBox(
               height: 6,
             ),
             ElevatedButton(
                 onPressed: () async {
-                  _currentLocation = await getCurrentLocation();
+                  currentLocation = await getCurrentLocation();
                   await getAdressFromCoordinates();
 
-                  Text("$_currentLocation");
+                  Text("$currentLocation");
                   debugPrint("test here");
                 },
                 child: const Text("Get location"))

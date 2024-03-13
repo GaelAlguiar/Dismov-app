@@ -128,15 +128,17 @@ class _RegisterFormState extends State<_RegisterForm> {
               buttonColor: AppColor.yellowCustom,
               icon: MdiIcons.fromString("account-multiple-plus"),
               onPressed: () async {
-                try{
-                  await LoginGoogleUtils().createUserWithEmail(email.text, password.text);
+                try {
+                  await LoginGoogleUtils()
+                      .createUserWithEmail(email.text, password.text);
                   if (FirebaseAuth.instance.currentUser != null) {
-                    await FirebaseAuth.instance.currentUser?.updateDisplayName(username.text);
+                    FirebaseAuth.instance.currentUser
+                        ?.updateDisplayName(username.text);
                     addPeople(username.text, email.text);
                     context.go("/Root");
                   }
-                }catch (e) {
-                  print(e);
+                } catch (e) {
+                  debugPrint("$e");
                 }
               },
             ),
@@ -151,7 +153,7 @@ class _RegisterFormState extends State<_RegisterForm> {
               buttonColor: AppColor.blue,
               icon: MdiIcons.fromString("google"),
               onPressed: () async {
-                try{
+                try {
                   await LoginGoogleUtils().signInWithGoogle();
                   //if is there a currentUser signed, we will go to the root
                   if (FirebaseAuth.instance.currentUser != null) {
@@ -159,11 +161,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                       context.go("/Root");
                     }
                   }
-
-                }catch(e){
+                } catch (e) {
                   print(e);
                 }
-
               },
             ),
           ),
