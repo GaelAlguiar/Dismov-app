@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
@@ -10,29 +12,29 @@ class MenuScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final scaffoldKey = GlobalKey<ScaffoldState>();
-    /*
-    String? fullName = FirebaseAuth.instance.currentUser?.displayName;
-    String? firstName;
-    String? lastName;
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    String nameToShow = "Hola!";
+    String name = "";
+    //Agrega el nombre del usuario al menu inicial
+    try{
+      if(FirebaseAuth.instance.currentUser != null){
+        String? fullName = FirebaseAuth.instance.currentUser?.displayName;
+        if (fullName != null) {
+          List<String> nameParts = fullName.split(" ");
+          name = nameParts.first;
+        }
 
-    if (fullName != null) {
-      List<String> nameParts = fullName.split(" ");
-      firstName = nameParts.first; // Obtener el nombre
-
-      if (nameParts.length > 1) {
-        lastName = nameParts.last; // Obtener el apellido
+        nameToShow = nameToShow +" "+ name;
       }
+    }catch(e){
+      nameToShow = "Ha ocurrido un problema, reinicia la aplicación";
     }
 
-    String nameToShow = lastName != null ? "$firstName $lastName" : firstName ?? "Usuario";
-    */
     return Scaffold(
       // drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
-        title: const Text(
-          //"Bienvenido! $nameToShow",
-          "Menu",
+        title: Text(
+          "$nameToShow",
           style: TextStyle(
             fontSize: 20,
           ),
