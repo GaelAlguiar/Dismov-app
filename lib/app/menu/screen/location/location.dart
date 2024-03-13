@@ -27,7 +27,6 @@ class _GeolocationAppState extends State<GeolocationApp> {
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
       }
-
       return await Geolocator.getCurrentPosition();
     }
 

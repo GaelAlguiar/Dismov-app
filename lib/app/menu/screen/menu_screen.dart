@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:dismov_app/utils/location_utils.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
@@ -57,6 +58,21 @@ class _MenuView extends StatefulWidget {
 }
 
 class __MenuViewState extends State<_MenuView> {
+  //Comprueba Ubicacion
+  String ubicacion = "Ubicacion Desconocida";
+  void obtenerYActualizarUbicacion() async {
+    String ubi = await LocationUtils().obtenerLocalizacion();
+    setState(() {
+      ubicacion = ubi; // Actualiza la ubicación una vez que se resuelve el Future
+    }); // Actualiza la ubicación una vez que se resuelve el Future
+  }
+  @override
+  void initState() {
+    super.initState();
+    // Llama al método para actualizar la ubicación cada 5 segundos
+    obtenerYActualizarUbicacion();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +84,7 @@ class __MenuViewState extends State<_MenuView> {
             pinned: true,
             snap: true,
             floating: true,
-            title: _buildAppBar(),
+            title: _buildAppBar(ubicacion),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -81,8 +97,8 @@ class __MenuViewState extends State<_MenuView> {
     );
   }
 
-  Widget _buildAppBar() {
-    return const Row(
+  Widget _buildAppBar(String location) {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
@@ -117,7 +133,7 @@ class __MenuViewState extends State<_MenuView> {
                 height: 3,
               ),
               Text(
-                "Monterrey, Nuevo León",
+                location,
                 style: TextStyle(
                   color: AppColor.textColor,
                   fontWeight: FontWeight.w500,
@@ -130,6 +146,8 @@ class __MenuViewState extends State<_MenuView> {
       ],
     );
   }
+
+
 
   _buildBody() {
     return SingleChildScrollView(
