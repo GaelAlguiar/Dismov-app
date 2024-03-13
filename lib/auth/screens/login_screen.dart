@@ -132,7 +132,7 @@ class _LoginFormState extends State<_LoginForm> {
               buttonColor: AppColor.yellowCustom,
               icon: MdiIcons.fromString("account"),
               onPressed: () async {
-                try{
+                try {
                   UserCredential? credentials = await LoginGoogleUtils()
                       .loginUserWithEmail(username.text, password.text);
                   if (credentials.user != null) {
@@ -140,10 +140,9 @@ class _LoginFormState extends State<_LoginForm> {
                       context.go("/Root");
                     }
                   }
-                }catch(e){
-                  print(e);
+                } catch (e) {
+                  debugPrint("$e");
                 }
-
               },
             ),
           ),
