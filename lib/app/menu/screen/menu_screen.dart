@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -21,7 +21,7 @@ class MenuScreen extends StatelessWidget {
       firstName = nameParts.first; // Obtener el nombre
 
       if (nameParts.length > 1) {
-        lastName = nameParts[2]; // Obtener el apellido
+        lastName = nameParts.last; // Obtener el apellido
       }
     }
 
@@ -30,11 +30,11 @@ class MenuScreen extends StatelessWidget {
     return Scaffold(
       // drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           //"Bienvenido! $nameToShow",
           "Menu",
-          style: const TextStyle(
-            fontSize: 19,
+          style: TextStyle(
+            fontSize: 20,
           ),
         ),
         backgroundColor: AppColor.yellow,

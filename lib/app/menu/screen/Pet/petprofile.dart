@@ -241,7 +241,57 @@ class PetProfilePage extends StatelessWidget {
                                     ),
                                     '${pet['owner_name']}'),
                               ],
-                            )
+                            ),
+                            Row(
+                              children: [
+                                Positioned(
+                                  child: Container(
+                                    height: 50.0,
+                                    width: 180.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(50.0),
+                                      color: Colors
+                                          .yellow, // Set the background color to yellow
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Adoptame',
+                                        style: TextStyle(
+                                          fontSize: 20.0, // Increase font size
+                                          fontWeight: FontWeight
+                                              .bold, // Make the text bold
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                    width: 12.0), // Spacing between containers
+                                Positioned(
+                                  top: 10.0,
+                                  left: 10.0,
+                                  child: Container(
+                                    height: 50.0,
+                                    width: 50.0,
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors
+                                          .yellow, // Set the background color to yellow
+                                    ),
+                                    child: const Center(
+                                      // Center the icon within the circle
+                                      child: Icon(
+                                        Icons
+                                            .chat, // Use the built-in chat icon
+                                        color: Colors
+                                            .black, // Set the icon color (optional)
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         )
                       ],

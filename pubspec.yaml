@@ -47,6 +47,8 @@ dependencies:
   badges: ^3.1.2
   flutter_svg: ^2.0.10+1
   glassmorphism_ui: ^0.3.0
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
 
   #Firebase Dependencies
   firebase_core: ^2.27.0
