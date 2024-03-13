@@ -251,7 +251,7 @@ class PetProfilePage extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.circular(50.0),
-                                      color: Colors
+                                      color: AppColor
                                           .yellow, // Set the background color to yellow
                                     ),
                                     child: const Center(
@@ -276,7 +276,7 @@ class PetProfilePage extends StatelessWidget {
                                     width: 50.0,
                                     decoration: const BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Colors
+                                      color: AppColor
                                           .yellow, // Set the background color to yellow
                                     ),
                                     child: const Center(
