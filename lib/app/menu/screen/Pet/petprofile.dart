@@ -27,9 +27,11 @@ class PetProfilePage extends StatelessWidget {
           )),
           // Container for pet information
           Positioned(
+
             left: 0,
             right: 0,
             bottom: 0,
+
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.0),
@@ -37,7 +39,8 @@ class PetProfilePage extends StatelessWidget {
               ),
               child: Container(
                 color: Colors.white,
-                padding: const EdgeInsets.all(40),
+                padding: const EdgeInsets.all(20),
+                alignment: Alignment.center,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

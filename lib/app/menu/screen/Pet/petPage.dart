@@ -156,30 +156,10 @@ class __PetViewState extends State<_PetView> {
     );
   }
 
-  int _selectedCategory = 0;
-  _buildCategories() {
-    List<Widget> lists = List.generate(
-      categories.length,
-          (index) => CategoryItem(
-        data: categories[index],
-        selected: index == _selectedCategory,
-        onTap: () {
-          setState(() {
-            _selectedCategory = index;
-          });
-        },
-      ),
-    );
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.only(bottom: 10, left: 10),
-      child: Row(children: lists),
-    );
-  }
-
   //Widget to build list of shelters
   _buildShelters() {
     double height = MediaQuery.of(context).size.height * .80;
+
     return Align(
       alignment: Alignment.center,
       child: CarouselSlider(
@@ -189,7 +169,7 @@ class __PetViewState extends State<_PetView> {
           disableCenter: true,
           viewportFraction: .9,
           scrollDirection:
-          Axis.vertical, // Configura la dirección del desplazamiento
+            Axis.vertical, // Configura la dirección del desplazamiento
         ),
         items: List.generate(
           shelters.length,
@@ -197,7 +177,6 @@ class __PetViewState extends State<_PetView> {
             alignment: Alignment.center,
             child: ShelterItem(
               data: shelters[index],
-
               height: height,
               onTap: null,
               onFavoriteTap: () {
@@ -213,38 +192,4 @@ class __PetViewState extends State<_PetView> {
   }
 //End of widget to build list of pets
 
-  //Widget to build list of pets
-  _buildPets() {
-    double height = MediaQuery.of(context).size.height * .70;
-    return Align(
-      alignment: Alignment.center,
-      child: CarouselSlider(
-        options: CarouselOptions(
-          height: height,
-          enlargeCenterPage: true,
-          disableCenter: true,
-          viewportFraction: .9,
-          scrollDirection:
-          Axis.vertical, // Configura la dirección del desplazamiento
-        ),
-        items: List.generate(
-          pets.length,
-              (index) => Align(
-            alignment: Alignment.center,
-            child: PetItem(
-              data: pets[index],
-              height: height,
-              onTap: null,
-              onFavoriteTap: () {
-                setState(() {
-                  pets[index]["is_favorited"] = !pets[index]["is_favorited"];
-                });
-              },
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-//End of widget to build list of pets
 }

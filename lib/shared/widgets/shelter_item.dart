@@ -32,10 +32,8 @@ class ShelterItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        alignment: Alignment.center,
         width: width,
-        height: height,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
         ),
@@ -102,7 +100,7 @@ class ShelterItem extends StatelessWidget {
 //End of widget to build list of pets
   Widget _buildInfoGlass() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 60.0),
+      padding: const EdgeInsets.only(bottom: 0),
       child: GlassContainer(
         borderRadius: BorderRadius.circular(25),
         border: Border.all(color: AppColor.yellowCustom),
