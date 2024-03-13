@@ -36,7 +36,7 @@ class PetItem extends StatelessWidget {
           children: [
             _buildImage(),
             Positioned(
-              bottom: 0,
+              bottom: 60,
               child: _buildInfoGlass(),
             ),
           ],
@@ -46,39 +46,43 @@ class PetItem extends StatelessWidget {
   }
 
   Widget _buildInfoGlass() {
-    return GlassContainer(
-      borderRadius: BorderRadius.circular(25),
-      blur: 10,
-      opacity: 0.15,
-      child: Container(
-        width: width,
-        height: 110,
-        padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(
-              color: AppColor.shadowColor.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 1,
-              offset: const Offset(0, 2), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildInfo(),
-            const SizedBox(
-              height: 5,
-            ),
-            _buildLocation(),
-            const SizedBox(
-              height: 15,
-            ),
-            _buildAttributes(),
-          ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 60.0),
+      child: GlassContainer(
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: AppColor.yellowCustom),
+        blur: 10,
+        opacity: 0.15,
+        child: Container(
+          width: width,
+          height: 120,
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+          decoration: BoxDecoration(
+            color: AppColor.yellow,
+            borderRadius: BorderRadius.circular(25),
+            boxShadow: [
+              BoxShadow(
+                color: AppColor.shadowColor.withOpacity(0.1),
+                spreadRadius: 1,
+                blurRadius: 1,
+                offset: const Offset(0, 2), // changes position of shadow
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildInfo(),
+              const SizedBox(
+                height: 5,
+              ),
+              _buildLocation(),
+              const SizedBox(
+                height: 20,
+              ),
+              _buildAttributes(),
+            ],
+          ),
         ),
       ),
     );
@@ -160,7 +164,7 @@ class PetItem extends StatelessWidget {
           size: 18,
         ),
         const SizedBox(
-          width: 3,
+          width: 8,
         ),
         Text(
           info,

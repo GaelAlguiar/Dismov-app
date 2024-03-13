@@ -28,6 +28,9 @@ class CategoryItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: selected ? AppColor.yellow : AppColor.cardColor,
           borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: AppColor.yellow,
+          ),
           boxShadow: [
             BoxShadow(
               color: AppColor.shadowColor.withOpacity(0.1),
@@ -43,6 +46,8 @@ class CategoryItem extends StatelessWidget {
               data["icon"],
               width: 35,
               height: 35,
+              // ignore: deprecated_member_use
+              color: selected ? Colors.white : null,
             ),
             const SizedBox(
               height: 8,

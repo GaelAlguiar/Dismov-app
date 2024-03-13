@@ -26,14 +26,17 @@ class CategoryItem extends StatelessWidget {
         width: 90,
         height: 90,
         decoration: BoxDecoration(
-          color: selected ? AppColor.secondary : AppColor.cardColor,
+          color: selected ? AppColor.yellow : AppColor.containerColor,
           borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: AppColor.yellow,
+          ),
           boxShadow: [
             BoxShadow(
-              color: AppColor.shadowColor.withOpacity(0.1),
+              color: AppColor.shadowColor.withOpacity(0.6),
               spreadRadius: .5,
               blurRadius: .5,
-              offset: const Offset(0, 1), // changes position of shadow
+              offset: const Offset(0, 1),
             ),
           ],
         ),
@@ -43,6 +46,8 @@ class CategoryItem extends StatelessWidget {
               data["icon"],
               width: 35,
               height: 35,
+              // ignore: deprecated_member_use
+              color: selected ? Colors.white : null,
             ),
             const SizedBox(
               height: 8,
