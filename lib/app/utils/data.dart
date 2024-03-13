@@ -4,8 +4,8 @@ List categories = [
   {"name": "Todo", "icon": "assets/icons/pet-border.svg"},
   {"name": "Perro", "icon": "assets/icons/dog.svg"},
   {"name": "Gato", "icon": "assets/icons/cat.svg"},
-  {"name": "Conejo", "icon": "assets/icons/rabbit.svg"},
-  {"name": "Pez", "icon": "assets/icons/fish.svg"},
+  //{"name": "Conejo", "icon": "assets/icons/rabbit.svg"},
+  //{"name": "Pez", "icon": "assets/icons/fish.svg"},
 ];
 
 List pets = [

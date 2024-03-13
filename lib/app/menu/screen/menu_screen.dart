@@ -64,12 +64,12 @@ class __MenuViewState extends State<_MenuView> {
     String ubi = await LocationUtils().obtenerLocalizacion();
     setState(() {
       ubicacion = ubi; // Actualiza la ubicación una vez que se resuelve el Future
-    }); // Actualiza la ubicación una vez que se resuelve el Future
+    });
   }
   @override
   void initState() {
     super.initState();
-    // Llama al método para actualizar la ubicación cada 5 segundos
+    // Llama al método para actualizar la ubicación al entrar en el menu screen
     obtenerYActualizarUbicacion();
   }
 
