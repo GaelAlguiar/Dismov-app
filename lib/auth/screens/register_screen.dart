@@ -135,7 +135,10 @@ class _RegisterFormState extends State<_RegisterForm> {
                     FirebaseAuth.instance.currentUser
                         ?.updateDisplayName(username.text);
                     addPeople(username.text, email.text);
-                    context.go("/Root");
+
+                    if (context.mounted) {
+                      context.go("/Root");
+                    }
                   }
                 } catch (e) {
                   debugPrint("$e");
@@ -162,7 +165,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                     }
                   }
                 } catch (e) {
-                  print(e);
+                  debugPrint("$e");
                 }
               },
             ),

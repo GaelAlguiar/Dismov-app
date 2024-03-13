@@ -106,7 +106,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
         height: 60,
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
         decoration: BoxDecoration(
-          color: AppColor.yellow,
+          color: AppColor.containerColor,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(

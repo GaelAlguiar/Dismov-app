@@ -29,6 +29,8 @@ class AppColor {
   static const sky = Color(0xFFABDEE6);
   static const blue = Color.fromARGB(255, 46, 124, 202);
   static const yellowCustom = Color.fromARGB(186, 168, 131, 6);
+  static const typeColor = Color.fromARGB(255, 239, 239, 239);
+  static const containerColor = Color.fromARGB(174, 239, 239, 239);
 
   static const listColors = [
     green,

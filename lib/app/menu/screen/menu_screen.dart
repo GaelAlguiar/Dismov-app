@@ -1,33 +1,35 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:dismov_app/utils/location_utils.dart';
+// import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
+
+//Location
+import 'package:dismov_app/utils/location_utils.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final scaffoldKey = GlobalKey<ScaffoldState>();
+    // final scaffoldKey = GlobalKey<ScaffoldState>();
     String nameToShow = "Hola!";
     String name = "";
     //Agrega el nombre del usuario al menu inicial
-    try{
-      if(FirebaseAuth.instance.currentUser != null){
+    try {
+      if (FirebaseAuth.instance.currentUser != null) {
         String? fullName = FirebaseAuth.instance.currentUser?.displayName;
         if (fullName != null) {
           List<String> nameParts = fullName.split(" ");
           name = nameParts.first;
         }
 
-        nameToShow = nameToShow +" "+ name;
+        nameToShow = "$nameToShow $name";
       }
-    }catch(e){
+    } catch (e) {
       nameToShow = "Ha ocurrido un problema, reinicia la aplicación";
     }
 
@@ -35,8 +37,8 @@ class MenuScreen extends StatelessWidget {
       // drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
         title: Text(
-          "$nameToShow",
-          style: TextStyle(
+          nameToShow,
+          style: const TextStyle(
             fontSize: 20,
           ),
         ),
@@ -63,9 +65,16 @@ class __MenuViewState extends State<_MenuView> {
   void obtenerYActualizarUbicacion() async {
     String ubi = await LocationUtils().obtenerLocalizacion();
     setState(() {
+<<<<<<< HEAD
       ubicacion = ubi; // Actualiza la ubicación una vez que se resuelve el Future
     });
+=======
+      ubicacion =
+          ubi; // Actualiza la ubicación una vez que se resuelve el Future
+    }); // Actualiza la ubicación una vez que se resuelve el Future
+>>>>>>> b7d8bce45d9e3d2e5fd8d257e5f53edee910114c
   }
+
   @override
   void initState() {
     super.initState();
@@ -106,7 +115,7 @@ class __MenuViewState extends State<_MenuView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: Row(
                   children: [
@@ -129,12 +138,12 @@ class __MenuViewState extends State<_MenuView> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 3,
               ),
               Text(
                 location,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColor.textColor,
                   fontWeight: FontWeight.w500,
                   fontSize: 14,
@@ -147,34 +156,30 @@ class __MenuViewState extends State<_MenuView> {
     );
   }
 
-
-
   _buildBody() {
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 0, bottom: 10),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const SizedBox(
-            height: 25,
-          ),
-          _buildCategories(),
-          const SizedBox(
-            height: 25,
-          ),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 25),
-            child: Text(
-              "Adoptame",
-              style: TextStyle(
-                color: AppColor.textColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 24,
-              ),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        const SizedBox(
+          height: 10,
+        ),
+        _buildCategories(),
+        const SizedBox(
+          height: 10,
+        ),
+        const Padding(
+          padding: EdgeInsets.only(
+              left: 30), // Ajusta el relleno interno según sea necesario
+          child: Text(
+            "Adóptame",
+            style: TextStyle(
+              color: AppColor.textColor,
+              fontWeight: FontWeight.w500,
+              fontSize: 30,
             ),
           ),
-          _buildPets(),
-        ]),
-      ),
+        ),
+        _buildPets(),
+      ]),
     );
   }
 
@@ -194,31 +199,39 @@ class __MenuViewState extends State<_MenuView> {
     );
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.only(bottom: 5, left: 15),
+      padding: const EdgeInsets.only(bottom: 10, left: 10),
       child: Row(children: lists),
     );
   }
 
   _buildPets() {
-    double width = MediaQuery.of(context).size.width * .8;
-    return CarouselSlider(
-      options: CarouselOptions(
-        height: 400,
-        enlargeCenterPage: true,
-        disableCenter: true,
-        viewportFraction: .8,
-      ),
-      items: List.generate(
-        pets.length,
-        (index) => PetItem(
-          data: pets[index],
-          width: width,
-          onTap: null,
-          onFavoriteTap: () {
-            setState(() {
-              pets[index]["is_favorited"] = !pets[index]["is_favorited"];
-            });
-          },
+    double height = MediaQuery.of(context).size.height * .70;
+    return Align(
+      alignment: Alignment.center,
+      child: CarouselSlider(
+        options: CarouselOptions(
+          height: height,
+          enlargeCenterPage: true,
+          disableCenter: true,
+          viewportFraction: .9,
+          scrollDirection:
+              Axis.vertical, // Configura la dirección del desplazamiento
+        ),
+        items: List.generate(
+          pets.length,
+          (index) => Align(
+            alignment: Alignment.center,
+            child: PetItem(
+              data: pets[index],
+              height: height,
+              onTap: null,
+              onFavoriteTap: () {
+                setState(() {
+                  pets[index]["is_favorited"] = !pets[index]["is_favorited"];
+                });
+              },
+            ),
+          ),
         ),
       ),
     );
