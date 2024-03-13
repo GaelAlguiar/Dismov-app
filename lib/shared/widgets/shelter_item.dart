@@ -12,14 +12,14 @@ import 'package:path/path.dart';
 import 'custom_image.dart';
 
 class ShelterItem extends StatelessWidget {
-   const ShelterItem(
+  const ShelterItem(
       {super.key,
-        required this.data,
-        this.width = 350,
-        this.height = 400,
-        this.radius = 40,
-        this.onTap,
-        this.onFavoriteTap});
+      required this.data,
+      this.width = 350,
+      this.height = 400,
+      this.radius = 40,
+      this.onTap,
+      this.onFavoriteTap});
   final Map<String, dynamic> data;
   final double width;
   final double height;
@@ -34,7 +34,7 @@ class ShelterItem extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 60),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
         ),
@@ -63,20 +63,21 @@ class ShelterItem extends StatelessWidget {
           disableCenter: true,
           viewportFraction: .9,
           scrollDirection:
-          Axis.horizontal, // Configura la dirección del desplazamiento
+              Axis.horizontal, // Configura la dirección del desplazamiento
         ),
         items: List.generate(
           pets.length,
-              (index) => Align(
+          (index) => Align(
             alignment: Alignment.center,
             child: PetItem(
               data: pets[index],
               height: height,
-              onTap: (){
-                Navigator.push(context,
+              onTap: () {
+                Navigator.push(
+                  context,
                   MaterialPageRoute(
-                    builder: (context) => PetProfilePage(
-                        key: UniqueKey(), pet: pets[index]),
+                    builder: (context) =>
+                        PetProfilePage(key: UniqueKey(), pet: pets[index]),
                   ),
                 );
               }
@@ -87,17 +88,16 @@ class ShelterItem extends StatelessWidget {
 
                 context.goNamed("sample", queryParameters: {'name': name, 'location': location});
 
-              },*/,
-
-              onFavoriteTap: () {
-
-              },
+              },*/
+              ,
+              onFavoriteTap: () {},
             ),
           ),
         ),
       ),
     );
   }
+
 //End of widget to build list of pets
   Widget _buildInfoGlass() {
     return Padding(
@@ -147,7 +147,6 @@ class ShelterItem extends StatelessWidget {
       data["location"],
       textAlign: TextAlign.left,
       maxLines: 1,
-
       style: const TextStyle(
         color: AppColor.glassLabelColor,
         fontSize: 13,
@@ -187,7 +186,6 @@ class ShelterItem extends StatelessWidget {
       height: 30,
     );
   }
-
 
   Widget _buildAttributes() {
     return Row(

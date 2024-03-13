@@ -23,13 +23,14 @@ class CategoryItem extends StatelessWidget {
         curve: Curves.fastOutSlowIn,
         padding: const EdgeInsets.fromLTRB(5, 20, 5, 0),
         margin: const EdgeInsets.only(right: 10),
-        width: 90,
-        height: 90,
+        width: 100,
+        height: 100,
         decoration: BoxDecoration(
           color: selected ? AppColor.yellow : AppColor.containerColor,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: AppColor.yellow,
+            width: selected ? 2 : 1,
           ),
           boxShadow: [
             BoxShadow(

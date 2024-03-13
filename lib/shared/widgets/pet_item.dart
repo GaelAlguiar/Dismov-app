@@ -36,7 +36,7 @@ class PetItem extends StatelessWidget {
           children: [
             _buildImage(),
             Positioned(
-              bottom: 60,
+              bottom: 80,
               child: _buildInfoGlass(),
             ),
           ],

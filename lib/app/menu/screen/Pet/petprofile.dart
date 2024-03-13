@@ -37,7 +37,7 @@ class PetProfilePage extends StatelessWidget {
               ),
               child: Container(
                 color: Colors.white,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

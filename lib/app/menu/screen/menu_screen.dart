@@ -63,9 +63,11 @@ class __MenuViewState extends State<_MenuView> {
   void obtenerYActualizarUbicacion() async {
     String ubi = await LocationUtils().obtenerLocalizacion();
     setState(() {
-      ubicacion = ubi; // Actualiza la ubicación una vez que se resuelve el Future
+      ubicacion =
+          ubi; // Actualiza la ubicación una vez que se resuelve el Future
     });
   }
+
   @override
   void initState() {
     super.initState();
@@ -113,7 +115,7 @@ class __MenuViewState extends State<_MenuView> {
                     Icon(
                       Icons.place_outlined,
                       color: AppColor.labelColor,
-                      size: 20,
+                      size: 23,
                     ),
                     SizedBox(
                       height: 10,
@@ -155,17 +157,17 @@ class __MenuViewState extends State<_MenuView> {
         ),
         _buildCategories(),
         const SizedBox(
-          height: 10,
+          height: 15,
         ),
         const Padding(
           padding: EdgeInsets.only(
-              left: 30), // Ajusta el relleno interno según sea necesario
+              left: 20), // Ajusta el relleno interno según sea necesario
           child: Text(
-            "Tu Mejor Amigo",
+            "¡Escoge a tu Mejor Amigo!",
             style: TextStyle(
               color: AppColor.textColor,
               fontWeight: FontWeight.w500,
-              fontSize: 30,
+              fontSize: 25,
             ),
           ),
         ),
@@ -194,6 +196,7 @@ class __MenuViewState extends State<_MenuView> {
       child: Row(children: lists),
     );
   }
+
   //Widget to build list of pets
   _buildPets() {
     double height = MediaQuery.of(context).size.height * .70;
