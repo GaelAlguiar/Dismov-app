@@ -1,5 +1,5 @@
-import 'package:dismov_app/Json/users.dart';
-import 'package:dismov_app/auth/db/sqlite.dart';
+// import 'package:dismov_app/Json/users.dart';
+// import 'package:dismov_app/auth/db/sqlite.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/services/firebase_service.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +8,8 @@ import 'package:dismov_app/shared/shared.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 //Utils for Google Login
-import 'package:dismov_app/utils/loginGoogleUtils.dart';
-
+import 'package:dismov_app/utils/login_google_utils.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // RegisterScreen
 class RegisterScreen extends StatelessWidget {
@@ -93,8 +93,8 @@ class _RegisterFormState extends State<_RegisterForm> {
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          const SizedBox(height: 50),
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
+          const SizedBox(height: 30),
           CustomTextFormField(
             label: 'Nombre completo',
             keyboardType: TextInputType.emailAddress,
@@ -118,22 +118,56 @@ class _RegisterFormState extends State<_RegisterForm> {
             obscureText: true,
             controller: confirmPassword,
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 40),
+          //Button to create user using email and password
           SizedBox(
             width: double.infinity,
             height: 60,
             child: CustomFilledButton(
-                text: 'Crear',
-                buttonColor: AppColor.yellowCustom,
-                onPressed: () async {
-                  await LoginGoogleUtils().createUserWithEmail(email.text,password.text);
+              text: 'Crear',
+              buttonColor: AppColor.yellowCustom,
+              icon: MdiIcons.fromString("account-multiple-plus"),
+              onPressed: () async {
+                try{
+                  await LoginGoogleUtils().createUserWithEmail(email.text, password.text);
                   if (FirebaseAuth.instance.currentUser != null) {
                     FirebaseAuth.instance.currentUser?.updateDisplayName(username.text);
                     addPeople(username.text, email.text);
                     context.go("/Root");
                   }
-                },),
+                }catch (e) {
+                  print(e);
+                }
+              },
+            ),
           ),
+          const SizedBox(height: 15),
+          //Login with Google Button
+          SizedBox(
+            width: double.infinity,
+            height: 60,
+            child: CustomFilledButton(
+              text: "Google",
+              buttonColor: AppColor.blue,
+              icon: MdiIcons.fromString("google"),
+              onPressed: () async {
+                try{
+                  await LoginGoogleUtils().signInWithGoogle();
+                  //if is there a currentUser signed, we will go to the root
+                  if (FirebaseAuth.instance.currentUser != null) {
+                    if (context.mounted) {
+                      context.go("/Root");
+                    }
+                  }
+
+                }catch(e){
+                  print(e);
+                }
+
+              },
+            ),
+          ),
+          const SizedBox(height: 25),
           const Spacer(flex: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

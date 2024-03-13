@@ -1,4 +1,4 @@
-import 'package:dismov_app/Json/users.dart';
+// import 'package:dismov_app/Json/users.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dismov_app/config/theme/color.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:dismov_app/shared/shared.dart';
 
 //Utils for Google Login
-import 'package:dismov_app/utils/loginGoogleUtils.dart';
-
+import 'package:dismov_app/utils/login_google_utils.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // LoginScreen
 class LoginScreen extends StatelessWidget {
@@ -18,13 +18,13 @@ class LoginScreen extends StatelessWidget {
     return FutureBuilder(
         future: LoginGoogleUtils().isUserLoggedIn(),
         builder: (context, snapshot) {
-          if(snapshot.connectionState == ConnectionState.waiting){
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
-          }else{
-            if (snapshot.data==true) {
+          } else {
+            if (snapshot.data == true) {
               context.go("/Root");
               return Container();
-            }else{
+            } else {
               return GestureDetector(
                 onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
                 child: Scaffold(
@@ -64,8 +64,7 @@ class LoginScreen extends StatelessWidget {
               );
             }
           }
-        }
-    );
+        });
   }
 }
 
@@ -108,7 +107,10 @@ class _LoginFormState extends State<_LoginForm> {
       child: Column(
         children: [
           const SizedBox(height: 50),
-          Text('Iniciar Sesión', style: textStyles.titleLarge),
+          Text(
+            'Iniciar Sesión',
+            style: textStyles.titleLarge,
+          ),
           const SizedBox(height: 70),
           CustomTextFormField(
             label: 'Correo',
@@ -128,32 +130,25 @@ class _LoginFormState extends State<_LoginForm> {
             child: CustomFilledButton(
               text: 'Ingresar',
               buttonColor: AppColor.yellowCustom,
+              icon: MdiIcons.fromString("account"),
               onPressed: () async {
-                UserCredential? credentials = await LoginGoogleUtils().loginUserWithEmail(username.text,password.text);
-                if (credentials.user != null ){
-                  context.go("/Root");
+                try{
+                  UserCredential? credentials = await LoginGoogleUtils()
+                      .loginUserWithEmail(username.text, password.text);
+                  if (credentials.user != null) {
+                    if (context.mounted) {
+                      context.go("/Root");
+                    }
+                  }
+                }catch(e){
+                  print(e);
                 }
+
               },
             ),
           ),
           const SizedBox(height: 10),
-          //Login with Google Button
-          SizedBox(
-            width: double.infinity,
-            height: 60,
-            child: CustomFilledButton(
-              text: "Iniciar Sesion con Google",
-              buttonColor: AppColor.darker,
-              onPressed: () async {
-                await LoginGoogleUtils().signInWithGoogle();
-                //if is there a currentUser signed, we will go to the root
-                if (FirebaseAuth.instance.currentUser != null) {
-                  context.go("/Root");
-                }
-              },
-            ),
-          ),
-          const Spacer(flex: 2),
+          const Spacer(flex: 1),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
