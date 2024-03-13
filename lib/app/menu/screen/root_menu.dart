@@ -102,7 +102,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
 
   Widget _buildBottomBar() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
+      padding: const EdgeInsets.only(bottom: 15),
       child: Container(
         height: 60,
         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),

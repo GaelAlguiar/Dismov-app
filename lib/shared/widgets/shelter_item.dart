@@ -35,7 +35,7 @@ class ShelterItem extends StatelessWidget {
         alignment: Alignment.center,
         width: width,
         height: height,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 60),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
         ),
