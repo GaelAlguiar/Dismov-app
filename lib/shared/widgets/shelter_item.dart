@@ -33,12 +33,8 @@ class ShelterItem extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: width,
-<<<<<<< HEAD
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
-=======
         height: height,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 60),
->>>>>>> 3f1a4384cb8dd0e29027e984115dd75cf47227c6
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(radius),
         ),
