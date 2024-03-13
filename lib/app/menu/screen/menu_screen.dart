@@ -54,7 +54,6 @@ class MenuScreen extends StatelessWidget {
 
 class _MenuView extends StatefulWidget {
   const _MenuView();
-
   @override
   __MenuViewState createState() => __MenuViewState();
 }
@@ -65,16 +64,9 @@ class __MenuViewState extends State<_MenuView> {
   void obtenerYActualizarUbicacion() async {
     String ubi = await LocationUtils().obtenerLocalizacion();
     setState(() {
-<<<<<<< HEAD
       ubicacion = ubi; // Actualiza la ubicación una vez que se resuelve el Future
     });
-=======
-      ubicacion =
-          ubi; // Actualiza la ubicación una vez que se resuelve el Future
-    }); // Actualiza la ubicación una vez que se resuelve el Future
->>>>>>> b7d8bce45d9e3d2e5fd8d257e5f53edee910114c
   }
-
   @override
   void initState() {
     super.initState();
