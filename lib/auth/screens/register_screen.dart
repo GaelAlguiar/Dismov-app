@@ -131,7 +131,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                 try{
                   await LoginGoogleUtils().createUserWithEmail(email.text, password.text);
                   if (FirebaseAuth.instance.currentUser != null) {
-                    FirebaseAuth.instance.currentUser?.updateDisplayName(username.text);
+                    await FirebaseAuth.instance.currentUser?.updateDisplayName(username.text);
                     addPeople(username.text, email.text);
                     context.go("/Root");
                   }
