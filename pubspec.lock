@@ -416,6 +416,8 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.0"
+<<<<<<< HEAD
+=======
   material_design_icons_flutter:
     dependency: "direct main"
     description:
@@ -424,6 +426,7 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.7296"
+>>>>>>> 72c104331d3043904afc024bfb69bc0de91c55e5
   meta:
     dependency: transitive
     description:
