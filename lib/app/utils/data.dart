@@ -8,6 +8,43 @@ List categories = [
   //{"name": "Pez", "icon": "assets/icons/fish.svg"},
 ];
 
+List shelters = [
+  {
+    "image":
+    "https://scontent.fntr1-1.fna.fbcdn.net/v/t1.6435-9/39442363_1250752031732962_9202215590595395584_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=S0YZz-apmAgAX8V4fS-&_nc_ht=scontent.fntr1-1.fna&oh=00_AfCCSUYLVu0_gcTdnq1kjOqo2HEU8CQmhdKjI_j6mt7mmw&oe=66194A41",
+    "name": "Huellitas",
+    "location": "San Pedro Garza Garcia, Nuevo León",
+    "is_favorited": false,
+    "description":
+    "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.",
+    "rate": 4.5,
+    "id": "pid001",
+    "owner_name": "Sangvaleap",
+    "owner_photo": profile,
+    "sex": "12 km",
+    "age": "2.6 Años",
+    "color": "0xFF0000FF",
+    "album": []
+  },
+  {
+    "image":
+    "https://scontent.fntr1-1.fna.fbcdn.net/v/t39.30808-6/352217954_160401410345494_534957844085528999_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=3mHo_DY6dBsAX-lWBo9&_nc_ht=scontent.fntr1-1.fna&oh=00_AfAdQDASlSXHo-O5g0R-GCLcJ2w_97uSb-9x4d5fDJWbQg&oe=65F7D9CF",
+    "name": "RESCATADOG Monterrey",
+    "location": "San Nicolás de los Garza, Nuevo León",
+    "is_favorited": false,
+    "description":
+    "Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.",
+    "rate": 4.5,
+    "id": "pid001",
+    "owner_name": "Sangvaleap",
+    "owner_photo": profile,
+    "sex": "21 km",
+    "age": "8 Meses",
+    "color": "0xFF0000FF",
+    "album": []
+  },
+];
+
 List pets = [
   {
     "image":

@@ -1,36 +1,21 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
+import 'package:dismov_app/shared/widgets/shelter_item.dart';
+import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 //Location
 import 'package:dismov_app/utils/location_utils.dart';
 
-class MenuScreen extends StatelessWidget {
-  const MenuScreen({super.key});
+class PetScreen extends StatelessWidget {
+  const PetScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     // final scaffoldKey = GlobalKey<ScaffoldState>();
-    String nameToShow = "Hola!";
-    String name = "";
-    //Agrega el nombre del usuario al menu inicial
-    try {
-      if (FirebaseAuth.instance.currentUser != null) {
-        String? fullName = FirebaseAuth.instance.currentUser?.displayName;
-        if (fullName != null) {
-          List<String> nameParts = fullName.split(" ");
-          name = nameParts.first;
-        }
-
-        nameToShow = "$nameToShow $name";
-      }
-    } catch (e) {
-      nameToShow = "Ha ocurrido un problema, reinicia la aplicación";
-    }
+    String nameToShow = "Refugios";
 
     return Scaffold(
       // drawer: SideMenu(scaffoldKey: scaffoldKey),
@@ -46,18 +31,18 @@ class MenuScreen extends StatelessWidget {
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
         ],
       ),
-      body: const _MenuView(),
+      body: const _PetView(),
     );
   }
 }
 
-class _MenuView extends StatefulWidget {
-  const _MenuView();
+class _PetView extends StatefulWidget {
+  const _PetView();
   @override
-  __MenuViewState createState() => __MenuViewState();
+  __PetViewState createState() => __PetViewState();
 }
 
-class __MenuViewState extends State<_MenuView> {
+class __PetViewState extends State<_PetView> {
   //Comprueba Ubicacion
   String ubicacion = "Ubicacion Desconocida";
   void obtenerYActualizarUbicacion() async {
@@ -88,7 +73,7 @@ class __MenuViewState extends State<_MenuView> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildBody(),
+                  (context, index) => _buildBody(),
               childCount: 1,
             ),
           )
@@ -120,7 +105,7 @@ class __MenuViewState extends State<_MenuView> {
                       width: 5,
                     ),
                     Text(
-                      "Locación",
+                      "Tú Ubicación",
                       style: TextStyle(
                         color: AppColor.labelColor,
                         fontSize: 13,
@@ -150,10 +135,7 @@ class __MenuViewState extends State<_MenuView> {
   _buildBody() {
     return SingleChildScrollView(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const SizedBox(
-          height: 10,
-        ),
-        _buildCategories(),
+
         const SizedBox(
           height: 10,
         ),
@@ -161,15 +143,15 @@ class __MenuViewState extends State<_MenuView> {
           padding: EdgeInsets.only(
               left: 30), // Ajusta el relleno interno según sea necesario
           child: Text(
-            "Tu Mejor Amigo",
+            "Refugios Cerca de ti",
             style: TextStyle(
               color: AppColor.textColor,
               fontWeight: FontWeight.w500,
-              fontSize: 30,
+              fontSize: 25,
             ),
           ),
         ),
-        _buildPets(),
+        _buildShelters(),
       ]),
     );
   }
@@ -178,7 +160,7 @@ class __MenuViewState extends State<_MenuView> {
   _buildCategories() {
     List<Widget> lists = List.generate(
       categories.length,
-      (index) => CategoryItem(
+          (index) => CategoryItem(
         data: categories[index],
         selected: index == _selectedCategory,
         onTap: () {
@@ -194,6 +176,43 @@ class __MenuViewState extends State<_MenuView> {
       child: Row(children: lists),
     );
   }
+
+  //Widget to build list of pets
+  _buildShelters() {
+    double height = MediaQuery.of(context).size.height * .80;
+    return Align(
+      alignment: Alignment.center,
+      child: CarouselSlider(
+        options: CarouselOptions(
+          height: height,
+          enlargeCenterPage: true,
+          disableCenter: true,
+          viewportFraction: .9,
+          scrollDirection:
+          Axis.vertical, // Configura la dirección del desplazamiento
+        ),
+        items: List.generate(
+          shelters.length,
+              (index) => Align(
+            alignment: Alignment.center,
+            child: ShelterItem(
+              data: shelters[index],
+
+              height: height,
+              onTap: null,
+              onFavoriteTap: () {
+                setState(() {
+                  shelters[index]["is_favorited"] = !shelters[index]["is_favorited"];
+                });
+              },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+//End of widget to build list of pets
+
   //Widget to build list of pets
   _buildPets() {
     double height = MediaQuery.of(context).size.height * .70;
@@ -206,11 +225,11 @@ class __MenuViewState extends State<_MenuView> {
           disableCenter: true,
           viewportFraction: .9,
           scrollDirection:
-              Axis.vertical, // Configura la dirección del desplazamiento
+          Axis.vertical, // Configura la dirección del desplazamiento
         ),
         items: List.generate(
           pets.length,
-          (index) => Align(
+              (index) => Align(
             alignment: Alignment.center,
             child: PetItem(
               data: pets[index],
@@ -227,5 +246,5 @@ class __MenuViewState extends State<_MenuView> {
       ),
     );
   }
-  //End of widget to build list of pets
+//End of widget to build list of pets
 }
