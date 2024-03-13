@@ -52,7 +52,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildBody(),
+                  (context, index) => _buildBody(),
               childCount: 1,
             ),
           )
@@ -98,8 +98,8 @@ class __UserSettingsState extends State<_UserSettingsView> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else {
-          String? email = FirebaseAuth.instance.currentUser?.email;
-          String? name = FirebaseAuth.instance.currentUser?.displayName;
+          String? email        = FirebaseAuth.instance.currentUser?.email;
+          String? name         = FirebaseAuth.instance.currentUser?.displayName;
           String? profilePhoto = FirebaseAuth.instance.currentUser?.photoURL;
           // Future<List> users = getUser(email);
           return SingleChildScrollView(

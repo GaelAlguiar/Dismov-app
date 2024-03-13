@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -11,7 +11,7 @@ class MenuScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final scaffoldKey = GlobalKey<ScaffoldState>();
-
+    /*
     String? fullName = FirebaseAuth.instance.currentUser?.displayName;
     String? firstName;
     String? lastName;
@@ -25,14 +25,15 @@ class MenuScreen extends StatelessWidget {
       }
     }
 
-    String nameToShow =
-        lastName != null ? "$firstName $lastName" : firstName ?? "Usuario";
+    String nameToShow = lastName != null ? "$firstName $lastName" : firstName ?? "Usuario";
+    */
     return Scaffold(
       // drawer: SideMenu(scaffoldKey: scaffoldKey),
       appBar: AppBar(
-        title: Text(
-          "Bienvenido! $nameToShow",
-          style: const TextStyle(
+        title: const Text(
+          //"Bienvenido! $nameToShow",
+          "Menu",
+          style: TextStyle(
             fontSize: 20,
           ),
         ),

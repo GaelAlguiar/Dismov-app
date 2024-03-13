@@ -7,11 +7,10 @@ class LoginGoogleUtils {
   //Create User With Email
   Future<void> createUserWithEmail(emailAddress, password) async {
     try {
-      // final credential =
-      //     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      //   email: emailAddress,
-      //   password: password,
-      // );
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailAddress,
+        password: password,
+      );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         debugPrint('The password provided is too weak.');
