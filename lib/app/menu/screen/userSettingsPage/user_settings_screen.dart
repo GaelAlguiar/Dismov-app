@@ -142,7 +142,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
 colocarImagen(String url) {
   if (url == 'null') {
     return Image.network(
-      'https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png',
+      'https://cdn-icons-png.flaticon.com/512/3541/3541871.png',
       width: 100,
       height: 100,
     );
