@@ -87,7 +87,7 @@ class ShelterDetailPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   shelter['name'],
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 28,
                     color: Colors.black87,
                     fontWeight: FontWeight.w600,
@@ -99,8 +99,8 @@ class ShelterDetailPage extends StatelessWidget {
                     Icon(Icons.location_on, color: Colors.grey),
                     const SizedBox(width: 5),
                     Text(
-                      "Location: San Nicolas de los Garza", // "Location: ${chat['location']}
-                      style: TextStyle(
+                      "Ubicación ${shelter['location']}",
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
                       ),
@@ -108,7 +108,7 @@ class ShelterDetailPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Text(
+                const Text(
                   "Descripcion",
                   style: TextStyle(
                     color: Colors.grey,
@@ -118,11 +118,11 @@ class ShelterDetailPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 Row(
                   children: [
-                    Icon(Icons.star, color: Colors.amber),
+                    const Icon(Icons.star, color: Colors.amber),
                     const SizedBox(width: 5),
                     Text(
                       shelter['rate'].toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
                       ),
@@ -130,10 +130,10 @@ class ShelterDetailPage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Row(
+                const Row(
                   children: [
                     Icon(Icons.person, color: Colors.grey),
-                    const SizedBox(width: 5),
+                    SizedBox(width: 5),
                     Text(
                       "Nombre del responsable", // "Owner: ${chat['owner']}
                       style: TextStyle(
