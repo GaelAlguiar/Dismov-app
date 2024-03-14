@@ -136,11 +136,10 @@ List pets = [
 
 var chats = [
   {
-    "image":
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTF8fHByb2ZpbGV8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-    "fname": "Carlos",
-    "lname": "Martínez",
-    "name": "Carlos Martínez",
+    "image": "https://adoptamty.org/wp-content/uploads/2021/07/thumbnail_LOGO-01-am.png",
+    "fname": "Adopta",
+    "lname": "Monterrey",
+    "name": "Adopta Monterrey",
     "skill": "Neurólogos",
     "last_text":
         "Lorem ipsum es un texto de relleno comúnmente utilizado para demostrar la forma visual de un documento",
@@ -148,11 +147,10 @@ var chats = [
     "notify": 2,
   },
   {
-    "image":
-        "https://images.unsplash.com/photo-1617069470302-9b5592c80f66?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Z2lybHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-    "fname": "Ana",
-    "lname": "Ramírez",
-    "name": "Ana Ramírez",
+    "image": "https://scontent.fntr1-1.fna.fbcdn.net/v/t1.6435-9/39442363_1250752031732962_9202215590595395584_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=S0YZz-apmAgAX8V4fS-&_nc_ht=scontent.fntr1-1.fna&oh=00_AfCCSUYLVu0_gcTdnq1kjOqo2HEU8CQmhdKjI_j6mt7mmw&oe=66194A41",
+    "fname": "Huellitas",
+    "lname": "",
+    "name": "Huellitas",
     "skill": "Neurólogos",
     "last_text":
         "Lorem ipsum es un texto de relleno comúnmente utilizado para demostrar la forma visual de un documento",
@@ -161,10 +159,10 @@ var chats = [
   },
   {
     "image":
-        "https://images.unsplash.com/photo-1564460576398-ef55d99548b2?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTZ8fHByb2ZpbGV8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-    "fname": "Blanca",
-    "lname": "Pérez",
-    "name": "Luis Pérez",
+        "https://scontent.fntr1-1.fna.fbcdn.net/v/t39.30808-6/352217954_160401410345494_534957844085528999_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_ohc=3mHo_DY6dBsAX-lWBo9&_nc_ht=scontent.fntr1-1.fna&oh=00_AfAdQDASlSXHo-O5g0R-GCLcJ2w_97uSb-9x4d5fDJWbQg&oe=65F7D9CF",
+    "fname": "RescataDOG",
+    "lname": "Monterrey",
+    "name": "RescataDOG Monterrey",
     "skill": "Dentistas",
     "last_text":
         "Lorem ipsum es un texto de relleno comúnmente utilizado para demostrar la forma visual de un documento",
