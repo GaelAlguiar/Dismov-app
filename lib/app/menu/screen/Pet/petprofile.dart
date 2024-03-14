@@ -35,6 +35,8 @@ class PetProfilePage extends StatelessWidget {
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0),
               ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
               child: Container(
                 color: Colors.white,
                 padding: const EdgeInsets.all(15),
@@ -300,6 +302,7 @@ class PetProfilePage extends StatelessWidget {
                   ],
                 ),
               ),
+                    ),
             ),
           ),
           // Back button positioned on top left
