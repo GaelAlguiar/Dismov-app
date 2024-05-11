@@ -8,6 +8,7 @@ import 'package:dismov_app/shared/widgets/shelter_item.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 //Location
 import 'package:dismov_app/utils/location_utils.dart';
+import 'package:dismov_app/app/menu/screen/chat/chat.dart';
 
 class PetScreen extends StatelessWidget {
   const PetScreen({super.key});
@@ -178,7 +179,17 @@ class __PetViewState extends State<_PetView> {
             child: ShelterItem(
               data: shelters[index],
               height: height,
-              onTap: null,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ShelterDetailPage(
+                        key: UniqueKey(),
+                        shelter: shelters[index],
+                    ),
+                  ),
+                );
+              },
               onFavoriteTap: () {
                 setState(() {
                   shelters[index]["is_favorited"] = !shelters[index]["is_favorited"];

@@ -27,19 +27,19 @@ class PetProfilePage extends StatelessWidget {
           )),
           // Container for pet information
           Positioned(
-
             left: 0,
             right: 0,
             bottom: 0,
-
             child: ClipRRect(
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20.0),
                 topRight: Radius.circular(20.0),
               ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
               child: Container(
                 color: Colors.white,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(15),
                 alignment: Alignment.center,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,7 +50,7 @@ class PetProfilePage extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 40, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 10.0), // Spacing between containers
+                    const SizedBox(height: 20.0), // Spacing between containers
                     Center(
                       child: Row(
                         children: [
@@ -106,7 +106,7 @@ class PetProfilePage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                              width: 10.0), // Spacing between containers
+                              width: 5.0), // Spacing between containers
                           Container(
                             height: 100.0, // Adjust as needed
                             width: 100.0,
@@ -156,7 +156,7 @@ class PetProfilePage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(
-                              width: 10.0), // Spacing between containers
+                              width: 5.0), // Spacing between containers
                           Container(
                             height: 100.0, // Adjust as needed
                             width: 100.0,
@@ -302,6 +302,7 @@ class PetProfilePage extends StatelessWidget {
                   ],
                 ),
               ),
+                    ),
             ),
           ),
           // Back button positioned on top left
