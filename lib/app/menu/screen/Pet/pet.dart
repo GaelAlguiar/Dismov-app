@@ -1,4 +1,5 @@
-import 'package:dismov_app/app/utils/data.dart'; // Assuming data.dart has getData function
+import 'package:dismov_app/app/utils/data.dart'; // Assuming data.dart has fetchPetsFromFirebase function
+import 'package:dismov_app/services/pet_service.dart';
 import 'package:dismov_app/shared/shared.dart'; // Assuming shared.dart has PetItem widget
 import 'package:flutter/material.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
@@ -14,7 +15,10 @@ class PetPage extends StatelessWidget {
         title: const Text('Pets'),
         backgroundColor: AppColor.yellow,
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.search_rounded),
+          ),
         ],
       ),
       body: const SearchPets(),
@@ -23,14 +27,14 @@ class PetPage extends StatelessWidget {
 }
 
 class SearchPets extends StatefulWidget {
-  const SearchPets({super.key});
+  const SearchPets({Key? key}) : super(key: key);
 
   @override
   State<SearchPets> createState() => _SearchPetsState();
 }
 
 class _SearchPetsState extends State<SearchPets> {
-  List<dynamic> petsSelected = [];
+  late List<dynamic> petsSelected = [];
   String searchText = "";
   List<String> selectedSpecies = [];
   List<String> selectedSizes = [];
@@ -38,18 +42,22 @@ class _SearchPetsState extends State<SearchPets> {
   @override
   void initState() {
     super.initState();
-    petsSelected = pets; // Assign pets from data.dart
+    PetService().getAllPets().then((pets) {
+      setState(() {
+        petsSelected = pets;
+      });
+    });
   }
 
   void filterPets(String searchText, List<String> selectedSpecies,
       List<String> selectedSizes) {
     setState(() {
-      pets = pets
+      petsSelected = petsSelected
           .where((pet) =>
-              pet.name.contains(searchText) &&
-              (selectedSpecies.isEmpty ||
-                  selectedSpecies.contains(pet.species)) &&
-              (selectedSizes.isEmpty || selectedSizes.contains(pet.size)))
+      pet["name"].contains(searchText) &&
+          (selectedSpecies.isEmpty ||
+              selectedSpecies.contains(pet["species"])) &&
+          (selectedSizes.isEmpty || selectedSizes.contains(pet["size"])))
           .toList();
     });
   }
@@ -64,38 +72,44 @@ class _SearchPetsState extends State<SearchPets> {
         children: [
           TextField(
             onChanged: (text) {
-              searchText = text;
+              setState(() {
+                searchText = text;
+              });
               filterPets(searchText, selectedSpecies, selectedSizes);
             },
           ),
           // Implement widgets for species and size filters (Checkbox/DropdownButton)
           Expanded(
             child: ListView.builder(
-              itemCount: pets.length,
+              itemCount: petsSelected.length,
               itemBuilder: (context, index) {
                 return Center(
-                    child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PetProfilePage(
-                                  key: UniqueKey(), pet: pets[index]),
-                            ),
-                          );
-                        },
-                        child: PetItem(
-                          data: pets[index],
-                          height: 300,
-                          width: 380, // Adjust width as needed
-                          onTap: null,
-                          onFavoriteTap: () {
-                            setState(() {
-                              pets[index].isFavorited =
-                                  !pets[index].isFavorited;
-                            });
-                          },
-                        )));
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PetProfilePage(
+                            key: UniqueKey(),
+                            pet: petsSelected[index],
+                          ),
+                        ),
+                      );
+                    },
+                    child: PetItem(
+                      data: petsSelected[index],
+                      height: 300,
+                      width: 380, // Adjust width as needed
+                      onTap: null,
+                      onFavoriteTap: () {
+                        setState(() {
+                          petsSelected[index]["is_favorited"] =
+                          !petsSelected[index]["is_favorited"];
+                        });
+                      },
+                    ),
+                  ),
+                );
               },
             ),
           ),

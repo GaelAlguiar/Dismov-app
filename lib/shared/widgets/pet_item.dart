@@ -90,7 +90,7 @@ class PetItem extends StatelessWidget {
 
   Widget _buildLocation() {
     return Text(
-      data["location"],
+      data["breed"],
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
@@ -125,7 +125,7 @@ class PetItem extends StatelessWidget {
 
   Widget _buildImage() {
     return CustomImage(
-      data["image"],
+      data["imageURLs"],
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(radius),
         bottom: Radius.zero,
@@ -146,11 +146,11 @@ class PetItem extends StatelessWidget {
         ),
         _getAttribute(
           Icons.color_lens_outlined,
-          data["color"],
+          data["colors"],
         ),
         _getAttribute(
           Icons.query_builder,
-          data["age"],
+          data["ageInYears"],
         ),
       ],
     );
