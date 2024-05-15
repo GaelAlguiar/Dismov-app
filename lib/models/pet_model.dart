@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PetModel {
   String id;
   String name;
@@ -12,7 +14,7 @@ class PetModel {
   String shelterId;
   String adoptionStatus;
   String? story;
-  int publishedAt;
+  Timestamp publishedAt;
   bool isFavorited;
 
   PetModel({
