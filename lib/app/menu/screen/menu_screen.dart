@@ -207,20 +207,20 @@ class __MenuViewState extends State<_MenuView> {
   _buildPets() {
     double height = MediaQuery.of(context).size.height * 0.70;
     return FutureBuilder<List<PetModel>>(
-      future: PetService().getAllPets(), // Call the asynchronous function
+      future: PetService().getAllPets(), // Llama a la función asíncrona
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          // While waiting for the future to resolve, return a loading indicator
+          // Mientras se espera a que el futuro se resuelva, devuelve un indicador de carga
           return Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          // If there's an error, display an error message
+          // Si hay un error, muestra un mensaje de error
           return Center(
             child: Text('Error: ${snapshot.error}'),
           );
         } else {
-          // Once the future has resolved, build the carousel slider with the data
+          // Una vez que el futuro se ha resuelto, construye el carousel slider con los datos
           var pets = snapshot.data!;
           return Align(
             alignment: Alignment.center,
@@ -232,25 +232,23 @@ class __MenuViewState extends State<_MenuView> {
                 viewportFraction: 0.9,
                 scrollDirection: Axis.vertical,
               ),
-              items: List.generate(
-                pets.length,
-                    (index) => Align(
-                  alignment: Alignment.center,
-                  child: PetItem(
-                    data: pets[index].toMap(),
-                    height: height,
-                    onTap: null,
-                    onFavoriteTap: () {
-                      setState(() {
-                        pets[index].isFavorited = !pets[index].isFavorited;
-                      });
-                    },
-                  ),
-                ),
-              ),
+              items: pets.map((pet) {
+                return Column(
+                  children: [
+                    Text(pet.id),
+                    Text(pet.name),
+                    Text(pet.size),
+                    Text(pet.sex),
+                    Text(pet.ageInYears.toString()),
+                    Text(pet.shelterId),
+                  ],
+
+                );
+              }).toList(),
             ),
           );
         }
       },
     );
+
   }}
