@@ -1,25 +1,26 @@
-import 'package:dismov_app/config/config.dart';
-import 'package:dismov_app/shared/widgets/box_favorite.dart';
+import 'package:dismov_app/services/pet_service.dart';
 import 'package:flutter/material.dart';
-import 'package:glassmorphism_ui/glassmorphism_ui.dart';
-import 'package:dismov_app/shared/widgets/pet_item_horizontal.dart';
-import 'package:dismov_app/app/utils/data.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
-import 'package:go_router/go_router.dart';
-import 'package:path/path.dart';
+import 'package:dismov_app/app/utils/data.dart';
+import 'package:dismov_app/config/config.dart';
+import 'package:dismov_app/shared/widgets/pet_item_horizontal.dart';
+import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 
+import '../../models/pet_model.dart';
 import 'custom_image.dart';
 
-class ShelterItem extends StatelessWidget {
-  const ShelterItem(
-      {super.key,
-      required this.data,
-      this.width = 350,
-      this.height = 400,
-      this.radius = 40,
-      this.onTap,
-      this.onFavoriteTap});
+class ShelterItem extends StatefulWidget {
+  const ShelterItem({
+    Key? key,
+    required this.data,
+    this.width = 350,
+    this.height = 400,
+    this.radius = 40,
+    this.onTap,
+    this.onFavoriteTap,
+  }) : super(key: key);
+
   final Map<String, dynamic> data;
   final double width;
   final double height;
@@ -28,19 +29,47 @@ class ShelterItem extends StatelessWidget {
   final GestureTapCallback? onFavoriteTap;
 
   @override
+  _ShelterItemState createState() => _ShelterItemState();
+}
+
+class _ShelterItemState extends State<ShelterItem> {
+  late Future<List<PetModel>> _fetchPetsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPetsFuture = PetService().getAllPets();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: widget.onTap,
       child: Container(
-        width: width,
+        width: widget.width,
         margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
-        height: height,
+        height: widget.height,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius),
+          borderRadius: BorderRadius.circular(widget.radius),
         ),
         child: Stack(
           children: [
-            _buildPets(context),
+            FutureBuilder<List<PetModel>>(
+              future: PetService().getAllPets(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Error fetching pets: ${snapshot.error}'),
+                  );
+                } else {
+                  return _buildPets(context, snapshot.data!.cast<PetModel>());
+                }
+              },
+            ),
             Positioned(
               bottom: 0,
               child: _buildInfoGlass(),
@@ -51,8 +80,7 @@ class ShelterItem extends StatelessWidget {
     );
   }
 
-//Widget to build list of pets
-  _buildPets(BuildContext context) {
+  Widget _buildPets(BuildContext context, List<PetModel> pets) {
     double height = 500;
     return Align(
       alignment: Alignment.center,
@@ -62,43 +90,34 @@ class ShelterItem extends StatelessWidget {
           enlargeCenterPage: true,
           disableCenter: true,
           viewportFraction: .9,
-          scrollDirection:
-              Axis.horizontal, // Configura la dirección del desplazamiento
+          scrollDirection: Axis.horizontal,
         ),
-        items: List.generate(
-          pets.length,
-          (index) => Align(
+        items: pets.map((pet) {
+          return Align(
             alignment: Alignment.center,
             child: PetItem(
-              data: pets[index],
+              data: pet.toMap(), // Convert PetModel object to Map<String, dynamic>
               height: height,
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        PetProfilePage(key: UniqueKey(), pet: pets[index]),
+                    builder: (context) => PetProfilePage(
+                      key: UniqueKey(),
+                      pet: pet.toMap(),
+                    ),
                   ),
                 );
-              }
-
-              /*() {
-                String name = pets[index]["name"];
-                String location = pets[index]["location"];
-
-                context.goNamed("sample", queryParameters: {'name': name, 'location': location});
-
-              },*/
-              ,
+              },
               onFavoriteTap: () {},
             ),
-          ),
-        ),
+          );
+        }).toList(),
       ),
     );
   }
 
-//End of widget to build list of pets
+
   Widget _buildInfoGlass() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 0),
@@ -108,7 +127,7 @@ class ShelterItem extends StatelessWidget {
         blur: 10,
         opacity: 0.15,
         child: Container(
-          width: width,
+          width: widget.width,
           height: 120,
           padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
           decoration: BoxDecoration(
@@ -144,7 +163,7 @@ class ShelterItem extends StatelessWidget {
 
   Widget _buildLocation() {
     return Text(
-      data["location"],
+      widget.data["location"],
       textAlign: TextAlign.left,
       maxLines: 1,
       style: const TextStyle(
@@ -159,7 +178,7 @@ class ShelterItem extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            data["name"],
+            widget.data["name"],
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -176,9 +195,9 @@ class ShelterItem extends StatelessWidget {
 
   Widget _buildImage() {
     return CustomImage(
-      data["image"],
+      widget.data["image"],
       borderRadius: BorderRadius.vertical(
-        top: Radius.circular(radius),
+        top: Radius.circular(widget.radius),
         bottom: Radius.zero,
       ),
       isShadow: false,
@@ -193,7 +212,7 @@ class ShelterItem extends StatelessWidget {
       children: [
         _getAttribute(
           Icons.gps_fixed,
-          data["sex"],
+          widget.data["sex"],
         ),
       ],
     );
