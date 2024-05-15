@@ -25,14 +25,15 @@ class PetScreen extends StatelessWidget {
           nameToShow,
           style: const TextStyle(
             fontSize: 20,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: AppColor.yellow,
+        backgroundColor: Color.fromARGB(255, 38, 121, 177),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
         ],
       ),
-      body: const _PetView(),
+      body: Placeholder(),
     );
   }
 }
