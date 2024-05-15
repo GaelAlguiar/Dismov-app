@@ -1,3 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismov_app/services/pet_service.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../models/pet_model.dart';
+
+
 var profile =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9ZAV6OLHHc8z7I4OaVD0ljzGdeFP0tGreDi3yMFwLBZRXWt7Nh93hC8uRt-UnawErZBw&usqp=CAU";
 
@@ -46,7 +53,7 @@ List shelters = [
   },
 ];
 
-List pets = [
+/*List pets = [
   {
     "image":
         "https://images.ecestaticos.com/h34TvzTFVdrau9Un4Wdmwhed_e4=/0x115:2265x1390/1200x900/filters:fill(white):format(jpg)/f.elconfidencial.com%2Foriginal%2F8ec%2F08c%2F85c%2F8ec08c85c866ccb70c4f1c36492d890f.jpg",
@@ -133,7 +140,7 @@ List pets = [
     "album": []
   },
 ];
-
+*/
 var chats = [
   {
     "image": "https://adoptamty.org/wp-content/uploads/2021/07/thumbnail_LOGO-01-am.png",

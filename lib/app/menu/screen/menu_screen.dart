@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
+import 'package:dismov_app/services/pet_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -8,6 +9,8 @@ import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 //Location
 import 'package:dismov_app/utils/location_utils.dart';
+
+import '../../../models/pet_model.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -60,6 +63,7 @@ class _MenuView extends StatefulWidget {
 class __MenuViewState extends State<_MenuView> {
   //Comprueba Ubicacion
   String ubicacion = "Ubicacion Desconocida";
+
   void obtenerYActualizarUbicacion() async {
     String ubi = await LocationUtils().obtenerLocalizacion();
     setState(() {
@@ -90,7 +94,7 @@ class __MenuViewState extends State<_MenuView> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildBody(),
+                  (context, index) => _buildBody(),
               childCount: 1,
             ),
           )
@@ -177,18 +181,20 @@ class __MenuViewState extends State<_MenuView> {
   }
 
   int _selectedCategory = 0;
+
   _buildCategories() {
     List<Widget> lists = List.generate(
       categories.length,
-      (index) => CategoryItem(
-        data: categories[index],
-        selected: index == _selectedCategory,
-        onTap: () {
-          setState(() {
-            _selectedCategory = index;
-          });
-        },
-      ),
+          (index) =>
+          CategoryItem(
+            data: categories[index],
+            selected: index == _selectedCategory,
+            onTap: () {
+              setState(() {
+                _selectedCategory = index;
+              });
+            },
+          ),
     );
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -199,36 +205,52 @@ class __MenuViewState extends State<_MenuView> {
 
   //Widget to build list of pets
   _buildPets() {
-    double height = MediaQuery.of(context).size.height * .70;
-    return Align(
-      alignment: Alignment.center,
-      child: CarouselSlider(
-        options: CarouselOptions(
-          height: height,
-          enlargeCenterPage: true,
-          disableCenter: true,
-          viewportFraction: .9,
-          scrollDirection:
-              Axis.vertical, // Configura la dirección del desplazamiento
-        ),
-        items: List.generate(
-          pets.length,
-          (index) => Align(
+    double height = MediaQuery.of(context).size.height * 0.70;
+    return FutureBuilder<List<PetModel>>(
+      future: PetService().getAllPets(), // Call the asynchronous function
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // While waiting for the future to resolve, return a loading indicator
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          // If there's an error, display an error message
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else {
+          // Once the future has resolved, build the carousel slider with the data
+          var pets = snapshot.data!;
+          return Align(
             alignment: Alignment.center,
-            child: PetItem(
-              data: pets[index],
-              height: height,
-              onTap: null,
-              onFavoriteTap: () {
-                setState(() {
-                  pets[index]["is_favorited"] = !pets[index]["is_favorited"];
-                });
-              },
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: height,
+                enlargeCenterPage: true,
+                disableCenter: true,
+                viewportFraction: 0.9,
+                scrollDirection: Axis.vertical,
+              ),
+              items: List.generate(
+                pets.length,
+                    (index) => Align(
+                  alignment: Alignment.center,
+                  child: PetItem(
+                    data: pets[index].toMap(),
+                    height: height,
+                    onTap: null,
+                    onFavoriteTap: () {
+                      setState(() {
+                        pets[index].isFavorited = !pets[index].isFavorited;
+                      });
+                    },
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+        }
+      },
     );
-  }
-  //End of widget to build list of pets
-}
+  }}
