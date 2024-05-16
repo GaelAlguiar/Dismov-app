@@ -311,6 +311,19 @@ class __MenuViewState extends State<_MenuView> {
           );
         } else {
           final List<PetModel> pets = snapshot.data!;
+          List<PetModel> filteredPets = [];
+
+          if (_selectedCategory == 0) {
+            // Mostrar todas las mascotas
+            filteredPets.addAll(pets);
+          } else if (_selectedCategory == 1) {
+            // Mostrar solo perros
+            filteredPets.addAll(pets.where((pet) => pet.type == 'dog'));
+          } else if (_selectedCategory == 2) {
+            // Mostrar solo gatos
+            filteredPets.addAll(pets.where((pet) => pet.type == 'cat'));
+          }
+
           return Align(
             alignment: Alignment.center,
             child: CarouselSlider.builder(
@@ -318,65 +331,66 @@ class __MenuViewState extends State<_MenuView> {
                 height: height,
                 enlargeCenterPage: true,
                 disableCenter: true,
-                viewportFraction: 0.45, // Modificado para mostrar dos elementos
+                viewportFraction: 0.45,
                 scrollDirection: Axis.vertical,
               ),
-              itemCount: (pets.length / 2).ceil(), // Dividir la cantidad de mascotas por 2
+              itemCount: (filteredPets.length / 2).ceil(),
               itemBuilder: (context, index, realIndex) {
                 final int firstIndex = index * 2;
                 final int secondIndex = firstIndex + 1;
                 return Row(
                   children: [
                     Expanded(
-                      child: Padding(padding: EdgeInsets.only(left: 25),child:
-
-                      PetItem(
-                        data: pets[firstIndex].toMap(),
-                        height: height,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PetProfilePage(
-                                key: UniqueKey(),
-                                pet: pets[firstIndex].toMap(),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 20),
+                        child: PetItem(
+                          data: filteredPets[firstIndex].toMap(),
+                          height: height,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PetProfilePage(
+                                  key: UniqueKey(),
+                                  pet: filteredPets[firstIndex].toMap(),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        onFavoriteTap: () {
-                          setState(() {
-                            pets[firstIndex].isFavorited = !pets[firstIndex].isFavorited;
-                          });
-                        },
+                            );
+                          },
+                          onFavoriteTap: () {
+                            setState(() {
+                              filteredPets[firstIndex].isFavorited = !filteredPets[firstIndex].isFavorited;
+                            });
+                          },
+                        ),
                       ),
-                    ),
                     ),
                     SizedBox(width: 15), // Espacio entre los elementos
                     Expanded(
-                      child: Padding(padding: EdgeInsets.only(right: 20),
-                      child: PetItem(
-                        data: pets[secondIndex].toMap(),
-                        height: height,
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PetProfilePage(
-                                key: UniqueKey(),
-                                pet: pets[secondIndex].toMap(),
+                      child: Padding(
+                        padding: EdgeInsets.only(right: 20),
+                        child: PetItem(
+                          data: filteredPets[secondIndex].toMap(),
+                          height: height,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PetProfilePage(
+                                  key: UniqueKey(),
+                                  pet: filteredPets[secondIndex].toMap(),
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        onFavoriteTap: () {
-                          setState(() {
-                            pets[secondIndex].isFavorited = !pets[secondIndex].isFavorited;
-                          });
-                        },
+                            );
+                          },
+                          onFavoriteTap: () {
+                            setState(() {
+                              filteredPets[secondIndex].isFavorited = !filteredPets[secondIndex].isFavorited;
+                            });
+                          },
+                        ),
                       ),
                     ),
-                ),
                   ],
                 );
               },
