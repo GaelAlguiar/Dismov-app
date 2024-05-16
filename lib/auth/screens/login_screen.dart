@@ -243,7 +243,7 @@ class _LoginFormState extends State<_LoginForm> {
 
           const SizedBox(height: 25),
 
-          // GOOGLE SING IN
+          // GOOGLE SIGN IN
           SizedBox(
             width: double.infinity,
             height: 60,
