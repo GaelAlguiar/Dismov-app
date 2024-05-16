@@ -1,6 +1,5 @@
 import "package:cloud_firestore/cloud_firestore.dart";
-
-import "../models/favorite_model.dart";
+import "package:dismov_app/models/favorite_model.dart";
 
 class FavoritesService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

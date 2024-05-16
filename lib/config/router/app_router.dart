@@ -4,10 +4,6 @@ import 'package:dismov_app/app/menu/screen/menu_screen.dart';
 import 'package:dismov_app/app/menu/screen/root_menu.dart';
 import 'package:dismov_app/auth/screens/login_screen.dart';
 import 'package:dismov_app/auth/screens/register_screen.dart';
-import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
-
-import 'package:dismov_app/app/menu/screen/Pet/petPage.dart';
-
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(

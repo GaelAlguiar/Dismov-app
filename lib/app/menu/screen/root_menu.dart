@@ -1,4 +1,3 @@
-import 'package:dismov_app/app/menu/screen/Pet/pet.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
 import 'package:dismov_app/app/menu/screen/menu_screen.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/user_settings_screen.dart';
@@ -7,9 +6,8 @@ import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/shared/widgets/bottombar.dart';
 import 'package:flutter/material.dart';
 //Test
-import 'package:dismov_app/app/menu/screen/Pet/petPage.dart';
 
-import 'package:dismov_app/app/menu/screen/Pet/sheltersPage.dart';
+import 'package:dismov_app/app/menu/screen/Pet/shelters_page.dart';
 
 class RootApp extends StatefulWidget {
   const RootApp({super.key});

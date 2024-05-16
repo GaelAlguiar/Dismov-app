@@ -123,7 +123,7 @@ class PetSearchDelegate extends SearchDelegate<String> {
                     MaterialPageRoute(
                       builder: (context) => PetProfilePage(
                         key: UniqueKey(),
-                        pet: pet.toMap(),
+                        pet: pet,
                       ),
                     ),
                   );
@@ -301,11 +301,10 @@ class __MenuViewState extends State<_MenuView> {
       future: PetService().getAllPets(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          print(snapshot.data);
           return Center(
             child: Text('Error: ${snapshot.error}'),
           );
@@ -342,7 +341,7 @@ class __MenuViewState extends State<_MenuView> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(left: 20),
+                        padding: const EdgeInsets.only(left: 20),
                         child: PetItem(
                           data: filteredPets[firstIndex].toMap(),
                           height: height,
@@ -352,23 +351,18 @@ class __MenuViewState extends State<_MenuView> {
                               MaterialPageRoute(
                                 builder: (context) => PetProfilePage(
                                   key: UniqueKey(),
-                                  pet: filteredPets[firstIndex].toMap(),
+                                  pet: filteredPets[firstIndex],
                                 ),
                               ),
                             );
                           },
-                          onFavoriteTap: () {
-                            setState(() {
-                              filteredPets[firstIndex].isFavorited = !filteredPets[firstIndex].isFavorited;
-                            });
-                          },
                         ),
                       ),
                     ),
-                    SizedBox(width: 15), // Espacio entre los elementos
+                    const SizedBox(width: 15), // Espacio entre los elementos
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.only(right: 20),
+                        padding: const EdgeInsets.only(right: 20),
                         child: PetItem(
                           data: filteredPets[secondIndex].toMap(),
                           height: height,
@@ -378,15 +372,10 @@ class __MenuViewState extends State<_MenuView> {
                               MaterialPageRoute(
                                 builder: (context) => PetProfilePage(
                                   key: UniqueKey(),
-                                  pet: filteredPets[secondIndex].toMap(),
+                                  pet: filteredPets[secondIndex],
                                 ),
                               ),
                             );
-                          },
-                          onFavoriteTap: () {
-                            setState(() {
-                              filteredPets[secondIndex].isFavorited = !filteredPets[secondIndex].isFavorited;
-                            });
                           },
                         ),
                       ),

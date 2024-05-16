@@ -1,5 +1,4 @@
 import 'package:dismov_app/config/config.dart';
-import 'package:dismov_app/shared/widgets/box_favorite.dart';
 import 'package:flutter/material.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
 
@@ -54,7 +53,7 @@ class PetItem extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 60.0),
       child: GlassContainer(
         borderRadius: BorderRadius.circular(0),
-        border: Border.all(color:Color.fromRGBO(	11	,96,	151,1)),
+        border: Border.all(color:const Color.fromRGBO(	11	,96,	151,1)),
         blur: 10,
         opacity: 0.15,
         child: Container(
@@ -129,7 +128,7 @@ class PetItem extends StatelessWidget {
 
   Widget _buildImage() {
     return CustomImage(
-      data["imageURLs"].join(''),
+      data["imageURLs"][0],
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(radius),
         bottom: Radius.zero,

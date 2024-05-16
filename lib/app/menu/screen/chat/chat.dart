@@ -1,8 +1,14 @@
+import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
 import 'package:dismov_app/app/menu/screen/chat/person_chat.dart';
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/shared/widgets/chat_item.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dismov_app/services/chat_service.dart';
+import 'package:dismov_app/models/chat_model.dart';
+import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
+import 'package:flutter/widgets.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -12,9 +18,36 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  // instance of chat serviice
+  final ChatService _chatService = ChatService(); 
+  List<ChatModel> chats = [];
+
   @override
   Widget build(BuildContext context) {
-    return getBody(context);
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text("No user found"),
+        ),
+      );
+    }
+    return StreamBuilder(stream: _chatService.getChatsByUserIdStream(currentUser.uid), builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      if (snapshot.hasError) {
+        return const Center(
+          child: Text("Error cargando los chats del usuario"),
+        );
+      }
+      chats = snapshot.data as List<ChatModel>;
+      return Scaffold(
+        body: getBody(context),
+      );
+    });
   }
 
   getBody(context) {
@@ -62,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => ChatsScreen(),
+                builder: (context) => ChatDetailPage(chatData: chats[index]),
               )
             );
           },
