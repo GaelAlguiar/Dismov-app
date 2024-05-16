@@ -26,6 +26,7 @@ class CustomFilledButton extends StatelessWidget {
             bottomLeft: radius,
             bottomRight: radius,
             topLeft: radius,
+            topRight: radius,
           ),
         ),
       ),
