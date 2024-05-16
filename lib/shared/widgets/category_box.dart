@@ -26,7 +26,7 @@ class CategoryItem extends StatelessWidget {
         width: 90,
         height: 90,
         decoration: BoxDecoration(
-          color: selected ? AppColor.yellow : AppColor.cardColor,
+          color: selected ?Color.fromRGBO(	11	,96,	151,1) : AppColor.cardColor,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: AppColor.yellow,

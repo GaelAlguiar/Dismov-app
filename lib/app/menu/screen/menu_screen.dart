@@ -7,6 +7,8 @@ import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/utils/location_utils.dart';
 import '../../../models/pet_model.dart';
+import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
+import 'Pet/petprofile.dart'; // Importar la página de perfil de la mascota
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -36,7 +38,7 @@ class MenuScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor: AppColor.yellow,
+        backgroundColor: Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(
             onPressed: () => _showSearch(context),
@@ -115,7 +117,16 @@ class PetSearchDelegate extends SearchDelegate<String> {
               return ListTile(
                 title: Text(pet.name),
                 onTap: () {
-                  close(context, pet.name);
+                  // Navegar a la página de perfil de la mascota cuando se hace clic en la mascota
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PetProfilePage(
+                        key: UniqueKey(),
+                        pet: pet.toMap(),
+                      ),
+                    ),
+                  );
                 },
               );
             },
@@ -302,34 +313,76 @@ class __MenuViewState extends State<_MenuView> {
           final List<PetModel> pets = snapshot.data!;
           return Align(
             alignment: Alignment.center,
-            child: CarouselSlider(
+            child: CarouselSlider.builder(
               options: CarouselOptions(
                 height: height,
                 enlargeCenterPage: true,
                 disableCenter: true,
-                viewportFraction: 0.9,
+                viewportFraction: 0.45, // Modificado para mostrar dos elementos
                 scrollDirection: Axis.vertical,
               ),
-              items: List.generate(
-                pets.length,
-                    (index) => Align(
-                  alignment: Alignment.center,
-                  child: PetItem(
-                    data: pets[index].toMap(),
-                    height: height,
-                    onTap: null,
-                    onFavoriteTap: () {
-                      setState(() {
-                        pets[index].isFavorited = !pets[index].isFavorited;
-                      });
-                    },
-                  ),
+              itemCount: (pets.length / 2).ceil(), // Dividir la cantidad de mascotas por 2
+              itemBuilder: (context, index, realIndex) {
+                final int firstIndex = index * 2;
+                final int secondIndex = firstIndex + 1;
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Padding(padding: EdgeInsets.only(left: 25),child:
+
+                      PetItem(
+                        data: pets[firstIndex].toMap(),
+                        height: height,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PetProfilePage(
+                                key: UniqueKey(),
+                                pet: pets[firstIndex].toMap(),
+                              ),
+                            ),
+                          );
+                        },
+                        onFavoriteTap: () {
+                          setState(() {
+                            pets[firstIndex].isFavorited = !pets[firstIndex].isFavorited;
+                          });
+                        },
+                      ),
+                    ),
+                    ),
+                    SizedBox(width: 15), // Espacio entre los elementos
+                    Expanded(
+                      child: Padding(padding: EdgeInsets.only(right: 20),
+                      child: PetItem(
+                        data: pets[secondIndex].toMap(),
+                        height: height,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PetProfilePage(
+                                key: UniqueKey(),
+                                pet: pets[secondIndex].toMap(),
+                              ),
+                            ),
+                          );
+                        },
+                        onFavoriteTap: () {
+                          setState(() {
+                            pets[secondIndex].isFavorited = !pets[secondIndex].isFavorited;
+                          });
+                        },
+                      ),
+                    ),
                 ),
-              ),
+                  ],
+                );
+              },
             ),
           );
         }
       },
     );
-  }
-}
+  }}
