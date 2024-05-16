@@ -23,7 +23,7 @@ class UserSettingsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              
+
             }, 
             icon: const Icon(Icons.edit)
           )
