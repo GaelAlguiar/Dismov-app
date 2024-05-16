@@ -1,3 +1,4 @@
+import 'package:dismov_app/app/menu/screen/chat/person_chat.dart';
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/shared/widgets/chat_item.dart';
@@ -42,7 +43,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
           SizedBox(height: 15),
           CustomTextBox(
-            hint: "Search",
+            hint: "Buscar",
             prefix: Icon(Icons.search, color: Colors.grey),
           ),
         ],
@@ -58,7 +59,13 @@ class _ChatPageState extends State<ChatPage> {
         chats.length,
         (index) => ChatItem(
           chats[index],
-          onTap: null
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ChatsScreen(),
+              )
+            );
+          },
         ),
       ),
     );
@@ -94,68 +101,10 @@ class ShelterDetailPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: Colors.grey),
-                    const SizedBox(width: 5),
-                    Text(
-                      "Ubicación ${shelter['location']}",
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  "Descripcion",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    const Icon(Icons.star, color: Colors.amber),
-                    const SizedBox(width: 5),
-                    Text(
-                      shelter['rate'].toString(),
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                const Row(
-                  children: [
-                    Icon(Icons.person, color: Colors.grey),
-                    SizedBox(width: 5),
-                    Text(
-                      "Nombre del responsable", // "Owner: ${chat['owner']}
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                )],
+                
+              ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: CustomFilledButton(
-                text: 'Formulario de Adopcion',
-                onPressed: () {},
-              ),
-            ),
-          )
         ],
       ),
     );
