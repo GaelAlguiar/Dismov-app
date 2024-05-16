@@ -53,7 +53,7 @@ class PetItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 60.0),
       child: GlassContainer(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(0),
         border: Border.all(color:Color.fromRGBO(	11	,96,	151,1)),
         blur: 10,
         opacity: 0.15,
@@ -63,7 +63,7 @@ class PetItem extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(0),
             boxShadow: [
               BoxShadow(
                 color: AppColor.shadowColor.withOpacity(0.1),
