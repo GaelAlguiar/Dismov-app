@@ -3,6 +3,11 @@ import 'package:dismov_app/app/utils/data.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/shared/widgets/chat_item.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
+
+import '../../../../models/shelter_model.dart';
+import '../../../../shared/widgets/custom_image.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -74,40 +79,79 @@ class _ChatPageState extends State<ChatPage> {
 
 
 class ShelterDetailPage extends StatelessWidget {
-  final Map shelter;
+  final ShelterModel shelter;
 
-  const ShelterDetailPage({super.key, required this.shelter});
+  const ShelterDetailPage({Key? key, required this.shelter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(shelter['name']),
+        title: Text('Shelter Detail'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(20),
-              children: [
-                Image.network(shelter['image']),
-                const SizedBox(height: 20),
-                Text(
-                  shelter['name'],
-                  style: const TextStyle(
-                    fontSize: 28,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomImage(
+              shelter.image,
+              borderRadius: BorderRadius.circular(50),
+              isShadow: true,
+              width: 80,
+              height: 80,
             ),
-          ),
-        ],
+            Text(
+              shelter.name,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Address: ${shelter.address}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Description: ${shelter.description}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Email: ${shelter.email}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Phone: ${shelter.phone}',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                _launchURL(shelter.adoptionFormURL);
+              },
+              child: Text('Adoption Form'),
+            ),
+            // You can add more information here if needed
+          ],
+        ),
       ),
     );
   }
 }
 
+void _launchURL(String? url) async {
+  if (url != null) {
+    await launchUrlString(url, mode: LaunchMode.externalApplication);
+  }}
