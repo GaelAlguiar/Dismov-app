@@ -20,52 +20,97 @@ class RegisterScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        body: GeometricalBackground(
-          child: SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 80),
-                // Icon Banner
-                Row(
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/images/fondoblue.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: MediaQuery.of(context).size.height - 260,
+                ),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: IconButton(
-                        onPressed: () {
-                          context.go("/login");
-                        },
-                        icon: const Icon(Icons.arrow_back_rounded,
-                            size: 40, color: Colors.white),
-                      ),
-                    ),
-                    const Spacer(flex: 1),
-                    Text(
-                      'Crear cuenta',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Colors.white,
+                    const SizedBox(height: 50),
+
+                    //ICON
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: IconButton(
+                            onPressed: () {
+                              context.go("/login");
+                            },
+                            icon: const Icon(Icons.arrow_back_rounded,
+                                size: 40, color: Colors.white),
                           ),
+                        ),
+                        //const Spacer(flex: 1),
+                        IconButton(
+                          icon: Image.asset(
+                            'assets/images/image.png',
+                            width: 220,
+                            height: 170,
+                          ),
+                          onPressed: () => {},
+                        ),
+
+                        //const SizedBox(height: 5),
+                        /*
+                      Text(
+                        'Crear cuenta',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),*/
+                        //const Spacer(flex:1),
+                      ],
                     ),
-                    const Spacer(flex: 2),
+
+                    const Text('PawnterUp',
+                        style: TextStyle(
+                            fontFamily: 'PottaOne',
+                            color: Colors.white,
+                            fontSize: 50,
+                            letterSpacing: 2.0,
+                            shadows: [
+                              Shadow(
+                                color: Color.fromRGBO(0, 0, 0, 0.7),
+                                blurRadius: 20,
+                                offset: Offset(4, 4),
+                              )
+                            ])),
+
+                    const SizedBox(height: 15),
+
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(60),
+                          topRight: Radius.circular(60),
+                        ),
+                      ),
+                      child: const _RegisterForm(),
+                    ),
                   ],
                 ),
-                const SizedBox(height: 50),
-                Container(
-                  height: MediaQuery.of(context).size.height - 260,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(100),
-                    ),
-                  ),
-                  child: const _RegisterForm(),
-                ),
-              ],
-            ),
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -93,40 +138,59 @@ class _RegisterFormState extends State<_RegisterForm> {
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          const SizedBox(height: 30),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
+          const Text(
+            'Crear Cuenta',
+            style: TextStyle(
+              fontFamily: 'Outfit',
+              fontSize: 40,
+              fontWeight: FontWeight.w900,
+              color: AppColor.darkblue,
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
           CustomTextFormField(
             label: 'Nombre completo',
             keyboardType: TextInputType.emailAddress,
             controller: username,
           ),
-          const SizedBox(height: 30),
+
+          const SizedBox(height: 20),
+
           CustomTextFormField(
             label: 'Correo',
             keyboardType: TextInputType.emailAddress,
             controller: email,
           ),
-          const SizedBox(height: 30),
+
+          const SizedBox(height: 20),
+
           CustomTextFormField(
             label: 'Contraseña',
             obscureText: true,
             controller: password,
           ),
-          const SizedBox(height: 30),
+
+          const SizedBox(height: 20),
+
           CustomTextFormField(
             label: 'Repita la contraseña',
             obscureText: true,
             controller: confirmPassword,
           ),
-          const SizedBox(height: 40),
+
+          const SizedBox(height: 30),
+
           //Button to create user using email and password
           SizedBox(
             width: double.infinity,
             height: 60,
             child: CustomFilledButton(
-              text: 'Crear',
-              buttonColor: AppColor.yellowCustom,
-              icon: MdiIcons.fromString("account-multiple-plus"),
+              text: 'Registrarse',
+              buttonColor: AppColor.blue,
+              //icon: MdiIcons.fromString("account-multiple-plus"),
               onPressed: () async {
                 try {
                   await LoginGoogleUtils()
@@ -188,15 +252,46 @@ class _RegisterFormState extends State<_RegisterForm> {
               },
             ),
           ),
-          const SizedBox(height: 20),
+
+          const SizedBox(height: 25),
+
+          const Row(
+            children: [
+              Expanded(
+                child: Divider(
+                  thickness: 3,
+                  color: AppColor.gray,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                child: Text(
+                  'O',
+                  style: TextStyle(
+                    color: AppColor.darkergray,
+                    fontFamily: 'Outfit',
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Divider(
+                  thickness: 3,
+                  color: AppColor.gray,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 25),
 
           //Login with Google Button
           SizedBox(
             width: double.infinity,
             height: 60,
             child: CustomFilledButton(
-              text: "Google",
-              buttonColor: AppColor.blue,
+              text: "Registrarse con Google",
+              buttonColor: AppColor.darker,
               icon: MdiIcons.fromString("google"),
               onPressed: () async {
                 try {
@@ -228,7 +323,8 @@ class _RegisterFormState extends State<_RegisterForm> {
               ),
             ],
           ),
-          const Spacer(flex: 1),
+          const SizedBox(height: 30),
+          //const Spacer(flex: 1),
         ],
       ),
     );

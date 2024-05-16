@@ -248,7 +248,7 @@ class _LoginFormState extends State<_LoginForm> {
             width: double.infinity,
             height: 60,
             child: CustomFilledButton(
-              text: "Google",
+              text: "Inicia sesión con Google",
               buttonColor: AppColor.darker,
               icon: MdiIcons.fromString("google"),
               onPressed: () async {
