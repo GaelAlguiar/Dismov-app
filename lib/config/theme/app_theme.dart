@@ -2,8 +2,8 @@ import 'package:dismov_app/config/config.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const colorSeed = AppColor.yellow;
-const scaffoldBackgroundColor = Color(0xFFF8F7F7);
+const colorSeed = AppColor.blue;
+const scaffoldBackgroundColor = Color.fromRGBO(254, 251, 255, 1);
 
 class AppTheme {
   ThemeData getTheme() => ThemeData(
@@ -14,11 +14,12 @@ class AppTheme {
 
       ///* Texts
       textTheme: TextTheme(
-          titleLarge: GoogleFonts.robotoCondensed()
+          titleLarge: GoogleFonts.outfit()
               .copyWith(fontSize: 40, fontWeight: FontWeight.bold),
-          titleMedium: GoogleFonts.robotoCondensed()
+          titleMedium: GoogleFonts.outfit()
               .copyWith(fontSize: 30, fontWeight: FontWeight.bold),
-          titleSmall: GoogleFonts.robotoCondensed().copyWith(fontSize: 20)),
+          titleSmall: GoogleFonts.outfit().copyWith(fontSize: 20),
+      ),
 
       ///* Scaffold Background Color
       scaffoldBackgroundColor: scaffoldBackgroundColor,

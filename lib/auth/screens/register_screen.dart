@@ -137,16 +137,59 @@ class _RegisterFormState extends State<_RegisterForm> {
                     addPeople(username.text, email.text);
 
                     if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                            "Usuario registrado con éxito!",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
+                        ),
+                      );
                       context.go("/Root");
                     }
                   }
                 } catch (e) {
                   debugPrint("$e");
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text(
+                          "Error al crear usuario. Inténtelo de nuevo.",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 10,
+                        ),
+                      ),
+                    );
+                  }
                 }
               },
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
+
           //Login with Google Button
           SizedBox(
             width: double.infinity,
@@ -170,8 +213,9 @@ class _RegisterFormState extends State<_RegisterForm> {
               },
             ),
           ),
-          const SizedBox(height: 25),
-          const Spacer(flex: 2),
+
+          const SizedBox(height: 20),
+          //const Spacer(flex: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
