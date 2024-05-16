@@ -18,8 +18,10 @@ class UserSettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Profile'),
-        backgroundColor: AppColor.yellow,
+        title: Text('Perfil', style: const TextStyle(
+            color: Colors.white
+          ),),
+        backgroundColor: const Color.fromARGB(255, 38, 121, 177),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
         ],
