@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 //Test
 import 'package:dismov_app/app/menu/screen/Pet/petPage.dart';
 
+import 'package:dismov_app/app/menu/screen/Pet/sheltersPage.dart';
+
 class RootApp extends StatefulWidget {
   const RootApp({super.key});
 
@@ -28,7 +30,7 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
     {
       "icon": "assets/icons/pet-border.svg",
       "active_icon": "assets/icons/pet.svg",
-      "page": const PetScreen(),
+      "page": const ShelterScreen(),
     },
     {
       "icon": "assets/icons/chat-border.svg",
