@@ -27,7 +27,7 @@ class PetScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor: AppColor.yellow,
+        backgroundColor: Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
         ],

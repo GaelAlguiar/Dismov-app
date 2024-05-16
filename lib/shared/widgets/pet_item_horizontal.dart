@@ -50,7 +50,7 @@ class PetItem extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 60.0),
       child: GlassContainer(
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: AppColor.yellowCustom),
+        border: Border.all(color: Color.fromRGBO(	11	,96,	151,1)),
         blur: 10,
         opacity: 0.15,
         child: Container(
@@ -58,7 +58,7 @@ class PetItem extends StatelessWidget {
           height: 100,
           padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
           decoration: BoxDecoration(
-            color: AppColor.yellow,
+            color: Color.fromRGBO(	11	,96,	151,1),
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
@@ -161,6 +161,7 @@ class PetItem extends StatelessWidget {
       children: [
         Icon(
           icon,
+          color: Colors.white,
           size: 18,
         ),
         const SizedBox(
@@ -170,7 +171,7 @@ class PetItem extends StatelessWidget {
           info,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(color: AppColor.textColor, fontSize: 13),
+          style: const TextStyle(color: Colors.white, fontSize: 13),
         ),
       ],
     );

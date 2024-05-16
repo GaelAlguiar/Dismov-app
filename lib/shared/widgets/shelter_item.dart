@@ -123,7 +123,7 @@ class _ShelterItemState extends State<ShelterItem> {
       padding: const EdgeInsets.only(bottom: 0),
       child: GlassContainer(
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: AppColor.yellowCustom),
+        border: Border.all(color: Color.fromRGBO(	11	,96,	151,1)),
         blur: 10,
         opacity: 0.15,
         child: Container(

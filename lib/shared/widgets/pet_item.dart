@@ -9,9 +9,9 @@ class PetItem extends StatelessWidget {
   const PetItem(
       {super.key,
       required this.data,
-      this.width = 350,
-      this.height = 400,
-      this.radius = 40,
+      this.width = 150,
+      this.height = 200,
+      this.radius = 20,
       this.onTap,
       this.onFavoriteTap});
   final Map<String, dynamic> data;
@@ -38,7 +38,9 @@ class PetItem extends StatelessWidget {
           children: [
             _buildImage(),
             Positioned(
-              bottom: 80,
+              bottom: -60, // Ajustar la posición del texto para que se vea centrado
+              left: 0, // Alinear el texto a la izquierda
+              right: 20,
               child: _buildInfoGlass(),
             ),
           ],
@@ -52,16 +54,16 @@ class PetItem extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 60.0),
       child: GlassContainer(
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: AppColor.yellowCustom),
+        border: Border.all(color:Color.fromRGBO(	11	,96,	151,1)),
         blur: 10,
         opacity: 0.15,
         child: Container(
           width: width,
-          height: 120,
+          height: 65,
           padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
           decoration: BoxDecoration(
-            color: AppColor.yellow,
-            borderRadius: BorderRadius.circular(25),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
                 color: AppColor.shadowColor.withOpacity(0.1),
@@ -76,11 +78,11 @@ class PetItem extends StatelessWidget {
             children: [
               _buildInfo(),
               const SizedBox(
-                height: 5,
+                height: 1,
               ),
               _buildLocation(),
               const SizedBox(
-                height: 20,
+                height: 5,
               ),
               _buildAttributes(),
             ],
@@ -96,8 +98,8 @@ class PetItem extends StatelessWidget {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
-        color: AppColor.glassLabelColor,
-        fontSize: 13,
+        color: Color.fromRGBO(	11	,80,	151,1),
+        fontSize: 8,
       ),
     );
   }
@@ -111,8 +113,8 @@ class PetItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: AppColor.glassTextColor,
-              fontSize: 18,
+              color: Color.fromRGBO(	11	,96,	151,1),
+              fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -134,7 +136,7 @@ class PetItem extends StatelessWidget {
       ),
       isShadow: false,
       width: width,
-      height: 350,
+      height: height-60,
     );
   }
 
@@ -163,16 +165,16 @@ class PetItem extends StatelessWidget {
       children: [
         Icon(
           icon,
-          size: 18,
+          size: 10,
         ),
         const SizedBox(
-          width: 8,
+          width: 2,
         ),
         Text(
           info,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(color: AppColor.textColor, fontSize: 13),
+          style: const TextStyle(color: Colors.black, fontSize: 8),
         ),
       ],
     );
