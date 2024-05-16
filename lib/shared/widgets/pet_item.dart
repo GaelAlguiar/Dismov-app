@@ -129,7 +129,7 @@ class PetItem extends StatelessWidget {
 
   Widget _buildImage() {
     return CustomImage(
-      data["imageURLs"].join(''),
+      data["imageURLs"][0],
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(radius),
         bottom: Radius.zero,
