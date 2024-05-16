@@ -28,17 +28,17 @@ class ShelterModel {
   // Método para convertir un objeto de refugio a un mapa
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'phone': phone,
-      'email': email,
-      'website': website,
-      'description': description,
-      'image': image,
-      'uid': uid,
-      'address': address,
-      'latitude': latitude,
-      'longitude': longitude,
-      'adoptionFormURL': adoptionFormURL,
+      'name': name ?? '',
+      'phone': phone ?? '',
+      'email': email ?? '',
+      'website': website ?? '',
+      'description': description ?? '',
+      'image': image ?? '',
+      'uid': uid ?? '',
+      'address': address ?? '',
+      'latitude': latitude ?? '',
+      'longitude': longitude ?? '',
+      'adoptionFormURL': adoptionFormURL ?? '',
     };
   }
 
@@ -50,11 +50,11 @@ class ShelterModel {
       email: map['email'],
       website: map['website'],
       description: map['description'],
-      image: map['image'],
+      image: map['imageURL'],
       uid: map['uid'],
       address: map['address'],
-      latitude: map['latitude'],
-      longitude: map['longitude'],
+      latitude: map['latitude'].toString(),
+      longitude: map['longitude'].toString(),
       adoptionFormURL: map['adoptionFormURL'],
     );
   }
