@@ -80,7 +80,7 @@ class PetProfilePage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.only(left: 25),
+                                    padding: EdgeInsets.only(left: 0),
                                     child: _buildInfoContainer(
                                       label: 'Edad',
                                       value: '${pet['ageInYears'] ?? 'Unknown Age'}',
@@ -143,7 +143,7 @@ class PetProfilePage extends StatelessWidget {
                                   ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromRGBO(255, 227, 170, 1),
+                                      backgroundColor: const Color.fromRGBO(	11	,96,	151,.7),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(50.0),
                                       ),
@@ -156,7 +156,7 @@ class PetProfilePage extends StatelessWidget {
                                       child: Text(
                                         'Adoptame',
                                         style: const TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.white,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -165,10 +165,10 @@ class PetProfilePage extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 10.0),
                                   CircleAvatar(
-                                    backgroundColor: AppColor.yellow,
+                                    backgroundColor: Color.fromRGBO(	11	,96,	151,.7),
                                     child: IconButton(
                                       icon: const Icon(Icons.chat),
-                                      color: Colors.black,
+                                      color: Colors.white,
                                       onPressed: () {},
                                     ),
                                   ),
@@ -188,7 +188,7 @@ class PetProfilePage extends StatelessWidget {
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => Navigator.pop(context),
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ],
@@ -201,7 +201,7 @@ class PetProfilePage extends StatelessWidget {
 
   Widget _buildInfoContainer({required String label, required String value}) {
     return Container(
-      width: 70,
+      width: 100,
       margin: const EdgeInsets.only(right: 10.0),
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
@@ -224,7 +224,7 @@ class PetProfilePage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: AppColor.yellowCustom,
+              color: Color.fromRGBO(	11	,96,	151,.99),
             ),
             textAlign: TextAlign.center,
           ),
@@ -266,7 +266,7 @@ class PetProfilePage extends StatelessWidget {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: AppColor.yellowCustom,
+              color: Color.fromRGBO(	11	,96,	151,.99),
             ),
             textAlign: TextAlign.center,
           ),
