@@ -27,12 +27,16 @@ class AppColor {
   static const red = Color(0xFFf77080);
   static const orange = Color(0xFFf5ba92);
   static const sky = Color(0xFFABDEE6);
-  static const blue = Color.fromARGB(255, 46, 124, 202);
+  static const blue = Color.fromRGBO(14, 107, 168, 1);
+  static const darkblue = Color.fromRGBO(8, 64, 101, 1);
   static const yellowCustom = Color.fromARGB(186, 168, 131, 6);
   static const yellowButton = Color.fromARGB(255, 168, 131, 6);
 
   static const typeColor = Color.fromARGB(255, 239, 239, 239);
   static const containerColor = Color.fromARGB(174, 239, 239, 239);
+  static const clearpurple = Color.fromRGBO(254, 251, 255, 1);
+  static const gray = Color.fromRGBO(200, 201, 202, 0.3);
+  static const darkergray = Color.fromRGBO(112, 112, 112, 1);
 
   static const listColors = [
     green,
@@ -45,5 +49,9 @@ class AppColor {
     blue,
     pink,
     yellow,
+    darkblue,
+    clearpurple,
+    gray,
+    darkergray,
   ];
 }

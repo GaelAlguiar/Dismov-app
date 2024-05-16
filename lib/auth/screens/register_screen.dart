@@ -146,7 +146,8 @@ class _RegisterFormState extends State<_RegisterForm> {
               },
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 20),
+
           //Login with Google Button
           SizedBox(
             width: double.infinity,
@@ -170,8 +171,9 @@ class _RegisterFormState extends State<_RegisterForm> {
               },
             ),
           ),
-          const SizedBox(height: 25),
-          const Spacer(flex: 2),
+
+          const SizedBox(height: 20),
+          //const Spacer(flex: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
