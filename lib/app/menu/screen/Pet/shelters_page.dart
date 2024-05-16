@@ -1,10 +1,15 @@
 import 'package:dismov_app/app/utils/data.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dismov_app/app/utils/data.dart'; // Debes eliminar esta importación
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 //Location
 import 'package:dismov_app/utils/location_utils.dart';
-
+import 'package:dismov_app/app/menu/screen/chat/chat.dart';
+import 'package:dismov_app/services/shelter_service.dart'; // Importa tu servicio de refugios
+import '../../../../models/shelter_model.dart';
 import '../../../../shared/widgets/custom_image.dart';
 
 class ShelterScreen extends StatelessWidget {
@@ -21,10 +26,11 @@ class ShelterScreen extends StatelessWidget {
         title: Text(
           nameToShow,
           style: const TextStyle(
+            color: Colors.white,
             fontSize: 20,
           ),
         ),
-        backgroundColor: AppColor.yellow,
+        backgroundColor:Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
         ],
@@ -142,13 +148,13 @@ class __SheltersViewState extends State<_SheltersView> {
                   ),
                 ),
                 Text(
-                  " Cerca de ti",
-                  style: TextStyle(
-                    color: AppColor.textColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 25,
+                    " Cerca de ti",
+                    style: TextStyle(
+                      color: AppColor.textColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 25,
+                    ),
                   ),
-                ),
               ],
             ),
             const SizedBox(height: 10,),
@@ -161,7 +167,6 @@ class __SheltersViewState extends State<_SheltersView> {
           ],
         ),
       )
-
     );
   }
 
@@ -169,80 +174,142 @@ class __SheltersViewState extends State<_SheltersView> {
   _buildShelters() {
     double height = MediaQuery.of(context).size.height * .80;
 
-    return Align(
-      alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(
-          shelters.length,
-              (index) => Column(
+    return FutureBuilder<List<ShelterModel>>(
+      future: ShelterService().getAllShelters(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text('Error: ${snapshot.error}'),
+          );
+        } else {
+          final List<ShelterModel> shelters = snapshot.data!;
+          return Align(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: shelters.map((shelter) => Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.all(8), // Margen de 10 en todos los lados
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10), // Borde circular de 10 en todos los lados
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5), // Color del sombreado
-                            spreadRadius: 1, // Extensión del sombreado
-                            blurRadius: 2, // Difuminado del sombreado
-                            offset: const Offset(0, 3), // Desplazamiento del sombreado
-                          ),
-                        ],
-                        color: Colors.white, // Color de fondo blanco
-                      ),
-                      padding: const EdgeInsets.all(10), // Padding de 10 en todos los lados
-                      child: Row(
-                        children: [
-                          CustomImage(
-                            shelters[index]["image"],
-                            borderRadius: BorderRadius.circular(50),
-                            isShadow: true,
-                            width: 80,
-                            height: 80,
-                          ),
-                          const SizedBox(width: 10), // Agrega un espacio entre la imagen y el texto
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  shelters[index]["name"],
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: AppColor.blue,
-                                  ),
-                                ),
-                                Text(
-                                  shelters[index]["location"],
-                                  textAlign: TextAlign.left,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                  // Container(
+                  //   margin: const EdgeInsets.all(8), // Margen de 10 en todos los lados
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(10), // Borde circular de 10 en todos los lados
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           color: Colors.grey.withOpacity(0.5), // Color del sombreado
+                  //           spreadRadius: 1, // Extensión del sombreado
+                  //           blurRadius: 2, // Difuminado del sombreado
+                  //           offset: const Offset(0, 3), // Desplazamiento del sombreado
+                  //         ),
+                  //       ],
+                  //       color: Colors.white, // Color de fondo blanco
+                  //     ),
+                  //     padding: const EdgeInsets.all(10), // Padding de 10 en todos los lados
+                  //     child: Row(
+                  //       children: [
+                  //         CustomImage(
+                  //           shelters[index]["image"],
+                  //           borderRadius: BorderRadius.circular(50),
+                  //           isShadow: true,
+                  //           width: 80,
+                  //           height: 80,
+                  //         ),
+                  //         const SizedBox(width: 10), // Agrega un espacio entre la imagen y el texto
+                  //         Expanded(
+                  //           child: Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             children: [
+                  //               Text(
+                  //                 shelters[index]["name"],
+                  //                 textAlign: TextAlign.left,
+                  //                 style: const TextStyle(
+                  //                   fontSize: 16,
+                  //                   color: AppColor.blue,
+                  //                 ),
+                  //               ),
+                  //               Text(
+                  //                 shelters[index]["location"],
+                  //                 textAlign: TextAlign.left,
+                  //                 style: const TextStyle(
+                  //                   fontSize: 16,
+                  //                   color: Colors.black,
+                  //                 ),
+                  //               ),
 
-                              ],
+                  //             ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ShelterDetailPage(shelter: shelter),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.all(8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 1,
+                              blurRadius: 2,
+                              offset: Offset(0, 3),
+                            )
+                          ],
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            CustomImage(
+                              shelter.imageURL,
+                              borderRadius: BorderRadius.circular(50),
+                              isShadow: true,
+                              width: 80,
+                              height: 80,
                             ),
-                          ),
-                        ],
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    shelter.name,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: AppColor.blue,
+                                    ),
+                                  ),
+                                  Text(
+                                    shelter.address,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-
-
-
-
                 ],
-              ),
-        ),
-      ),
+              )).toList(),
+            ),
+          );
+        }
+      },
     );
-
-  }
-//End of widget to build list of pets
-
-}
+  }}

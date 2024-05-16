@@ -48,9 +48,14 @@ class PetProfilePage extends StatelessWidget {
               children: [
                 // Background image
                 Positioned.fill(
-                  child: Image.network(
-                    pet.imageURLs[0],
-                    fit: BoxFit.cover,
+                  child: PageView.builder(
+                    itemCount: pet.imageURLs.length,
+                    itemBuilder: (context, index) {
+                      return Image.network(
+                        pet.imageURLs[index],
+                        fit: BoxFit.cover,
+                      );
+                    },
                   ),
                 ),
                 // Container for pet information

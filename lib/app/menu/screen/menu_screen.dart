@@ -35,6 +35,7 @@ class MenuScreen extends StatelessWidget {
         title: Text(
           nameToShow,
           style: const TextStyle(
+            color: Colors.white,
             fontSize: 20,
           ),
         ),
