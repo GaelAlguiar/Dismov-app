@@ -1,4 +1,3 @@
-// import 'package:dismov_app/Json/users.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dismov_app/config/theme/color.dart';
@@ -45,61 +44,58 @@ class LoginScreen extends StatelessWidget {
                       SingleChildScrollView(
                         physics: const ClampingScrollPhysics(),
                         child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const SizedBox(height: 40),
-                              // Icon Banner
-                              IconButton(
-                                icon: Image.asset(
-                                  'assets/images/image.png',
-                                  width: 220,
-                                  height: 170,
-                                ),
-                                onPressed: () => {},
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 40),
+                            // Icon Banner
+                            IconButton(
+                              icon: Image.asset(
+                                'assets/images/image.png',
+                                width: 220,
+                                height: 170,
                               ),
-                              //const SizedBox(height: 5),
-                              const Text(
-                                  'PawnterUp',
-                                  style: TextStyle(
-                                      fontFamily: 'PottaOne',
-                                      color: Colors.white,
-                                      fontSize: 50,
-                                      letterSpacing: 2.0,
-                                      shadows: [
-                                        Shadow(
-                                          color: Color.fromRGBO(0, 0, 0, 0.7),
-                                          blurRadius: 20,
-                                          offset: Offset(4,4),
-                                        )
-                                      ]
-                                  )
-                              ),
+                              onPressed: () => {},
+                            ),
+                            //const SizedBox(height: 5),
+                            const Text('PawnterUp',
+                                style: TextStyle(
+                                    fontFamily: 'PottaOne',
+                                    color: Colors.white,
+                                    fontSize: 50,
+                                    letterSpacing: 2.0,
+                                    shadows: [
+                                      Shadow(
+                                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                                        blurRadius: 20,
+                                        offset: Offset(4, 4),
+                                      )
+                                    ])),
 
-                              const SizedBox(height: 15),
+                            const SizedBox(height: 15),
 
-                              Container(
-                                height: MediaQuery.of(context).size.height - 260,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).scaffoldBackgroundColor,
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(60),
-                                    topRight: Radius.circular(60),
-                                  ),
+                            Container(
+                              height: MediaQuery.of(context).size.height - 260,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(60),
+                                  topRight: Radius.circular(60),
                                 ),
-                                child: _LoginForm(),
                               ),
-                            ],
-                          ),
+                              child: _LoginForm(),
+                            ),
+                          ],
                         ),
+                      ),
                     ],
                   ),
                 ),
               );
             }
           }
-        }
-        );
+        });
   }
 }
 
@@ -112,31 +108,9 @@ class _LoginFormState extends State<_LoginForm> {
   final username = TextEditingController();
   final password = TextEditingController();
   final formKey = GlobalKey<FormState>();
-/*
-  bool isLoginTrue = false;
 
-  final db = DatabaseHelper();
-
-  Future<void> login() async {
-    var response = await db.login(
-      Users(userName: username.text, userPassword: password.text),
-    );
-    if (response == true) {
-      //If login is correct, then goto notes
-      if (!mounted) return;
-      context.go("/");
-    } else {
-      //If not, true the bool value to show error message
-      setState(() {
-        isLoginTrue = true;
-      });
-    }
-  }
-*/
   @override
   Widget build(BuildContext context) {
-    //final textStyles = Theme.of(context).textTheme;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
@@ -145,11 +119,11 @@ class _LoginFormState extends State<_LoginForm> {
           const Text(
             'Iniciar Sesión',
             style: TextStyle(
-                fontFamily: 'Outfit',
-                fontSize: 40,
-                fontWeight: FontWeight.w900,
-                color: AppColor.darkblue
-            )
+              fontFamily: 'Outfit',
+              fontSize: 40,
+              fontWeight: FontWeight.w900,
+              color: AppColor.darkblue,
+            ),
           ),
 
           const SizedBox(height: 20),
@@ -182,11 +156,55 @@ class _LoginFormState extends State<_LoginForm> {
                       .loginUserWithEmail(username.text, password.text);
                   if (credentials.user != null) {
                     if (context.mounted) {
+                      String? userName =
+                          credentials.user?.displayName ?? "Usuario";
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Bienvenido, $userName!",
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 10,
+                          ),
+                        ),
+                      );
                       context.go("/Root");
                     }
                   }
                 } catch (e) {
                   debugPrint("$e");
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text(
+                          "El correo o contraseña es incorrecta. Inténtelo de nuevo.",
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        backgroundColor: Colors.red,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 10,
+                        ),
+                      ),
+                    );
+                  }
                 }
               },
             ),
@@ -196,34 +214,32 @@ class _LoginFormState extends State<_LoginForm> {
 
           //O
           const Row(
-              children: [
-                Expanded(
-                  child: Divider(
-                    thickness: 3,
-                    color: AppColor.gray,
+            children: [
+              Expanded(
+                child: Divider(
+                  thickness: 3,
+                  color: AppColor.gray,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                child: Text(
+                  'O',
+                  style: TextStyle(
+                    color: AppColor.darkergray,
+                    fontFamily: 'Outfit',
+                    fontSize: 13,
                   ),
                 ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Text(
-                    'O',
-                    style: TextStyle(
-                      color: AppColor.darkergray,
-                      fontFamily: 'Outfit',
-                      fontSize: 13,
-                    ),
-                  ),
+              ),
+              Expanded(
+                child: Divider(
+                  thickness: 3,
+                  color: AppColor.gray,
                 ),
-
-                Expanded(
-                  child: Divider(
-                    thickness: 3,
-                    color: AppColor.gray,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
+          ),
 
           const SizedBox(height: 25),
 
