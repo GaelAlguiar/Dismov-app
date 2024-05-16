@@ -83,6 +83,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/fonts/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -96,6 +97,23 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  fonts:
+    - family: PottaOne
+      fonts:
+        - asset: assets/fonts/PottaOne-Regular.ttf
+
+    - family: Outfit
+      fonts:
+        - asset: assets/fonts/Outfit-VariableFont_wght.ttf
+        - asset: assets/fonts/static/Outfit-Black.ttf
+        - asset: assets/fonts/static/Outfit-Bold.ttf
+        - asset: assets/fonts/static/Outfit-ExtraBold.ttf
+        - asset: assets/fonts/static/Outfit-ExtraLight.ttf
+        - asset: assets/fonts/static/Outfit-Light.ttf
+        - asset: assets/fonts/static/Outfit-Medium.ttf
+        - asset: assets/fonts/static/Outfit-Regular.ttf
+        - asset: assets/fonts/static/Outfit-SemiBold.ttf
+        - asset: assets/fonts/static/Outfit-Thin.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

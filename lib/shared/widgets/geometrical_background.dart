@@ -31,7 +31,7 @@ class GeometricalBackground extends StatelessWidget {
           Container(
               height: size.height * 0.7,
               decoration: const BoxDecoration(
-                color: AppColor.yellowCustom,
+                color: AppColor.blue,
               ),
               child: Column(
                 children: [
