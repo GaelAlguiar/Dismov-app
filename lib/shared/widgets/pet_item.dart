@@ -22,7 +22,9 @@ class PetItem extends StatelessWidget {
   final GestureTapCallback? onFavoriteTap;
 
   @override
+
   Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -115,17 +117,17 @@ class PetItem extends StatelessWidget {
             ),
           ),
         ),
-        FavoriteBox(
+        /*FavoriteBox(
           isFavorited: data["is_favorited"],
           onTap: onFavoriteTap,
-        )
+        )*/
       ],
     );
   }
 
   Widget _buildImage() {
     return CustomImage(
-      data["imageURLs"],
+      data["imageURLs"].join(''),
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(radius),
         bottom: Radius.zero,
@@ -146,11 +148,11 @@ class PetItem extends StatelessWidget {
         ),
         _getAttribute(
           Icons.color_lens_outlined,
-          data["colors"],
+          data["colors"].join(', '),
         ),
         _getAttribute(
           Icons.query_builder,
-          data["ageInYears"],
+          data["ageInYears"].toString(),
         ),
       ],
     );
