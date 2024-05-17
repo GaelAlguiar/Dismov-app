@@ -1,13 +1,11 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:dismov_app/models/chat_model.dart';
 import 'package:dismov_app/models/message_model.dart';
 import 'package:dismov_app/services/chat_service.dart';
-import 'package:dismov_app/services/pet_service.dart'; 
+import 'package:dismov_app/services/pet_service.dart';
 import 'package:dismov_app/shared/widgets/custom_image.dart';
-
 
 class ChatDetailPage extends StatefulWidget {
   const ChatDetailPage({super.key, required this.chatData});
@@ -45,7 +43,8 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   getMessages() async {
-    List<MessageModel> messages = await chatService.getMessagesByChatId(widget.chatData.id);
+    List<MessageModel> messages =
+        await chatService.getMessagesByChatId(widget.chatData.id);
     setState(() {
       _messages = messages;
     });
@@ -58,7 +57,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       leadingWidth: 90,
       leading: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        
         children: [
           IconButton(
             iconSize: 30,
@@ -76,10 +74,9 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           ),
         ],
       ),
-      
-
     );
   }
+
   getBody(context) {
     return Column(
       children: [
@@ -159,19 +156,22 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black, 
-              ),
-              controller: _messageController,
-              decoration: const InputDecoration(
-                hintStyle: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.normal,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+              child: TextField(
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
                 ),
-                hintText: 'Escribe un mensaje...',
-                border: InputBorder.none,
+                controller: _messageController,
+                decoration: const InputDecoration(
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  hintText: 'Escribe un mensaje...',
+                  border: InputBorder.none,
+                ),
               ),
             ),
           ),
@@ -208,5 +208,3 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     super.dispose();
   }
 }
-
-
