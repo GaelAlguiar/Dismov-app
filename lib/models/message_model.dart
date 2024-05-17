@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class MessageModel {
   String id;
   String content;
   String? imageURL;
+  String senderId;
   String senderName;
   int time;
 
@@ -9,6 +12,7 @@ class MessageModel {
     required this.id,
     required this.content,
     this.imageURL,
+    required this.senderId,
     required this.senderName,
     required this.time,
   });
@@ -19,19 +23,23 @@ class MessageModel {
       'id': id,
       'content': content,
       'imageURL': imageURL,
+      'senderId': senderId,
       'senderName': senderName,
       'time': time,
     };
   }
 
   // Método para crear un objeto de mensaje desde un mapa
-  factory MessageModel.fromMap(Map<String, dynamic> map) {
+  factory MessageModel.fromFirebase(DocumentSnapshot doc) {
+    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;  
+    // convert time strint to int
     return MessageModel(
-      id: map['id'],
-      content: map['content'],
-      imageURL: map['imageURL'],
-      senderName: map['senderName'],
-      time: map['time'],
+      id: doc.id,
+      content: map['content'] ?? '',
+      imageURL: map['imageURL'] ?? '',
+      senderId: map['senderId'] ?? '',
+      senderName: map['senderName'] ?? '',
+      time: int.parse((map['time'] ?? '').toString()),
     );
   }
 }

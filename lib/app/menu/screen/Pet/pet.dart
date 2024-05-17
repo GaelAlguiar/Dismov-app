@@ -1,4 +1,3 @@
-import 'package:dismov_app/app/utils/data.dart'; // Assuming data.dart has fetchPetsFromFirebase function
 import 'package:dismov_app/services/pet_service.dart';
 import 'package:dismov_app/shared/shared.dart'; // Assuming shared.dart has PetItem widget
 import 'package:flutter/material.dart';
@@ -27,7 +26,7 @@ class PetPage extends StatelessWidget {
 }
 
 class SearchPets extends StatefulWidget {
-  const SearchPets({Key? key}) : super(key: key);
+  const SearchPets({super.key});
 
   @override
   State<SearchPets> createState() => _SearchPetsState();

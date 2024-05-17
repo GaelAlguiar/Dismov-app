@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   String name;
   String email;
@@ -22,11 +24,12 @@ class UserModel {
   }
 
   // Método para crear un objeto de usuario desde un mapa
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromFirebase(DocumentSnapshot doc) {
+    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
     return UserModel(
       name: map['name'] ?? '',
       email: map['email'] ?? '',
-      uid: map['uid'] ?? '',
+      uid: doc.id,
       profilePicURL: map['profilePicURL'], // Puede ser nulo
     );
   }

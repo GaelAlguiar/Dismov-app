@@ -1,3 +1,4 @@
+import 'package:dismov_app/models/chat_model.dart';
 import 'package:flutter/material.dart';
 import 'custom_image.dart';
 
@@ -10,7 +11,7 @@ class ChatItem extends StatelessWidget {
     this.profileSize = 50,
   });
 
-  final Map<String, dynamic> chatData;
+  final ChatModel chatData;
   final bool isNotified;
   final GestureTapCallback? onTap;
   final double profileSize;
@@ -61,7 +62,7 @@ class ChatItem extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: Text(
-            chatData['last_text'],
+            chatData.recentMessageContent ?? '',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 13),
@@ -73,19 +74,33 @@ class ChatItem extends StatelessWidget {
 
   Widget _buildPhoto() {
     return CustomImage(
-      chatData['image'],
+      chatData.shelterImageURL,
       width: profileSize,
       height: profileSize,
     );
   }
 
   Widget buildNameAndTime() {
+    String timeAgoString = '';
+
+    if (chatData.recentMessageTime != null) {
+      final timeAgo = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(chatData.recentMessageTime!));
+
+      timeAgoString = timeAgo.inDays > 0
+          ? '${timeAgo.inDays}d'
+          : timeAgo.inHours > 0
+              ? '${timeAgo.inHours}h'
+              : timeAgo.inMinutes > 0
+                  ? '${timeAgo.inMinutes}m'
+                  : 'now';
+    }
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
           child: Text(
-            chatData['name'],
+            '${chatData.petName} - ${chatData.shelterName}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
@@ -93,7 +108,7 @@ class ChatItem extends StatelessWidget {
         ),
         const SizedBox(width: 5),
         Text(
-          chatData['date'],
+          timeAgoString,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
