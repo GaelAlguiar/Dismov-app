@@ -1,15 +1,10 @@
 import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
-import 'package:dismov_app/app/menu/screen/chat/person_chat.dart';
-import 'package:dismov_app/app/utils/data.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/shared/widgets/chat_item.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dismov_app/services/chat_service.dart';
 import 'package:dismov_app/models/chat_model.dart';
-import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
-import 'package:flutter/widgets.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../models/shelter_model.dart';
 import '../../../../shared/widgets/custom_image.dart';
@@ -113,13 +108,13 @@ class _ChatPageState extends State<ChatPage> {
 class ShelterDetailPage extends StatelessWidget {
   final ShelterModel shelter;
 
-  const ShelterDetailPage({Key? key, required this.shelter}) : super(key: key);
+  const ShelterDetailPage({super.key, required this.shelter});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Shelter Detail'),
+        title: const Text('Shelter Detail'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -135,50 +130,52 @@ class ShelterDetailPage extends StatelessWidget {
             ),
             Text(
               shelter.name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Address: ${shelter.address}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Description: ${shelter.description}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Email: ${shelter.email}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Phone: ${shelter.phone}',
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 _launchURL(shelter.adoptionFormURL);
               },
-              child: Text('Adoption Form'),
+              child: const Text('Adoption Form'),
             ),
             // You can add more information here if needed
           ],
         ),
       ),
+      // TODO: Mostrar un widget con la ubicación del refugio
+
     );
   }
 }

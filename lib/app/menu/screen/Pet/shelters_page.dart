@@ -1,7 +1,4 @@
-import 'package:dismov_app/app/utils/data.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dismov_app/app/utils/data.dart'; // Debes eliminar esta importación
-import 'package:firebase_auth/firebase_auth.dart';
+// Debes eliminar esta importación
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -30,7 +27,7 @@ class ShelterScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor:Color.fromRGBO(	11	,96,	151,1),
+        backgroundColor:const Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
         ],
@@ -178,7 +175,7 @@ class __SheltersViewState extends State<_SheltersView> {
       future: ShelterService().getAllShelters(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
@@ -252,7 +249,7 @@ class __SheltersViewState extends State<_SheltersView> {
                       );
                     },
                     child: Container(
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -261,12 +258,12 @@ class __SheltersViewState extends State<_SheltersView> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 1,
                               blurRadius: 2,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                             )
                           ],
                           color: Colors.white,
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
                             CustomImage(
@@ -276,7 +273,7 @@ class __SheltersViewState extends State<_SheltersView> {
                               width: 80,
                               height: 80,
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -284,7 +281,7 @@ class __SheltersViewState extends State<_SheltersView> {
                                   Text(
                                     shelter.name,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: AppColor.blue,
                                     ),
@@ -292,7 +289,7 @@ class __SheltersViewState extends State<_SheltersView> {
                                   Text(
                                     shelter.address,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.black,
                                     ),

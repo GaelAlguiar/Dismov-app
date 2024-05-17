@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
@@ -7,10 +6,8 @@ import 'package:dismov_app/models/pet_model.dart';
 import 'package:dismov_app/models/shelter_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import '../../../../services/shelter_service.dart';
 import 'package:dismov_app/services/chat_service.dart';
-import 'package:dismov_app/models/shelter_model.dart';
 
 
 class PetProfilePage extends StatelessWidget {
@@ -169,7 +166,7 @@ class PetProfilePage extends StatelessWidget {
                                       },
                                     ),
                                   ),
-                                  SizedBox(width: 10.0),
+                                  const SizedBox(width: 10.0),
                                   ElevatedButton(
                                     onPressed: () async {
                                       goToChat(

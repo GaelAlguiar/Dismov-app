@@ -8,7 +8,7 @@ import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/utils/location_utils.dart';
 import '../../../models/pet_model.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
-import 'Pet/petprofile.dart'; // Importar la página de perfil de la mascota
+// Importar la página de perfil de la mascota
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -39,7 +39,7 @@ class MenuScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor: Color.fromRGBO(	11	,96,	151,1),
+        backgroundColor: const Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(
             onPressed: () => _showSearch(context),
@@ -57,7 +57,7 @@ class MenuScreen extends StatelessWidget {
 }
 
 class PetSearchDelegate extends SearchDelegate<String> {
-  List<PetModel> _filteredPets = [];
+  final List<PetModel> _filteredPets = [];
 
   @override
   String get searchFieldLabel => 'Buscar Mascotas';
@@ -100,7 +100,7 @@ class PetSearchDelegate extends SearchDelegate<String> {
       future: PetService().getAllPets(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
