@@ -39,7 +39,7 @@ class MenuScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor: const Color.fromRGBO(	11	,96,	151,1),
+        backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
         actions: [
           IconButton(
             onPressed: () => _showSearch(context),
@@ -146,7 +146,7 @@ class PetSearchDelegate extends SearchDelegate<String> {
       _filteredPets.addAll(allPets);
     } else {
       _filteredPets.addAll(allPets.where(
-            (pet) => pet.name.toLowerCase().contains(query.toLowerCase()),
+        (pet) => pet.name.toLowerCase().contains(query.toLowerCase()),
       ));
     }
   }
@@ -189,7 +189,7 @@ class __MenuViewState extends State<_MenuView> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-                  (context, index) => _buildBody(),
+              (context, index) => _buildBody(),
               childCount: 1,
             ),
           )
@@ -279,7 +279,7 @@ class __MenuViewState extends State<_MenuView> {
   _buildCategories() {
     List<Widget> lists = List.generate(
       categories.length,
-          (index) => CategoryItem(
+      (index) => CategoryItem(
         data: categories[index],
         selected: index == _selectedCategory,
         onTap: () {
@@ -291,7 +291,7 @@ class __MenuViewState extends State<_MenuView> {
     );
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.only(bottom: 10, left: 10),
+      padding: const EdgeInsets.only(bottom: 20, left: 10),
       child: Row(children: lists),
     );
   }
@@ -324,69 +324,77 @@ class __MenuViewState extends State<_MenuView> {
             filteredPets.addAll(pets.where((pet) => pet.type == 'cat'));
           }
 
-          return Align(
-            alignment: Alignment.center,
-            child: CarouselSlider.builder(
-              options: CarouselOptions(
-                height: height,
-                enlargeCenterPage: true,
-                disableCenter: true,
-                viewportFraction: 0.45,
-                scrollDirection: Axis.vertical,
+          return Padding(
+            padding: const EdgeInsets.only(left: 30.0, top: 10),
+            child: Align(
+              alignment: Alignment.center,
+              child: CarouselSlider.builder(
+                options: CarouselOptions(
+                  height: height,
+                  enlargeCenterPage: true,
+                  disableCenter: true,
+                  viewportFraction: .40,
+                  scrollDirection: Axis.vertical,
+                ),
+                itemCount: (filteredPets.length / 2).ceil(),
+                itemBuilder: (context, index, realIndex) {
+                  final int firstIndex = index * 2;
+                  final int secondIndex = firstIndex + 1;
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: PetItem(
+                            data: filteredPets[firstIndex].toMap(),
+                            height: height,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PetProfilePage(
+                                    key: UniqueKey(),
+                                    pet: filteredPets[firstIndex],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 30,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            right: 15,
+                          ),
+                          child: PetItem(
+                            data: filteredPets[secondIndex].toMap(),
+                            height: height,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PetProfilePage(
+                                    key: UniqueKey(),
+                                    pet: filteredPets[secondIndex],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
-              itemCount: (filteredPets.length / 2).ceil(),
-              itemBuilder: (context, index, realIndex) {
-                final int firstIndex = index * 2;
-                final int secondIndex = firstIndex + 1;
-                return Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: PetItem(
-                          data: filteredPets[firstIndex].toMap(),
-                          height: height,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PetProfilePage(
-                                  key: UniqueKey(),
-                                  pet: filteredPets[firstIndex],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 15), // Espacio entre los elementos
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: PetItem(
-                          data: filteredPets[secondIndex].toMap(),
-                          height: height,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PetProfilePage(
-                                  key: UniqueKey(),
-                                  pet: filteredPets[secondIndex],
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
             ),
           );
         }
       },
     );
-  }}
+  }
+}
