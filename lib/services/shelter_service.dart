@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../models/shelter_model.dart'; // Asegúrate de importar el modelo aquí
+import 'package:dismov_app/models/shelter_model.dart'; // Asegúrate de importar el modelo aquí
 
 class ShelterService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -9,9 +8,8 @@ class ShelterService {
   Future<ShelterModel?> getShelterById(String shelterId) async {
       DocumentSnapshot shelterSnapshot =
           await _firestore.collection('shelters').doc(shelterId).get();
-
       if (shelterSnapshot.exists) {
-        return ShelterModel.fromMap(shelterSnapshot.data()! as Map<String, dynamic>);
+        return ShelterModel.fromFirebase(shelterSnapshot);
       } else {
         return null;
       }
@@ -40,7 +38,7 @@ class ShelterService {
   // Metodo para obtener todos los refugios
   Future<List<ShelterModel>> getAllShelters() async {
     QuerySnapshot sheltersSnapshot = await _firestore.collection('shelters').get();
-    return sheltersSnapshot.docs.map((doc) => ShelterModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    return sheltersSnapshot.docs.map((doc) => ShelterModel.fromFirebase(doc)).toList();
   }
 
   // Método para buscar los refugios de acuerdo a la cercanía a una ubicación
@@ -66,8 +64,8 @@ class ShelterService {
     if (sheltersSnapshot.docs.isEmpty) {
       return [];
     }
-    return sheltersSnapshot.docs.map((doc) => ShelterModel.fromMap(doc.data() as Map<String, dynamic>)).toList();
+    return sheltersSnapshot.docs.map((doc) => ShelterModel.fromFirebase(doc)).toList();
   }
 
-
+  // 
 }

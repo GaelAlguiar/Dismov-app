@@ -120,7 +120,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     ),
                     Text(
                       name.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
@@ -130,7 +130,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     ),
                     Text(
                       email.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.grey,
                       ),
                     ),
@@ -148,11 +148,11 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           ),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                      child: Row(
+                      child: const Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
+                            padding: EdgeInsets.only(left: 10),
                             child: Text(
                               'Dog lover.\n21 years old.',
                               style: TextStyle(
@@ -170,7 +170,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
+                        const Text(
                           'Preferencias de mascota',
                           style: TextStyle(
                             fontSize: 22,
@@ -178,14 +178,14 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.edit),
+                          icon: const Icon(Icons.edit),
                           onPressed: () {
                             // Acción de editar preferencias
                           },
                         ),
                       ],
                     ),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Chip(

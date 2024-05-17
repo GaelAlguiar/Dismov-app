@@ -26,7 +26,6 @@ class LoginGoogleUtils {
   Future<UserCredential> loginUserWithEmail(emailAddress, password) async {
     final credential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: emailAddress, password: password);
-
     return credential;
   }
 

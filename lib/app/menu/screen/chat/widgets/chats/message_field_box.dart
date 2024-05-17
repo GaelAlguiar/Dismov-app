@@ -8,20 +8,19 @@ class MessageFieldBox extends StatelessWidget {
 
     final textController = TextEditingController();
 
-    final OutlineInputBorder = UnderlineInputBorder(
-      borderSide: BorderSide( color: Colors.transparent ),
+    final outlineInputBorder = UnderlineInputBorder(
+      borderSide: const BorderSide( color: Colors.transparent ),
       borderRadius: BorderRadius.circular(40)
     );
 
     final inputDecoration = InputDecoration(
-        enabledBorder: OutlineInputBorder,
-        focusedBorder: OutlineInputBorder,
+        enabledBorder: outlineInputBorder,
+        focusedBorder: outlineInputBorder,
         filled: true,
         fillColor: const Color.fromARGB(255, 215, 215, 215),
         suffixIcon: IconButton(
           icon: const Icon( Icons.send_outlined ),
           onPressed: () {
-            print('Valor de la caja de texto');
           },
         ),
       );
@@ -30,7 +29,6 @@ class MessageFieldBox extends StatelessWidget {
       controller: textController,
       decoration: inputDecoration,
       onFieldSubmitted:(value) {
-        print('Submit value $value');
         textController.clear();
       },
 

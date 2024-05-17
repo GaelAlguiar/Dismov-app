@@ -1,16 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dismov_app/app/utils/data.dart'; // Debes eliminar esta importación
-import 'package:firebase_auth/firebase_auth.dart';
+// Debes eliminar esta importación
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
-import 'package:dismov_app/shared/widgets/shelter_item.dart';
-import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 //Location
 import 'package:dismov_app/utils/location_utils.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
 import 'package:dismov_app/services/shelter_service.dart'; // Importa tu servicio de refugios
-
 import '../../../../models/shelter_model.dart';
 import '../../../../shared/widgets/custom_image.dart';
 
@@ -32,7 +27,7 @@ class ShelterScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor:Color.fromRGBO(	11	,96,	151,1),
+        backgroundColor:const Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
         ],
@@ -97,22 +92,22 @@ class __SheltersViewState extends State<_SheltersView> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: EdgeInsets.only(top: 10),
+               Padding(
+                padding: const EdgeInsets.only(top: 10),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.place_outlined,
                       color: AppColor.labelColor,
                       size: 30,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                       width: 5,
                     ),
                     Text(
                       location,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColor.textColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
@@ -134,22 +129,22 @@ class __SheltersViewState extends State<_SheltersView> {
 
   _buildBody() {
     return SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20), // Margen a los lados de 20
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    "Refugios",
-                    style: TextStyle(
-                      color: AppColor.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 25,
-                    ),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20), // Margen a los lados de 20
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Row(
+              children: [
+                Text(
+                  "Refugios",
+                  style: TextStyle(
+                    color: AppColor.blue,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25,
                   ),
-                  Text(
+                ),
+                Text(
                     " Cerca de ti",
                     style: TextStyle(
                       color: AppColor.textColor,
@@ -157,19 +152,18 @@ class __SheltersViewState extends State<_SheltersView> {
                       fontSize: 25,
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: 10,),
-              CustomTextBox(
-                hint: "Search",
-                prefix: Icon(Icons.search, color: Colors.grey),
-              ),
-              SizedBox(height: 10,),
-              _buildShelters(),
-            ],
-          ),
-        )
-
+              ],
+            ),
+            const SizedBox(height: 10,),
+            const CustomTextBox(
+              hint: "Search",
+              prefix: Icon(Icons.search, color: Colors.grey),
+            ),
+            const SizedBox(height: 10,),
+            _buildShelters(),
+          ],
+        ),
+      )
     );
   }
 
@@ -181,7 +175,7 @@ class __SheltersViewState extends State<_SheltersView> {
       future: ShelterService().getAllShelters(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
@@ -197,6 +191,54 @@ class __SheltersViewState extends State<_SheltersView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: shelters.map((shelter) => Column(
                 children: [
+                  // Container(
+                  //   margin: const EdgeInsets.all(8), // Margen de 10 en todos los lados
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(10), // Borde circular de 10 en todos los lados
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           color: Colors.grey.withOpacity(0.5), // Color del sombreado
+                  //           spreadRadius: 1, // Extensión del sombreado
+                  //           blurRadius: 2, // Difuminado del sombreado
+                  //           offset: const Offset(0, 3), // Desplazamiento del sombreado
+                  //         ),
+                  //       ],
+                  //       color: Colors.white, // Color de fondo blanco
+                  //     ),
+                  //     padding: const EdgeInsets.all(10), // Padding de 10 en todos los lados
+                  //     child: Row(
+                  //       children: [
+                  //         CustomImage(
+                  //           shelters[index]["image"],
+                  //           borderRadius: BorderRadius.circular(50),
+                  //           isShadow: true,
+                  //           width: 80,
+                  //           height: 80,
+                  //         ),
+                  //         const SizedBox(width: 10), // Agrega un espacio entre la imagen y el texto
+                  //         Expanded(
+                  //           child: Column(
+                  //             crossAxisAlignment: CrossAxisAlignment.start,
+                  //             children: [
+                  //               Text(
+                  //                 shelters[index]["name"],
+                  //                 textAlign: TextAlign.left,
+                  //                 style: const TextStyle(
+                  //                   fontSize: 16,
+                  //                   color: AppColor.blue,
+                  //                 ),
+                  //               ),
+                  //               Text(
+                  //                 shelters[index]["location"],
+                  //                 textAlign: TextAlign.left,
+                  //                 style: const TextStyle(
+                  //                   fontSize: 16,
+                  //                   color: Colors.black,
+                  //                 ),
+                  //               ),
+
+                  //             ],
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -207,7 +249,7 @@ class __SheltersViewState extends State<_SheltersView> {
                       );
                     },
                     child: Container(
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -216,22 +258,22 @@ class __SheltersViewState extends State<_SheltersView> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 1,
                               blurRadius: 2,
-                              offset: Offset(0, 3),
-                            ),
+                              offset: const Offset(0, 3),
+                            )
                           ],
                           color: Colors.white,
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Row(
                           children: [
                             CustomImage(
-                              shelter.image,
+                              shelter.imageURL,
                               borderRadius: BorderRadius.circular(50),
                               isShadow: true,
                               width: 80,
                               height: 80,
                             ),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,7 +281,7 @@ class __SheltersViewState extends State<_SheltersView> {
                                   Text(
                                     shelter.name,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: AppColor.blue,
                                     ),
@@ -247,7 +289,7 @@ class __SheltersViewState extends State<_SheltersView> {
                                   Text(
                                     shelter.address,
                                     textAlign: TextAlign.left,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 16,
                                       color: Colors.black,
                                     ),
