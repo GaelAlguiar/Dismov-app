@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dismov_app/models/user_preferences_model.dart'; // Asegúrate de importar el modelo aquí
+
+import '../models/user_preferences_model.dart'; // Asegúrate de importar el modelo aquí
 
 class UserPreferencesService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -10,7 +11,7 @@ class UserPreferencesService {
         await _firestore.collection('user_preferences').doc(userId).get();
 
     if (userPreferencesSnapshot.exists) {
-      return UserPreferencesModel.fromFirebase(userPreferencesSnapshot);
+      return UserPreferencesModel.fromMap(userPreferencesSnapshot.data()! as Map<String, dynamic>);
     } else {
       return null;
     }

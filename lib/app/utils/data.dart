@@ -1,3 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dismov_app/services/pet_service.dart';
+import 'package:flutter/foundation.dart';
+
+import '../../models/pet_model.dart';
+
+
 var profile =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9ZAV6OLHHc8z7I4OaVD0ljzGdeFP0tGreDi3yMFwLBZRXWt7Nh93hC8uRt-UnawErZBw&usqp=CAU";
 

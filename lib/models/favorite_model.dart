@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class FavoriteModel {
   String id;
   String petId;
@@ -18,10 +16,9 @@ class FavoriteModel {
   }
 
   // Método para crear un objeto de favoritos del usuario desde un mapa
-  factory FavoriteModel.fromFirebase(DocumentSnapshot doc) {
-    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+  factory FavoriteModel.fromMap(Map<String, dynamic> map) {
     return FavoriteModel(
-      id: doc.id,
+      id: map['id'],
       petId: map['petId'],
     );
   }

@@ -198,7 +198,7 @@ class _RegisterFormState extends State<_RegisterForm> {
                   if (FirebaseAuth.instance.currentUser != null) {
                     FirebaseAuth.instance.currentUser
                         ?.updateDisplayName(username.text);
-                    addPeople(username.text, email.text, FirebaseAuth.instance.currentUser!.uid);
+                    addPeople(username.text, email.text);
 
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(

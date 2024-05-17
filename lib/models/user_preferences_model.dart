@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 class UserPreferencesModel {
-  String? id;
   String? userId;
   String? type;
   String? sex;
@@ -11,7 +9,6 @@ class UserPreferencesModel {
 
   UserPreferencesModel({
     this.userId,
-    this.id,
     this.type,
     this.sex,
     this.size,
@@ -23,7 +20,6 @@ class UserPreferencesModel {
   // Método para convertir un objeto de preferencias de usuario a un mapa
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'userId': userId,
       'type': type,
       'sex': sex,
@@ -35,10 +31,8 @@ class UserPreferencesModel {
   }
 
   // Método para crear un objeto de preferencias de usuario desde un mapa
-  factory UserPreferencesModel.fromFirebase(DocumentSnapshot doc) {
-    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+  factory UserPreferencesModel.fromMap(Map<String, dynamic> map) {
     return UserPreferencesModel(
-      id: doc.id,
       userId: map['userId'],
       type: map['type'],
       sex: map['sex'],

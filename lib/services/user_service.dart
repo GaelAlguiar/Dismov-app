@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dismov_app/models/user_model.dart'; // Asegúrate de importar el modelo aquí
+
+import '../models/user_model.dart';
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -9,7 +10,7 @@ class UserService {
     DocumentSnapshot userSnapshot =
         await _firestore.collection('users').doc(uid).get();
     if (userSnapshot.exists) {
-      return UserModel.fromFirebase(userSnapshot);
+      return UserModel.fromMap(userSnapshot.data()! as Map<String, dynamic>);
     } else {
       return null;
     }

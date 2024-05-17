@@ -14,7 +14,8 @@ class PetModel {
   String shelterId;
   String adoptionStatus;
   String? story;
-  int publishedAt;
+  Timestamp publishedAt;
+  bool isFavorited;
 
   PetModel({
     required this.id,
@@ -31,6 +32,7 @@ class PetModel {
     required this.adoptionStatus,
     this.story,
     required this.publishedAt,
+    this.isFavorited = false
   });
 
   // Método para convertir un objeto de mascota a un mapa
@@ -54,10 +56,9 @@ class PetModel {
   }
 
   // Método para crear un objeto de mascota desde un mapa
-  factory PetModel.fromFirebase(DocumentSnapshot doc) {
-    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;
+  factory PetModel.fromMap(Map<String, dynamic> map) {
     return PetModel(
-      id: doc.id,
+      id: map['id'],
       name: map['name'],
       type: map['type'],
       sex: map['sex'],

@@ -27,7 +27,7 @@ class AppTheme {
       ///* Buttons
       filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
-              textStyle: WidgetStatePropertyAll(GoogleFonts.robotoCondensed()
+              textStyle: MaterialStatePropertyAll(GoogleFonts.robotoCondensed()
                   .copyWith(fontWeight: FontWeight.w700)))),
 
       ///* AppBar

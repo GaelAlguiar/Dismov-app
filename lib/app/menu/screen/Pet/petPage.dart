@@ -1,8 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/shared/widgets/shelter_item.dart';
+import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 //Location
 import 'package:dismov_app/utils/location_utils.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
@@ -24,7 +27,7 @@ class PetScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor: const Color.fromRGBO(	11	,96,	151,1),
+        backgroundColor: Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded))
         ],

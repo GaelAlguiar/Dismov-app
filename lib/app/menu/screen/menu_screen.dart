@@ -8,7 +8,7 @@ import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/utils/location_utils.dart';
 import '../../../models/pet_model.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
-// Importar la página de perfil de la mascota
+import 'Pet/petprofile.dart'; // Importar la página de perfil de la mascota
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -39,7 +39,7 @@ class MenuScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor: const Color.fromRGBO(	11	,96,	151,1),
+        backgroundColor: Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(
             onPressed: () => _showSearch(context),
@@ -57,7 +57,7 @@ class MenuScreen extends StatelessWidget {
 }
 
 class PetSearchDelegate extends SearchDelegate<String> {
-  final List<PetModel> _filteredPets = [];
+  List<PetModel> _filteredPets = [];
 
   @override
   String get searchFieldLabel => 'Buscar Mascotas';
@@ -100,7 +100,7 @@ class PetSearchDelegate extends SearchDelegate<String> {
       future: PetService().getAllPets(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
@@ -124,7 +124,7 @@ class PetSearchDelegate extends SearchDelegate<String> {
                     MaterialPageRoute(
                       builder: (context) => PetProfilePage(
                         key: UniqueKey(),
-                        pet: pet,
+                        pet: pet.toMap(),
                       ),
                     ),
                   );
@@ -302,10 +302,11 @@ class __MenuViewState extends State<_MenuView> {
       future: PetService().getAllPets(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
+          return Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
+          print(snapshot.data);
           return Center(
             child: Text('Error: ${snapshot.error}'),
           );
@@ -342,7 +343,7 @@ class __MenuViewState extends State<_MenuView> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 20),
+                        padding: EdgeInsets.only(left: 20),
                         child: PetItem(
                           data: filteredPets[firstIndex].toMap(),
                           height: height,
@@ -352,18 +353,23 @@ class __MenuViewState extends State<_MenuView> {
                               MaterialPageRoute(
                                 builder: (context) => PetProfilePage(
                                   key: UniqueKey(),
-                                  pet: filteredPets[firstIndex],
+                                  pet: filteredPets[firstIndex].toMap(),
                                 ),
                               ),
                             );
                           },
+                          onFavoriteTap: () {
+                            setState(() {
+                              filteredPets[firstIndex].isFavorited = !filteredPets[firstIndex].isFavorited;
+                            });
+                          },
                         ),
                       ),
                     ),
-                    const SizedBox(width: 15), // Espacio entre los elementos
+                    SizedBox(width: 15), // Espacio entre los elementos
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.only(right: 20),
+                        padding: EdgeInsets.only(right: 20),
                         child: PetItem(
                           data: filteredPets[secondIndex].toMap(),
                           height: height,
@@ -373,10 +379,15 @@ class __MenuViewState extends State<_MenuView> {
                               MaterialPageRoute(
                                 builder: (context) => PetProfilePage(
                                   key: UniqueKey(),
-                                  pet: filteredPets[secondIndex],
+                                  pet: filteredPets[secondIndex].toMap(),
                                 ),
                               ),
                             );
+                          },
+                          onFavoriteTap: () {
+                            setState(() {
+                              filteredPets[secondIndex].isFavorited = !filteredPets[secondIndex].isFavorited;
+                            });
                           },
                         ),
                       ),

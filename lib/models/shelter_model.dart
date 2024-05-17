@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ShelterModel {
   String uid;
   String name;
@@ -7,10 +5,10 @@ class ShelterModel {
   String? email;
   String? website;
   String description;
-  String imageURL;
+  String image;
   String address;
-  double latitude;
-  double longitude;
+  String latitude;
+  String longitude;
   String? adoptionFormURL;
 
   ShelterModel({
@@ -20,7 +18,7 @@ class ShelterModel {
     this.email,
     this.website,
     required this.description,
-    required this.imageURL,
+    required this.image,
     required this.address,
     required this.latitude,
     required this.longitude,
@@ -30,34 +28,33 @@ class ShelterModel {
   // Método para convertir un objeto de refugio a un mapa
   Map<String, dynamic> toMap() {
     return {
-      'name': name,
-      'phone': phone,
-      'email': email,
-      'website': website,
-      'description': description,
-      'image': imageURL,
-      'uid': uid,
-      'address': address,
-      'latitude': latitude,
-      'longitude': longitude,
-      'adoptionFormURL': adoptionFormURL,
+      'name': name ?? '',
+      'phone': phone ?? '',
+      'email': email ?? '',
+      'website': website ?? '',
+      'description': description ?? '',
+      'image': image ?? '',
+      'uid': uid ?? '',
+      'address': address ?? '',
+      'latitude': latitude ?? '',
+      'longitude': longitude ?? '',
+      'adoptionFormURL': adoptionFormURL ?? '',
     };
   }
 
   // Método para crear un objeto de refugio desde un mapa
-  factory ShelterModel.fromFirebase(DocumentSnapshot doc) {
-    Map<String, dynamic> map = doc.data() as Map<String, dynamic>;  
+  factory ShelterModel.fromMap(Map<String, dynamic> map) {
     return ShelterModel(
       name: map['name'],
       phone: map['phone'],
       email: map['email'],
       website: map['website'],
       description: map['description'],
-      imageURL: map['imageURL'],
-      uid: doc.id,
+      image: map['imageURL'],
+      uid: map['uid'],
       address: map['address'],
-      latitude: map['latitude'],
-      longitude: map['longitude'],
+      latitude: map['latitude'].toString(),
+      longitude: map['longitude'].toString(),
       adoptionFormURL: map['adoptionFormURL'],
     );
   }

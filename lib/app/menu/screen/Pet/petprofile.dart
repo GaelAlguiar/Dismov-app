@@ -1,34 +1,28 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
-import 'package:dismov_app/models/chat_model.dart';
-import 'package:dismov_app/models/pet_model.dart';
 import 'package:dismov_app/models/shelter_model.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../../../config/theme/color.dart';
 import '../../../../services/shelter_service.dart';
-import 'package:dismov_app/services/chat_service.dart';
-
 
 class PetProfilePage extends StatelessWidget {
-  final PetModel pet;
-  final ChatService _chatService = ChatService();
+  final Map<String, dynamic> pet;
 
-  PetProfilePage({required Key key, required this.pet}) : super(key: key);
+  const PetProfilePage({required Key key, required this.pet}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<ShelterModel?>(
-      future: ShelterService().getShelterById(pet.shelterId), // Call the asynchronous function
+      future: ShelterService().getShelterById(pet['shelterId']), // Call the asynchronous function
       builder: (context, AsyncSnapshot<ShelterModel?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           // While waiting for the future to resolve, return a loading indicator
-          return const Scaffold(
+          return Scaffold(
             body: Center(
               child: CircularProgressIndicator(),
             ),
           );
         } else if (snapshot.hasError) {
+          print(snapshot.error);
+          print(snapshot);
           // If there's an error, display an error message
           return Scaffold(
             body: Center(
@@ -38,18 +32,18 @@ class PetProfilePage extends StatelessWidget {
         } else {
           // Once the future has resolved, build the UI with the data
           var shelter = snapshot.data!;
-          var shelterName = shelter.name;
-          String colorsString = pet.colors.join(',') ?? 'Unknown Color';
+          var shelterName = shelter.name ?? 'Unknown Shelter Name';
+          String colorsString = pet['colors']?.join(',') ?? 'Unknown Color';
           return Scaffold(
             body: Stack(
               children: [
                 // Background image
                 Positioned.fill(
                   child: PageView.builder(
-                    itemCount: pet.imageURLs.length,
+                    itemCount: pet['imageURLs']?.length ?? 0,
                     itemBuilder: (context, index) {
                       return Image.network(
-                        pet.imageURLs[index],
+                        pet['imageURLs']![index],
                         fit: BoxFit.cover,
                       );
                     },
@@ -62,9 +56,9 @@ class PetProfilePage extends StatelessWidget {
                   bottom: 0,
                   child: Container(
                     padding: const EdgeInsets.all(15),
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(20.0),
                         topRight: Radius.circular(20.0),
                       ),
@@ -80,7 +74,7 @@ class PetProfilePage extends StatelessWidget {
                             children: [
                               // Show pet information
                               Text(
-                                pet.name,
+                                '${pet['name']}',
                                 style: const TextStyle(
                                   fontSize: 40,
                                   fontWeight: FontWeight.bold,
@@ -91,15 +85,15 @@ class PetProfilePage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 0),
+                                    padding: EdgeInsets.only(left: 0),
                                     child: _buildInfoContainer(
                                       label: 'Edad',
-                                      value: '${pet.ageInYears ?? 'Unknown Age'}',
+                                      value: '${pet['ageInYears'] ?? 'Unknown Age'}',
                                     ),
                                   ),
                                   _buildInfoContainer(
                                     label: 'Sexo',
-                                    value: pet.sex,
+                                    value: '${pet['sex'] ?? 'Unknown Sex'}',
                                   ),
                                   _buildInfoContainerColor(
                                     label: 'Color',
@@ -116,7 +110,7 @@ class PetProfilePage extends StatelessWidget {
                                       height: 50.0,
                                       width: 50.0,
                                       child: Image.network(
-                                        shelter.imageURL,
+                                        shelter.image ?? '',
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -134,9 +128,9 @@ class PetProfilePage extends StatelessWidget {
                                         ),
                                       ),
                                       const SizedBox(height: 5.0),
-                                      const Text(
+                                      Text(
                                         'Propietario',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.normal,
                                           color: Colors.grey,
@@ -151,51 +145,36 @@ class PetProfilePage extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CircleAvatar(
-                                    backgroundColor: const Color.fromRGBO(	11	,96,	151,.7),
-                                    child: IconButton(
-                                      icon: const Icon(Icons.chat),
-                                      color: Colors.white,
-                                      onPressed: () async {
-                                        goToChat(
-                                            context: context,
-                                            chatService: _chatService,
-                                            shelter: shelter,
-                                            pet: pet,
-                                            user: FirebaseAuth.instance.currentUser!);
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10.0),
                                   ElevatedButton(
-                                    onPressed: () async {
-                                      goToChat(
-                                          context: context,
-                                          chatService: _chatService,
-                                          shelter: shelter,
-                                          pet: pet,
-                                          user: FirebaseAuth.instance.currentUser!
-                                          );
-                                    },
+                                    onPressed: () {},
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: const Color.fromRGBO(	11	,96,	151,.7),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(50.0),
                                       ),
                                     ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
                                         vertical: 10.0,
-                                        horizontal: 50.0,
+                                        horizontal: 90.0,
                                       ),
                                       child: Text(
                                         'Adoptame',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10.0),
+                                  CircleAvatar(
+                                    backgroundColor: Color.fromRGBO(	11	,96,	151,.7),
+                                    child: IconButton(
+                                      icon: const Icon(Icons.chat),
+                                      color: Colors.white,
+                                      onPressed: () {},
                                     ),
                                   ),
                                 ],
@@ -225,61 +204,9 @@ class PetProfilePage extends StatelessWidget {
     );
   }
 
-  void goToChat(
-      {required BuildContext context,
-      required ChatService chatService,
-      required ShelterModel shelter,
-      required PetModel pet,
-      required User user}) async {
-  // if exists, navigate to the chat screen
-  // if not, create a new chat room and navigate to the chat screen
-  ChatModel? chatRoom = await _chatService.checkChat(
-    FirebaseAuth.instance.currentUser!.uid,
-    pet.shelterId,
-    pet.id
-  );
-
-  if (chatRoom != null) {
-    Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => ChatDetailPage(chatData: chatRoom!)
-        )
-      );
-
-  } else {
-    User user = FirebaseAuth.instance.currentUser!;
-    chatRoom = ChatModel(
-      id: '',
-      userId: user.uid,
-      userImageURL: user.photoURL ?? '',
-      userName: user.displayName ?? '',
-      shelterImageURL: shelter.imageURL,
-      shelterName: shelter.name,
-      shelterId: pet.shelterId,
-      petId: pet.id,
-      petName: pet.name,
-      petImageURL: pet.imageURLs[0],
-      recentMessageContent: null,
-      recentMessageTime: null,
-      recentMessageSenderId: null,
-      conversationStatus: 'intento de adopción', 
-    );
-
-    DocumentReference newChatDoc = await _chatService.createChat(chatRoom);
-    chatRoom.id = newChatDoc.id;
-    Navigator.push(
-      context, 
-      MaterialPageRoute(
-        builder: (context) => ChatDetailPage(chatData: chatRoom!)
-        )
-      );
-
-  }
-      }
-
   Widget _buildInfoContainer({required String label, required String value}) {
     return Container(
+      width: 100,
       margin: const EdgeInsets.only(right: 10.0),
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(

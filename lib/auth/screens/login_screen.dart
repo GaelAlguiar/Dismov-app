@@ -7,6 +7,7 @@ import 'package:dismov_app/shared/shared.dart';
 
 //Utils for Google Login
 import 'package:dismov_app/utils/login_google_utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 // LoginScreen

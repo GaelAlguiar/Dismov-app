@@ -25,7 +25,7 @@ class LocationUtils {
   getAdressFromCoordinates(Position? ubicacionActual) async {
     try {
       List<Placemark> placemark = await placemarkFromCoordinates(
-          ubicacionActual!.latitude, ubicacionActual.longitude);
+          ubicacionActual!.latitude, ubicacionActual!.longitude);
       Placemark place = placemark[0];
       String currentAdress = "${place.locality}, ${place.country}";
       return currentAdress;
