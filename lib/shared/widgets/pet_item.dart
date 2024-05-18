@@ -38,7 +38,7 @@ class PetItem extends StatelessWidget {
               bottom:
                   -60, // Ajustar la posición del texto para que se vea centrado
               left: 0, // Alinear el texto a la izquierda
-              right: 20,
+              right: 0,
               child: _buildInfoGlass(),
             ),
           ],
@@ -57,8 +57,8 @@ class PetItem extends StatelessWidget {
         opacity: 0.15,
         child: Container(
           width: width,
-          height: 65,
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+          height: height * 0.1,
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(0),
@@ -80,7 +80,7 @@ class PetItem extends StatelessWidget {
               ),
               _buildLocation(),
               const SizedBox(
-                height: 5,
+                height: 4,
               ),
               _buildAttributes(),
             ],
@@ -134,7 +134,7 @@ class PetItem extends StatelessWidget {
       ),
       isShadow: false,
       width: width,
-      height: height - 60,
+      height: height - (height*0.1),
     );
   }
 

@@ -41,6 +41,7 @@ class PetProfilePage extends StatelessWidget {
           var shelterName = shelter.name;
           String colorsString = pet.colors.join(',') ?? 'Unknown Color';
           return Scaffold(
+            appBar: AppBar(),
             body: Stack(
               children: [
                 // Background image
