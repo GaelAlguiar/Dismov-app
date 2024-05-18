@@ -21,9 +21,7 @@ class PetItem extends StatelessWidget {
   final GestureTapCallback? onFavoriteTap;
 
   @override
-
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -37,9 +35,10 @@ class PetItem extends StatelessWidget {
           children: [
             _buildImage(),
             Positioned(
-              bottom: -60, // Ajustar la posición del texto para que se vea centrado
+              bottom:
+                  -60, // Ajustar la posición del texto para que se vea centrado
               left: 0, // Alinear el texto a la izquierda
-              right: 20,
+              right: 0,
               child: _buildInfoGlass(),
             ),
           ],
@@ -53,13 +52,13 @@ class PetItem extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 60.0),
       child: GlassContainer(
         borderRadius: BorderRadius.circular(0),
-        border: Border.all(color:const Color.fromRGBO(	11	,96,	151,1)),
+        border: Border.all(color: const Color.fromRGBO(11, 96, 151, 1)),
         blur: 10,
         opacity: 0.15,
         child: Container(
           width: width,
-          height: 65,
-          padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+          height: height * 0.1,
+          padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(0),
@@ -81,7 +80,7 @@ class PetItem extends StatelessWidget {
               ),
               _buildLocation(),
               const SizedBox(
-                height: 5,
+                height: 4,
               ),
               _buildAttributes(),
             ],
@@ -97,7 +96,7 @@ class PetItem extends StatelessWidget {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
-        color: Color.fromRGBO(	11	,80,	151,1),
+        color: Color.fromRGBO(11, 80, 151, 1),
         fontSize: 8,
       ),
     );
@@ -112,7 +111,7 @@ class PetItem extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
-              color: Color.fromRGBO(	11	,96,	151,1),
+              color: Color.fromRGBO(11, 96, 151, 1),
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
@@ -129,13 +128,13 @@ class PetItem extends StatelessWidget {
   Widget _buildImage() {
     return CustomImage(
       data["imageURLs"][0],
-      borderRadius: BorderRadius.vertical(
-        top: Radius.circular(radius),
+      borderRadius: const BorderRadius.vertical(
+        top: Radius.circular(5),
         bottom: Radius.zero,
       ),
       isShadow: false,
       width: width,
-      height: height-60,
+      height: height - (height*0.1),
     );
   }
 

@@ -19,14 +19,18 @@ class UserSettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil'),
-        backgroundColor: AppColor.yellow,
+        title: const Text('Perfil',
+        style: TextStyle(
+            color: Colors.white
+        )),
+        backgroundColor: Color.fromRGBO(	11	,96,	151,1),
         actions: [
           IconButton(
             onPressed: () {
 
             }, 
-            icon: const Icon(Icons.edit)
+            icon: const Icon(Icons.edit,
+            color: Colors.white)
           )
         ],
       ),
