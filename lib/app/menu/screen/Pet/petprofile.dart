@@ -39,7 +39,7 @@ class PetProfilePage extends StatelessWidget {
           // Once the future has resolved, build the UI with the data
           var shelter = snapshot.data!;
           var shelterName = shelter.name;
-          String colorsString = pet.colors.join(',') ?? 'Unknown Color';
+          String colorsString = pet.colors.join(',');
           return Scaffold(
             body: Stack(
               children: [
@@ -239,14 +239,13 @@ class PetProfilePage extends StatelessWidget {
     pet.id
   );
 
-  if (chatRoom != null) {
+  if (chatRoom != null && context.mounted) {
     Navigator.push(
       context, 
       MaterialPageRoute(
         builder: (context) => ChatDetailPage(chatData: chatRoom!)
         )
       );
-
   } else {
     User user = FirebaseAuth.instance.currentUser!;
     chatRoom = ChatModel(
@@ -268,13 +267,14 @@ class PetProfilePage extends StatelessWidget {
 
     DocumentReference newChatDoc = await _chatService.createChat(chatRoom);
     chatRoom.id = newChatDoc.id;
+    if (context.mounted) {
     Navigator.push(
       context, 
       MaterialPageRoute(
         builder: (context) => ChatDetailPage(chatData: chatRoom!)
         )
       );
-
+    }
   }
       }
 

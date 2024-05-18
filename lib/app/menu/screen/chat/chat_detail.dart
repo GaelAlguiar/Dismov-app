@@ -23,8 +23,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   final TextEditingController _messageController = TextEditingController();
 
   List<MessageModel> _messages = [];
-  ChatModel? _chat;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,7 +185,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   _sendMessage() async {
-    FirebaseAuth.instance.currentUser!.updateDisplayName('Patitas Suaves');
     if (_messageController.text.isNotEmpty) {
       MessageModel message = MessageModel(
         id: '',
