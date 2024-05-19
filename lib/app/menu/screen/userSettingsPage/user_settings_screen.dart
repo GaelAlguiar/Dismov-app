@@ -178,7 +178,10 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.edit),
+                        icon: const Icon(
+                          Icons.edit,
+                          color: AppColor.blue,
+                        ),
                         onPressed: () {
                           showDialog(
                             context: context,
@@ -236,7 +239,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       height: 47,
                       child: CustomFilledButton(
                         text: "Cerrar Sesión",
-                        buttonColor: AppColor.darker,
+                        buttonColor: AppColor.blue,
                         onPressed: () async {
                           await LoginGoogleUtils().signOutGoogle();
                           await LoginGoogleUtils().singOutWithEmail();
@@ -277,7 +280,7 @@ class __EditDescriptionDialogState extends State<_EditDescriptionDialog> {
     _descriptionController = TextEditingController(
       text: userBox.get(
         'description',
-        defaultValue: 'Dog lover.\n21 years old.',
+        defaultValue: '',
       ),
     );
   }
@@ -324,10 +327,25 @@ colocarImagen(String url) {
       height: 190,
     );
   } else {
-    return Image.network(
-      url,
+    return Container(
       width: 190,
       height: 190,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: const Color.fromARGB(255, 52, 143, 217),
+          width: 3,
+        ),
+        borderRadius: BorderRadius.circular(17.8),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Image.network(
+          url,
+          width: 190,
+          height: 190,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }
