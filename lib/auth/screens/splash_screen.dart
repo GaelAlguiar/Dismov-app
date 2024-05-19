@@ -22,12 +22,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _checkLoginStatus() async {
     if (FirebaseAuth.instance.currentUser != null) {
-      // set user in provider 
-      await UserService().setUserInProvider(context);
+      bool result = await UserService().setUserInProvider(context,  FirebaseAuth.instance.currentUser);
+      print("RESULT>>>>>>>>>>>>>>>>>>>>>> $result");
       if (mounted) {
+        print(FirebaseAuth.instance.currentUser?.email);
+        print("going to root");
         context.go('/Root');
       }
     } else {
+        print("going to login");
         context.go('/login');
     }
   }

@@ -19,18 +19,14 @@ class UserSettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil',
-        style: TextStyle(
-            color: Colors.white
-        )),
-        backgroundColor: Color.fromRGBO(	11	,96,	151,1),
+        title: const Text('Perfil'),
+        backgroundColor: AppColor.yellow,
         actions: [
           IconButton(
             onPressed: () {
 
             }, 
-            icon: const Icon(Icons.edit,
-            color: Colors.white)
+            icon: const Icon(Icons.edit)
           )
         ],
       ),
@@ -109,9 +105,9 @@ class __UserSettingsState extends State<_UserSettingsView> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else {
-          String? email        = ap.user!.email;
-          String? name         = ap.user!.name;
-          String? profilePhoto = ap.user!.profilePicURL;
+          String email        = ap.user?.email ?? '';
+          String name         = ap.user?.name ?? '';
+          String? profilePhoto = ap.user?.profilePicURL;
           // Future<List> users = getUser(email);
           return SingleChildScrollView(
             child: Padding(

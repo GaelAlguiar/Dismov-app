@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismov_app/models/user_model.dart'; // Asegúrate de importar el modelo aquí
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
+import 'package:firebase_storage/firebase_storage.dart'; 
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Método para obtener un usuario por su UID
   Future<UserModel?> getUserByUid(String uid) async {
@@ -18,19 +24,30 @@ class UserService {
     }
   }
 
-  Future<UserModel> createUser(String username, String email, String password, String image) async {
+  Future<UserModel> createUser(String username, String email, String password, File? image, BuildContext context) async {
     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
+
     UserModel user = UserModel(
       uid: userCredential.user!.uid,
       name: username,
       email: email,
-      profilePicURL: image,
+      profilePicURL: image != null ? await uploadProfilePic(image, userCredential.user!.uid) : null,
     );
+
+    // update current user data
+    _auth.currentUser!.updateDisplayName(username);
+    _auth.currentUser!.updatePhotoURL(user.profilePicURL!);
     await _firestore.collection('users').doc(user.uid).set(user.toMap());
     return user;
+  }
+
+  Future<String> uploadProfilePic(File image, String uid) async {
+    UploadTask uploadTask = _storage.ref('profilePic/$uid').putFile(image);
+    TaskSnapshot taskSnapshot = await uploadTask;
+    return await taskSnapshot.ref.getDownloadURL();
   }
 
 
@@ -49,13 +66,11 @@ class UserService {
     Provider.of<AuthenticationProvider>(context, listen: false).removeUser();
   }
 
-  Future<bool> setUserInProvider(context) async {
-    UserModel? user = await getUserByUid(FirebaseAuth.instance.currentUser!.uid);
-    if (user != null) {
-      Provider.of<AuthenticationProvider>(context, listen: false).user = user;
-      return true;
-    }
-    return false;
+  Future<bool> setUserInProvider(context, User? user) async {
+    if (user == null) return false;
+    UserModel? userData = await getUserByUid(user.uid);
+    Provider.of<AuthenticationProvider>(context, listen: false).user = userData;
+    return true;
   }
 
   // Método para obtener un usuario por su email

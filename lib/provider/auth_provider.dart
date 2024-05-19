@@ -4,7 +4,6 @@ import 'package:dismov_app/models/user_model.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
   late UserModel? _user;
-
   UserModel? get user => _user;
 
   // set user 

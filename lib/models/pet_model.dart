@@ -14,7 +14,7 @@ class PetModel {
   String shelterId;
   String adoptionStatus;
   String? story;
-  Timestamp publishedAt;
+  int publishedAt;
 
   PetModel({
     required this.id,
