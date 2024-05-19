@@ -157,9 +157,8 @@ class __SheltersViewState extends State<_SheltersView> {
     );
   }
 
-  Widget _buildShelters() {
-    double height = MediaQuery.of(context).size.height * .80;
-
+  //Widget to build list of shelters
+  _buildShelters() {
     return FutureBuilder<List<ShelterModel>>(
       future: ShelterService().getAllShelters(),
       builder: (context, snapshot) {

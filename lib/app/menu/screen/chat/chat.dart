@@ -7,8 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dismov_app/services/chat_service.dart';
 import 'package:dismov_app/models/chat_model.dart';
 import 'package:glassmorphism_ui/glassmorphism_ui.dart';
-import 'package:path/path.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../../config/theme/color.dart';
 import '../../../../models/pet_model.dart';
@@ -16,7 +14,6 @@ import '../../../../models/shelter_model.dart';
 import '../../../../services/pet_service.dart';
 import '../../../../shared/widgets/custom_image.dart';
 import '../Pet/petprofile.dart';
-import 'package:flutter/material.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -138,11 +135,11 @@ class ShelterDetailPage extends StatelessWidget {
                   width: 120,
                   height: 120,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     IntrinsicWidth(
                       child: Row(
                         children: [
@@ -153,8 +150,8 @@ class ShelterDetailPage extends StatelessWidget {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromRGBO(11, 96, 151, 1),
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -164,7 +161,7 @@ class ShelterDetailPage extends StatelessWidget {
                               style: TextStyle(color: Colors.white, fontSize: 14),
                             ),
                           ),
-                          SizedBox(width: 10), // Add spacing between buttons
+                          const SizedBox(width: 10), // Add spacing between buttons
                           ElevatedButton(
                             onPressed: () {
                               if (shelter.adoptionFormURL != null) {
@@ -172,8 +169,8 @@ class ShelterDetailPage extends StatelessWidget {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromRGBO(11, 96, 151, 1),
-                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -186,17 +183,17 @@ class ShelterDetailPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Wrap(
                           children: [
-                            Icon(Icons.location_pin, color: AppColor.blue),
+                            const Icon(Icons.location_pin, color: AppColor.blue),
                             Container(
                               width: 195, // Set a fixed width or use MediaQuery to get the available width
                               child: Text(
                                 shelter.address,
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                                 softWrap: true,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -221,7 +218,7 @@ class ShelterDetailPage extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -231,7 +228,7 @@ class ShelterDetailPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
 
                   children: [
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   Text(
                     shelter.name,
                     style: const TextStyle(
@@ -243,7 +240,7 @@ class ShelterDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '${shelter.description}',
+                    shelter.description,
                     style: const TextStyle(
                       fontSize: 18,
                     ),
@@ -294,7 +291,6 @@ _buildPets(BuildContext context,String shelterId) {
           child: CircularProgressIndicator(),
         );
       } else if (snapshot.hasError) {
-        print(snapshot);
         return Center(
           child: Text('Error pets: ${snapshot.error}'),
         );

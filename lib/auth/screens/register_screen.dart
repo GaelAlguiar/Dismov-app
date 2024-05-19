@@ -1,15 +1,16 @@
 // import 'package:dismov_app/Json/users.dart';
 // import 'package:dismov_app/auth/db/sqlite.dart';
-import 'package:dismov_app/config/config.dart';
-import 'package:dismov_app/services/firebase_service.dart';
+import 'dart:io';
+import 'package:dismov_app/models/user_model.dart';
+import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:dismov_app/config/config.dart';
+import 'package:dismov_app/services/user_service.dart';
+import 'package:dismov_app/utils/pick_image.dart';
 import 'package:dismov_app/shared/shared.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-//Utils for Google Login
-import 'package:dismov_app/utils/login_google_utils.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:dismov_app/utils/snackbar.dart';
+import 'package:provider/provider.dart';
 
 // RegisterScreen
 class RegisterScreen extends StatelessWidget {
@@ -36,13 +37,12 @@ class RegisterScreen extends StatelessWidget {
               physics: const ClampingScrollPhysics(),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height - 260,
+                  minHeight: MediaQuery.of(context).size.height - 400,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 50),
-
+                    const SizedBox(height: 20),
                     //ICON
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,28 +58,10 @@ class RegisterScreen extends StatelessWidget {
                           ),
                         ),
                         //const Spacer(flex: 1),
-                        IconButton(
-                          icon: Image.asset(
-                            'assets/images/image.png',
-                            width: 220,
-                            height: 170,
-                          ),
-                          onPressed: () => {},
-                        ),
-
-                        //const SizedBox(height: 5),
-                        /*
-                      Text(
-                        'Crear cuenta',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),*/
-                        //const Spacer(flex:1),
                       ],
                     ),
 
-                    const Text('PawnterUp',
+                    const Text('PawtnerUp',
                         style: TextStyle(
                             fontFamily: 'PottaOne',
                             color: Colors.white,
@@ -129,6 +111,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   final email = TextEditingController();
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
+  File? image;
 
   final formKey = GlobalKey<FormState>();
 
@@ -139,6 +122,31 @@ class _RegisterFormState extends State<_RegisterForm> {
       child: Column(
         children: [
           const SizedBox(height: 20),
+           GestureDetector(
+            onTap: () async {
+              image = await pickImage(context);
+              setState(() {});
+            },
+            child: CircleAvatar(
+              radius: 50,
+              backgroundColor: AppColor.darkblue,
+              child: image != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(50),
+                      child: Image.file(
+                        image!,
+                        width: 100,
+                        height: 100,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : const Icon(
+                      Icons.add_a_photo,
+                      size: 50,
+                      color: Colors.white,
+                    ),
+            ),
+          ),
           const Text(
             'Crear Cuenta',
             style: TextStyle(
@@ -192,125 +200,66 @@ class _RegisterFormState extends State<_RegisterForm> {
               buttonColor: AppColor.blue,
               //icon: MdiIcons.fromString("account-multiple-plus"),
               onPressed: () async {
-                try {
-                  await LoginGoogleUtils()
-                      .createUserWithEmail(email.text, password.text);
-                  if (FirebaseAuth.instance.currentUser != null) {
-                    FirebaseAuth.instance.currentUser
-                        ?.updateDisplayName(username.text);
-                    addPeople(username.text, email.text, FirebaseAuth.instance.currentUser!.uid);
-
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
-                            "Usuario registrado con éxito!",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                        ),
-                      );
-                      context.go("/Root");
-                    }
-                  }
-                } catch (e) {
-                  debugPrint("$e");
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text(
-                          "Error al crear usuario. Inténtelo de nuevo.",
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 10,
-                        ),
-                      ),
-                    );
-                  }
-                }
+                if (!areFieldsValid()) return;
+                registerUser();
               },
             ),
           ),
 
           const SizedBox(height: 25),
 
-          const Row(
-            children: [
-              Expanded(
-                child: Divider(
-                  thickness: 3,
-                  color: AppColor.gray,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: Text(
-                  'O',
-                  style: TextStyle(
-                    color: AppColor.darkergray,
-                    fontFamily: 'Outfit',
-                    fontSize: 13,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Divider(
-                  thickness: 3,
-                  color: AppColor.gray,
-                ),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 25),
-
-          //Login with Google Button
-          SizedBox(
-            width: double.infinity,
-            height: 60,
-            child: CustomFilledButton(
-              text: "Registrarse con Google",
-              buttonColor: AppColor.darker,
-              icon: MdiIcons.fromString("google"),
-              onPressed: () async {
-                try {
-                  await LoginGoogleUtils().signInWithGoogle();
-                  //if is there a currentUser signed, we will go to the root
-                  if (FirebaseAuth.instance.currentUser != null) {
-                    if (context.mounted) {
-                      context.go("/Root");
-                    }
-                  }
-                } catch (e) {
-                  debugPrint("$e");
-                }
-              },
-            ),
-          ),
-
+          // const Row(
+          //   children: [
+          //     Expanded(
+          //       child: Divider(
+          //         thickness: 3,
+          //         color: AppColor.gray,
+          //       ),
+          //     ),
+          //     Padding(
+          //       padding: EdgeInsets.symmetric(horizontal: 15.0),
+          //       child: Text(
+          //         'O',
+          //         style: TextStyle(
+          //           color: AppColor.darkergray,
+          //           fontFamily: 'Outfit',
+          //           fontSize: 13,
+          //         ),
+          //       ),
+          //     ),
+          //     Expanded(
+          //       child: Divider(
+          //         thickness: 3,
+          //         color: AppColor.gray,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 25),
+          // //Login with Google Button
+          // SizedBox(
+          //   width: double.infinity,
+          //   height: 60,
+          //   child: CustomFilledButton(
+          //     text: "Registrarse con Google",
+          //     buttonColor: AppColor.darker,
+          //     icon: MdiIcons.fromString("google"),
+          //     onPressed: () async {
+          //       try {
+          //         await LoginGoogleUtils().signInWithGoogle();
+          //         //if is there a currentUser signed, we will go to the root
+          //         if (FirebaseAuth.instance.currentUser != null) {
+          //           if (context.mounted) {
+          //             context.go("/Root");
+          //           }
+          //         }
+          //       } catch (e) {
+          //         debugPrint("$e");
+          //       }
+          //     },
+          //   ),
+          // ),
           const SizedBox(height: 20),
-          //const Spacer(flex: 2),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -324,9 +273,49 @@ class _RegisterFormState extends State<_RegisterForm> {
             ],
           ),
           const SizedBox(height: 30),
-          //const Spacer(flex: 1),
         ],
       ),
     );
+  }
+
+  void registerUser() async {
+   try {
+     UserModel newUser = await UserService().createUser(username.text, email.text, password.text, image, context);
+     if (mounted) {
+      AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+      authProvider.user = newUser;
+       showSuccessSnackbar(context, "Usuario registrado con éxito!");
+       context.go("/Root");
+     }
+   } catch (e) {
+     debugPrint("$e");
+     if (mounted) {
+       showErrorSnackbar(context, "Error al crear usuario. Inténtelo de nuevo.");
+     }
+   }
+  }
+
+  bool areFieldsValid() {
+    if (username.text.isEmpty) {
+      showErrorSnackbar(context, "Por favor, ingrese su nombre completo.");
+      return false;
+    }
+    if (email.text.isEmpty) {
+      showErrorSnackbar(context, "Por favor, ingrese su correo.");
+      return false;
+    }
+    if (password.text.isEmpty) {
+      showErrorSnackbar(context, "Por favor, ingrese su contraseña.");
+      return false;
+    }
+    if (confirmPassword.text.isEmpty) {
+      showErrorSnackbar(context, "Por favor, repita su contraseña.");
+      return false;
+    }
+    if (password.text != confirmPassword.text) {
+      showErrorSnackbar(context, "Las contraseñas no coinciden.");
+      return false;
+    }
+    return true;
   }
 }

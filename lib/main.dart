@@ -1,9 +1,11 @@
+import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/config/router/app_router.dart';
 
 //Firebase Imports
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -20,11 +22,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return  MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => AuthenticationProvider())],
+      child: MaterialApp.router(
       title: 'Pawtner Up',
       routerConfig: appRouter,
       theme: AppTheme().getTheme(),
       debugShowCheckedModeBanner: false,
+      )
     );
-  }
+    }
 }

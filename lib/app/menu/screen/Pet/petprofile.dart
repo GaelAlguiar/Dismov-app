@@ -4,8 +4,11 @@ import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
 import 'package:dismov_app/models/chat_model.dart';
 import 'package:dismov_app/models/pet_model.dart';
 import 'package:dismov_app/models/shelter_model.dart';
+import 'package:dismov_app/models/user_model.dart';
+import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../services/shelter_service.dart';
 import 'package:dismov_app/services/chat_service.dart';
 
@@ -39,7 +42,7 @@ class PetProfilePage extends StatelessWidget {
           // Once the future has resolved, build the UI with the data
           var shelter = snapshot.data!;
           var shelterName = shelter.name;
-          String colorsString = pet.colors.join(',') ?? 'Unknown Color';
+          String colorsString = pet.colors.join(',');
           return Scaffold(
             appBar: AppBar(),
             body: Stack(
@@ -240,21 +243,21 @@ class PetProfilePage extends StatelessWidget {
     pet.id
   );
 
-  if (chatRoom != null) {
+  if (chatRoom != null && context.mounted) {
     Navigator.push(
       context, 
       MaterialPageRoute(
         builder: (context) => ChatDetailPage(chatData: chatRoom!)
         )
       );
-
   } else {
-    User user = FirebaseAuth.instance.currentUser!;
+    final AuthenticationProvider _authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+    UserModel user = _authProvider.user!;
     chatRoom = ChatModel(
       id: '',
       userId: user.uid,
-      userImageURL: user.photoURL ?? '',
-      userName: user.displayName ?? '',
+      userImageURL: user.profilePicURL ?? '',
+      userName: user.name,
       shelterImageURL: shelter.imageURL,
       shelterName: shelter.name,
       shelterId: pet.shelterId,
@@ -269,13 +272,14 @@ class PetProfilePage extends StatelessWidget {
 
     DocumentReference newChatDoc = await _chatService.createChat(chatRoom);
     chatRoom.id = newChatDoc.id;
+    if (context.mounted) {
     Navigator.push(
       context, 
       MaterialPageRoute(
         builder: (context) => ChatDetailPage(chatData: chatRoom!)
         )
       );
-
+    }
   }
       }
 
