@@ -3,17 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/config/router/app_router.dart';
 
-//Firebase Imports
+// Firebase Imports
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
+// Hive Imports
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //DataBase Connection
+
+  // Firebase Initialization
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // Hive Initialization
+  await Hive.initFlutter();
+  await Hive.openBox('userBox'); // Open the userBox before running the app
+
   runApp(const MyApp());
 }
 
@@ -22,14 +32,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthenticationProvider())],
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthenticationProvider())
+      ],
       child: MaterialApp.router(
-      title: 'Pawtner Up',
-      routerConfig: appRouter,
-      theme: AppTheme().getTheme(),
-      debugShowCheckedModeBanner: false,
-      )
+        title: 'Pawtner Up',
+        routerConfig: appRouter,
+        theme: AppTheme().getTheme(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
-    }
+  }
 }

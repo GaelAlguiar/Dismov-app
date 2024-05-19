@@ -47,7 +47,7 @@ class DefaultFirebaseOptions {
     apiKey: 'AIzaSyDLcVchONH6s06L24F6rUKeTQwufpGZD-M',
     appId: '1:497881747557:web:54f99e680d2da2afe0768c',
     messagingSenderId: '497881747557',
-    projectId: 'petappdb-5f982',
+    projectId: 'db-5f982',
     authDomain: 'petappdb-5f982.firebaseapp.com',
     storageBucket: 'petappdb-5f982.appspot.com',
     measurementId: 'G-72HG29PMS7',

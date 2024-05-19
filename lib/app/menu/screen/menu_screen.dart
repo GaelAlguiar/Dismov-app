@@ -26,13 +26,13 @@ import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 
 import 'package:provider/provider.dart';
 
-
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+    AuthenticationProvider authProvider =
+        Provider.of<AuthenticationProvider>(context, listen: false);
     String nameToShow = "Hola!";
     String name = "";
     try {
@@ -58,10 +58,8 @@ class MenuScreen extends StatelessWidget {
             fontSize: 20,
           ),
         ),
-        backgroundColor:const Color.fromRGBO(	11	,96,	151,1),
-        actions: [
-
-        ],
+        backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
+        actions: const [],
       ),
       body: _MenuView(),
     );
@@ -80,7 +78,8 @@ class __MenuViewState extends State<_MenuView> {
   void obtenerYActualizarUbicacion() async {
     String ubi = await LocationUtils().obtenerLocalizacion();
     setState(() {
-      ubicacion = ubi; // Actualiza la ubicación una vez que se resuelve el Future
+      ubicacion =
+          ubi; // Actualiza la ubicación una vez que se resuelve el Future
     });
   }
 
@@ -89,9 +88,7 @@ class __MenuViewState extends State<_MenuView> {
     super.initState();
     // Llama al método para actualizar la ubicación al entrar en el menu screen
     obtenerYActualizarUbicacion();
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -123,24 +120,19 @@ class __MenuViewState extends State<_MenuView> {
                   return Center(
                     child: Text('Error: ${snapshot.error}'),
                   );
-                } else if(!snapshot.hasData)
-                {
+                } else if (!snapshot.hasData) {
                   return const Center(
                     child: Text('No hay mascotas a mostrar'),
                   );
-                }
-                else {
+                } else {
                   final List<PetModel> pets = snapshot.data!;
                   List<PetModel> filteredPets = [];
 
                   if (_selectedCategory == 0) {
-
                     filteredPets.addAll(pets);
                   } else if (_selectedCategory == 1) {
-
                     filteredPets.addAll(pets.where((pet) => pet.type == 'dog'));
                   } else if (_selectedCategory == 2) {
-
                     filteredPets.addAll(pets.where((pet) => pet.type == 'cat'));
                   }
                   return Expanded(
@@ -153,39 +145,39 @@ class __MenuViewState extends State<_MenuView> {
                           mainAxisSpacing: 10.0,
                           childAspectRatio: 0.7,
                         ),
-                        itemCount: filteredPets.length, // Número de elementos en el grid
+                        itemCount: filteredPets
+                            .length, // Número de elementos en el grid
                         itemBuilder: (context, index) {
                           return PetItem(
-                              data: filteredPets[index].toMap(),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PetProfilePage(
-                                      key: UniqueKey(),
-                                      pet: filteredPets[index],
-                                    ),
+                            data: filteredPets[index].toMap(),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PetProfilePage(
+                                    key: UniqueKey(),
+                                    pet: filteredPets[index],
                                   ),
-                                );
-                              },
-                            );
+                                ),
+                              );
+                            },
+                          );
                         },
                       ),
                     ),
-
                   );
                 }
-              }
-          ),
+              }),
         ],
       ),
     );
   }
+
   int _selectedCategory = 0;
-  Widget _categoriesWidget(){
+  Widget _categoriesWidget() {
     List<Widget> lists = List.generate(
       categories.length,
-          (index) => CategoryItem(
+      (index) => CategoryItem(
         data: categories[index],
         selected: index == _selectedCategory,
         onTap: () {
@@ -199,17 +191,18 @@ class __MenuViewState extends State<_MenuView> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(
-          categories.length,
-            (index) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8.0), // Espaciado vertical entre elementos
+        categories.length,
+        (index) => Padding(
+          padding: const EdgeInsets.symmetric(
+              vertical: 8.0), // Espaciado vertical entre elementos
           child: CategoryItem(
-              data: categories[index],
-              selected: index == _selectedCategory,
-              onTap: () {
-                setState(() {
-                  _selectedCategory = index;
-                });
-              },
+            data: categories[index],
+            selected: index == _selectedCategory,
+            onTap: () {
+              setState(() {
+                _selectedCategory = index;
+              });
+            },
           ),
         ),
       ),
@@ -281,17 +274,15 @@ class __MenuViewState extends State<_MenuView> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10,),
-
+                  const SizedBox(
+                    height: 10,
+                  ),
                 ],
               ),
-
             ],
           ),
         ),
       ],
     );
   }
-
-
 }
