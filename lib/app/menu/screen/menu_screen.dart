@@ -307,7 +307,6 @@ class __MenuViewState extends State<_MenuView> {
                   ),
                   const SizedBox(height: 10,),
 
-                  //_buildShelters(),
                 ],
               ),
 
@@ -318,114 +317,5 @@ class __MenuViewState extends State<_MenuView> {
     );
   }
 
-  _buildBody() {
-    return SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 20), // Margen a los lados de 20
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildShelters(),
-            ],
-          ),
-        )
-    );
-  }
 
-  //Widget to build list of shelters
-  _buildShelters() {
-    double height = MediaQuery.of(context).size.height * .80;
-
-    return FutureBuilder<List<ShelterModel>>(
-      future: ShelterService().getAllShelters(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        } else {
-          final List<ShelterModel> shelters = snapshot.data!;
-          return Align(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: shelters.map((shelter) => Column(
-                children: [
-
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ShelterDetailPage(shelter: shelter),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 2,
-                              offset: const Offset(0, 3),
-                            )
-                          ],
-                          color: Colors.white,
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            CustomImage(
-                              shelter.imageURL,
-                              borderRadius: BorderRadius.circular(50),
-                              isShadow: true,
-                              width: 80,
-                              height: 80,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    shelter.name,
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: AppColor.blue,
-                                    ),
-                                  ),
-                                  Text(
-                                    shelter.address,
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )).toList(),
-            ),
-          );
-        }
-      },
-    );
-  }
 }
