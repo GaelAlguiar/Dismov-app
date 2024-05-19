@@ -170,17 +170,20 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         ),
                         borderRadius: BorderRadius.circular(15),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          description.isNotEmpty
-                              ? description
-                              : 'Añade una descripción...',
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: description.isNotEmpty
-                                ? Colors.black
-                                : Colors.grey[400],
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                            description.isNotEmpty
+                                ? description
+                                : 'Añade una descripción...',
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: description.isNotEmpty
+                                  ? Colors.black
+                                  : Colors.grey[400],
+                            ),
                           ),
                         ),
                       ),
@@ -285,9 +288,11 @@ class __EditDescriptionDialogState extends State<_EditDescriptionDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Editar descripción'),
-      content: TextField(
-        controller: _descriptionController,
-        maxLines: 5,
+      content: SingleChildScrollView(
+        child: TextField(
+          controller: _descriptionController,
+          maxLines: null,
+        ),
       ),
       actions: [
         TextButton(
