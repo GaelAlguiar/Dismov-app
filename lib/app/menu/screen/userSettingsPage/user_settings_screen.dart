@@ -305,7 +305,7 @@ class __EditDescriptionDialogState extends State<_EditDescriptionDialog> {
           onPressed: () {
             userBox.put('description', _descriptionController.text);
             Navigator.of(context).pop();
-            setState(() {}); // Trigger a rebuild after saving
+            setState(() {});
           },
           child: const Text('Guardar'),
         ),

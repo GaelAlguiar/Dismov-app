@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 // Hive Imports
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -22,7 +21,7 @@ void main() async {
 
   // Hive Initialization
   await Hive.initFlutter();
-  await Hive.openBox('userBox'); // Open the userBox before running the app
+  await Hive.openBox('userBox');
 
   runApp(const MyApp());
 }
