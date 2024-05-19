@@ -7,12 +7,12 @@ import 'custom_image.dart';
 class PetItem extends StatelessWidget {
   const PetItem(
       {super.key,
-      required this.data,
-      this.width = 150,
-      this.height = 200,
-      this.radius = 20,
-      this.onTap,
-      this.onFavoriteTap});
+        required this.data,
+        this.width = 150,
+        this.height = 200,
+        this.radius = 20,
+        this.onTap,
+        this.onFavoriteTap});
   final Map<String, dynamic> data;
   final double width;
   final double height;
@@ -89,7 +89,7 @@ class PetItem extends StatelessWidget {
                         style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),
                       ),
                       Text(
-                          data['ageInYears'].toString(),
+                        data['ageInYears'].toString(),
                         style: TextStyle(fontSize: 14),
                       ),
                     ],
@@ -100,7 +100,7 @@ class PetItem extends StatelessWidget {
                         style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),
                       ),
                       Text(
-                          data['breed'],
+                        data['breed'],
                         style: TextStyle(fontSize: 14),
                       ),
                     ],
@@ -109,9 +109,6 @@ class PetItem extends StatelessWidget {
                 ],
               ),
             )
-
-
-
           ],
         ),
       ),

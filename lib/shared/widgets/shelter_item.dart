@@ -32,15 +32,7 @@ class ShelterItem extends StatefulWidget {
 }
 
 class _ShelterItemState extends State<ShelterItem> {
-  late Future<List<PetModel>> _fetchPetsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchPetsFuture = PetService().getAllPets();
-  }
-
-  @override
+   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: widget.onTap,

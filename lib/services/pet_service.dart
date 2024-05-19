@@ -100,6 +100,20 @@ class PetService {
       'adoptionStatus': 'archived',
     });
   }
-
+  Future<List<PetModel>> getPetsByShelterId(String shelterId) async {
+    try {
+      // Realiza una consulta a tu fuente de datos (base de datos, API, etc.)
+      // para obtener las mascotas que pertenecen al refugio con el ID dado
+      // Supongamos que tienes una función llamada fetchPetsFromDatabase que hace esto
+      List<PetModel> pets = await PetService().getAllPets(); // Esta función debería recuperar las mascotas de la base de datos filtrando por el shelterId
+      // Filtra las mascotas por el shelterId
+      List<PetModel> filteredPets = pets.where((pet) => pet.shelterId == shelterId).toList();
+      // Devuelve las mascotas filtradas
+      return filteredPets;
+    } catch (error) {
+      // Maneja cualquier error que pueda ocurrir durante la recuperación de las mascotas
+      throw Exception('Error retrieving pets by shelter ID: $error');
+    }
+  }
 
 }

@@ -1,3 +1,5 @@
+import 'package:dismov_app/models/user_model.dart';
+import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +8,7 @@ import 'package:dismov_app/models/message_model.dart';
 import 'package:dismov_app/services/chat_service.dart';
 import 'package:dismov_app/services/pet_service.dart';
 import 'package:dismov_app/shared/widgets/custom_image.dart';
+import 'package:provider/provider.dart';
 
 class ChatDetailPage extends StatefulWidget {
   const ChatDetailPage({super.key, required this.chatData});
@@ -21,8 +24,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   final TextEditingController _messageController = TextEditingController();
 
   List<MessageModel> _messages = [];
-  ChatModel? _chat;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,6 +141,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   Widget _buildInput() {
+    AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -178,7 +180,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
           IconButton(
             icon: const Icon(Icons.send),
             onPressed: () {
-              _sendMessage();
+              _sendMessage(authProvider.user!);
             },
           ),
         ],
@@ -186,14 +188,13 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
     );
   }
 
-  _sendMessage() async {
-    FirebaseAuth.instance.currentUser!.updateDisplayName('Patitas Suaves');
+  _sendMessage(UserModel senderUser) async {
     if (_messageController.text.isNotEmpty) {
       MessageModel message = MessageModel(
         id: '',
         content: _messageController.text,
-        senderId: FirebaseAuth.instance.currentUser!.uid,
-        senderName: FirebaseAuth.instance.currentUser!.displayName!,
+        senderId: senderUser.uid,
+        senderName: senderUser.name,
         time: DateTime.now().millisecondsSinceEpoch,
       );
       await chatService.addMessageToChat(widget.chatData.id, message);

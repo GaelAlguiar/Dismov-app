@@ -1,12 +1,13 @@
 // import 'package:carousel_slider/carousel_slider.dart';
 // import 'package:dismov_app/app/utils/data.dart';
 // import 'package:dismov_app/services/firebase_service.dart';
+import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//Utils for Google Login
+import 'package:provider/provider.dart';
 import 'package:dismov_app/utils/login_google_utils.dart';
 
 class UserSettingsScreen extends StatelessWidget {
@@ -97,15 +98,16 @@ class __UserSettingsState extends State<_UserSettingsView> {
   }
 
   _buildBody() {
+    AuthenticationProvider ap = Provider.of<AuthenticationProvider>(context, listen:false);
     return FutureBuilder(
       future: LoginGoogleUtils().isUserLoggedIn(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else {
-          String? email        = FirebaseAuth.instance.currentUser?.email;
-          String? name         = FirebaseAuth.instance.currentUser?.displayName;
-          String? profilePhoto = FirebaseAuth.instance.currentUser?.photoURL;
+          String email        = ap.user?.email ?? '';
+          String name         = ap.user?.name ?? '';
+          String? profilePhoto = ap.user?.profilePicURL;
           // Future<List> users = getUser(email);
           return SingleChildScrollView(
             child: Padding(

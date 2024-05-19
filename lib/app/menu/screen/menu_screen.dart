@@ -14,6 +14,7 @@ import '../../../../shared/widgets/custom_image.dart';
 //no se
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/utils/data.dart';
+import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:dismov_app/services/pet_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +24,20 @@ import 'package:dismov_app/utils/location_utils.dart';
 import '../../../models/pet_model.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 
+import 'package:provider/provider.dart';
+
+
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
     String nameToShow = "Hola!";
     String name = "";
     try {
       if (FirebaseAuth.instance.currentUser != null) {
-        String? fullName = FirebaseAuth.instance.currentUser?.displayName;
+        String? fullName = authProvider.user?.name;
         if (fullName != null) {
           List<String> nameParts = fullName.split(" ");
           name = nameParts.first;
@@ -190,6 +195,7 @@ class __MenuViewState extends State<_MenuView> {
         },
       ),
     );
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(
@@ -204,11 +210,13 @@ class __MenuViewState extends State<_MenuView> {
                   _selectedCategory = index;
                 });
               },
-            ),
+          ),
         ),
       ),
     );
   }
+
+
 
   Widget _buildPetsGrid() {
     return Expanded(
