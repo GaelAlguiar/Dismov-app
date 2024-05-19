@@ -25,10 +25,10 @@ class AppTheme {
       scaffoldBackgroundColor: scaffoldBackgroundColor,
 
       ///* Buttons
-      filledButtonTheme: FilledButtonThemeData(
+      /*filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
               textStyle: WidgetStatePropertyAll(GoogleFonts.robotoCondensed()
-                  .copyWith(fontWeight: FontWeight.w700)))),
+                  .copyWith(fontWeight: FontWeight.w700)))),*/
 
       ///* AppBar
       appBarTheme: AppBarTheme(
