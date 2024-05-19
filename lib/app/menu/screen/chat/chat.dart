@@ -215,7 +215,7 @@ class ShelterDetailPage extends StatelessWidget {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: Colors.grey.withOpacity(0.2),
                     spreadRadius: 2,
                     blurRadius: 5,
                     offset: const Offset(0, 3),
@@ -267,7 +267,62 @@ class ShelterDetailPage extends StatelessWidget {
               ),
               ),
             ),
-            _buildPets(context,shelter.uid)
+            FutureBuilder<List<PetModel>>(
+                future: PetService().getPetsByShelterId(shelter.uid),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else if(!snapshot.hasData)
+                  {
+                    return const Center(
+                      child: Text('No hay mascotas a mostrar'),
+                    );
+                  }
+                  else {
+                    final List<PetModel> pets = snapshot.data!;
+                    List<PetModel> filteredPets = [];
+
+                    filteredPets.addAll(pets);
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: GridView.builder(
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 10.0,
+                            childAspectRatio: 0.7,
+                          ),
+                          itemCount: filteredPets.length, // Número de elementos en el grid
+                          itemBuilder: (context, index) {
+                            return PetItem(
+                              data: filteredPets[index].toMap(),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PetProfilePage(
+                                      key: UniqueKey(),
+                                      pet: filteredPets[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        ),
+                      ),
+
+                    );
+                  }
+                }
+            ),
           ],
         ),
       ),

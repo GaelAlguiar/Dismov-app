@@ -216,38 +216,6 @@ class __MenuViewState extends State<_MenuView> {
     );
   }
 
-
-
-  Widget _buildPetsGrid() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Número de columnas
-            crossAxisSpacing: 10.0, // Espaciado entre columnas
-            mainAxisSpacing: 10.0, // Espaciado entre filas
-          ),
-          itemCount: 8, // Número de elementos en el grid
-          itemBuilder: (context, index) {
-            return Container(
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Text(
-                'Item $index',
-                style: TextStyle(color: Colors.white, fontSize: 18.0),
-              ),
-            );
-          },
-        ),
-      ),
-
-    );
-
-  }
   Widget _buildAppBar(String location) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
