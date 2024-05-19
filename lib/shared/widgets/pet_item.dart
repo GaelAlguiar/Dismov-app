@@ -25,22 +25,93 @@ class PetItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: width,
-        height: height,
-        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        width: double.infinity,
+        height: double.infinity,
+        alignment: Alignment.center,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius),
-        ),
-        child: Stack(
-          children: [
-            _buildImage(),
-            Positioned(
-              bottom:
-                  -60, // Ajustar la posición del texto para que se vea centrado
-              left: 0, // Alinear el texto a la izquierda
-              right: 20,
-              child: _buildInfoGlass(),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 1,
+              blurRadius: 5,
+              offset: Offset(0, 2),
             ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Container(
+                child: FractionallySizedBox(
+                  widthFactor: 0.9,
+                  heightFactor: 0.9,
+                  child: CustomImage(
+                    data["imageURLs"]![0],
+                    borderRadius: BorderRadius.circular(10),
+                    isShadow: false,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 5),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        data['name'],
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromRGBO(	11	,96,	151,1),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      (data['sex']=="male")?Icon(
+                        Icons.male,
+                        size: 25,
+                        color: Color.fromRGBO(11, 96, 151, 1),
+                      ):Icon(
+                        Icons.female,
+                        size: 25,
+                        color: Color.fromRGBO(11, 96, 151, 1),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text( "Edad: ",
+                        style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),
+                      ),
+                      Text(
+                          data['ageInYears'].toString(),
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("Raza: ",
+                        style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold,),
+                      ),
+                      Text(
+                          data['breed'],
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
+            )
+
+
+
           ],
         ),
       ),

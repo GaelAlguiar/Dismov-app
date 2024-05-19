@@ -309,4 +309,5 @@ class __SheltersViewState extends State<_SheltersView> {
         }
       },
     );
-  }}
+  }
+}
