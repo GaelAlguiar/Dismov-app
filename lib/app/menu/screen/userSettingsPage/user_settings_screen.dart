@@ -121,10 +121,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           String email = ap.user?.email ?? '';
           String name = ap.user?.name ?? '';
           String? profilePhoto = ap.user?.profilePicURL;
-          String description = userBox.get(
-            'description',
-            defaultValue: '',
-          );
+          String description = userBox.get('description', defaultValue: '');
 
           return SingleChildScrollView(
             child: Padding(
@@ -156,7 +153,9 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         width: 300,
                         height: 80,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: description.isEmpty
+                              ? Colors.grey[200]
+                              : Colors.white,
                           border: Border.all(
                             color: const Color.fromARGB(255, 52, 143, 217),
                             width: 2,
@@ -166,18 +165,20 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
-                            description,
-                            style: const TextStyle(
+                            description.isNotEmpty
+                                ? description
+                                : 'Añade una descripción...',
+                            style: TextStyle(
                               fontSize: 17,
+                              color: description.isNotEmpty
+                                  ? Colors.black
+                                  : Colors.grey[400],
                             ),
                           ),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Color.fromARGB(255, 10, 145, 224),
-                        ),
+                        icon: const Icon(Icons.edit),
                         onPressed: () {
                           showDialog(
                             context: context,
@@ -185,6 +186,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                               return const _EditDescriptionDialog();
                             },
                           ).then((_) {
+                            // Trigger a rebuild after the dialog is closed
                             setState(() {});
                           });
                         },

@@ -1,29 +1,17 @@
 // Debes eliminar esta importación
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 //Location
 import 'package:dismov_app/utils/location_utils.dart';
-import 'package:dismov_app/app/menu/screen/chat/chat.dart';
-import 'package:dismov_app/services/shelter_service.dart'; // Importa tu servicio de refugios
-import 'package:flutter/widgets.dart';
-import '../../../../models/shelter_model.dart';
-import '../../../../shared/widgets/custom_image.dart';
-//no se
-import 'package:carousel_slider/carousel_slider.dart';
+
+//Data
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:dismov_app/services/pet_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:dismov_app/shared/shared.dart';
-import 'package:dismov_app/config/config.dart';
-import 'package:dismov_app/utils/location_utils.dart';
 import '../../../models/pet_model.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
-
 import 'package:provider/provider.dart';
 
 class MenuScreen extends StatelessWidget {
@@ -61,7 +49,7 @@ class MenuScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
         actions: const [],
       ),
-      body: _MenuView(),
+      body: const _MenuView(),
     );
   }
 }
@@ -139,7 +127,8 @@ class __MenuViewState extends State<_MenuView> {
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           crossAxisSpacing: 20,
                           mainAxisSpacing: 10.0,
@@ -245,12 +234,12 @@ class __MenuViewState extends State<_MenuView> {
               const SizedBox(
                 height: 3,
               ),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: const Column(
+                    padding: EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -274,7 +263,7 @@ class __MenuViewState extends State<_MenuView> {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     height: 10,
                   ),
                 ],

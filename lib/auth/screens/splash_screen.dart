@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';  
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dismov_app/config/config.dart';
@@ -22,16 +22,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void _checkLoginStatus() async {
     if (FirebaseAuth.instance.currentUser != null) {
-      bool result = await UserService().setUserInProvider(context,  FirebaseAuth.instance.currentUser);
-      print("RESULT>>>>>>>>>>>>>>>>>>>>>> $result");
+      bool result = await UserService()
+          .setUserInProvider(context, FirebaseAuth.instance.currentUser);
+      debugPrint("RESULT>>>>>>>>>>>>>>>>>>>>>> $result");
       if (mounted) {
-        print(FirebaseAuth.instance.currentUser?.email);
-        print("going to root");
+        debugPrint(FirebaseAuth.instance.currentUser?.email);
+        debugPrint("going to root");
         context.go('/Root');
       }
     } else {
-        print("going to login");
-        context.go('/login');
+      debugPrint("going to login");
+      context.go('/login');
     }
   }
 
@@ -53,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
           ),
         ),
-      ),  
+      ),
     );
   }
 }

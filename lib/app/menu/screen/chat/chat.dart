@@ -37,22 +37,24 @@ class _ChatPageState extends State<ChatPage> {
         ),
       );
     }
-    return StreamBuilder(stream: _chatService.getChatsByUserIdStream(currentUser.uid), builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      if (snapshot.hasError) {
-        return const Center(
-          child: Text("Error cargando los chats del usuario"),
-        );
-      }
-      chats = snapshot.data as List<ChatModel>;
-      return Scaffold(
-        body: getBody(context),
-      );
-    });
+    return StreamBuilder(
+        stream: _chatService.getChatsByUserIdStream(currentUser.uid),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text("Error cargando los chats del usuario"),
+            );
+          }
+          chats = snapshot.data as List<ChatModel>;
+          return Scaffold(
+            body: getBody(context),
+          );
+        });
   }
 
   getBody(context) {
@@ -98,18 +100,15 @@ class _ChatPageState extends State<ChatPage> {
         (index) => ChatItem(
           chats[index],
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => ChatDetailPage(chatData: chats[index]),
-              )
-            );
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ChatDetailPage(chatData: chats[index]),
+            ));
           },
         ),
       ),
     );
   }
 }
-
 
 class ShelterDetailPage extends StatelessWidget {
   final ShelterModel shelter;
@@ -150,18 +149,22 @@ class ShelterDetailPage extends StatelessWidget {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              backgroundColor:
+                                  const Color.fromRGBO(11, 96, 151, 1),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                             child: const Text(
                               'Sitio Web',
-                              style: TextStyle(color: Colors.white, fontSize: 14),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
                             ),
                           ),
-                          const SizedBox(width: 10), // Add spacing between buttons
+                          const SizedBox(
+                              width: 10), // Add spacing between buttons
                           ElevatedButton(
                             onPressed: () {
                               if (shelter.adoptionFormURL != null) {
@@ -169,15 +172,18 @@ class ShelterDetailPage extends StatelessWidget {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              backgroundColor:
+                                  const Color.fromRGBO(11, 96, 151, 1),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                             child: const Text(
                               'Link de adopción',
-                              style: TextStyle(color: Colors.white, fontSize: 13.5),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 13.5),
                             ),
                           ),
                         ],
@@ -188,9 +194,11 @@ class ShelterDetailPage extends StatelessWidget {
                       children: [
                         Wrap(
                           children: [
-                            const Icon(Icons.location_pin, color: AppColor.blue),
+                            const Icon(Icons.location_pin,
+                                color: AppColor.blue),
                             Container(
-                              width: 195, // Set a fixed width or use MediaQuery to get the available width
+                              width:
+                                  195, // Set a fixed width or use MediaQuery to get the available width
                               child: Text(
                                 shelter.address,
                                 style: const TextStyle(color: Colors.black),
@@ -226,28 +234,28 @@ class ShelterDetailPage extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-
                   children: [
-                  const SizedBox(height: 10,),
-                  Text(
-                    shelter.name,
-                    style: const TextStyle(
-                      fontSize: 32,
-                      color: AppColor.blue,
-
-                      fontWeight: FontWeight.w900,
+                    const SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    shelter.description,
-                    style: const TextStyle(
-                      fontSize: 18,
+                    Text(
+                      shelter.name,
+                      style: const TextStyle(
+                        fontSize: 32,
+                        color: AppColor.blue,
+                        fontWeight: FontWeight.w900,
+                      ),
                     ),
-                    softWrap: true,
-                  ),
-                  const SizedBox(height: 10),
-                  /*Text(
+                    const SizedBox(height: 10),
+                    Text(
+                      shelter.description,
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                      softWrap: true,
+                    ),
+                    const SizedBox(height: 10),
+                    /*Text(
                     'Email: ${shelter.email}',
                     style: const TextStyle(
                       fontSize: 18,
@@ -262,9 +270,9 @@ class ShelterDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   */
-                  // You can add more information here if needed
-                ],
-              ),
+                    // You can add more information here if needed
+                  ],
+                ),
               ),
             ),
             FutureBuilder<List<PetModel>>(
@@ -278,13 +286,11 @@ class ShelterDetailPage extends StatelessWidget {
                     return Center(
                       child: Text('Error: ${snapshot.error}'),
                     );
-                  } else if(!snapshot.hasData)
-                  {
+                  } else if (!snapshot.hasData) {
                     return const Center(
                       child: Text('No hay mascotas a mostrar'),
                     );
-                  }
-                  else {
+                  } else {
                     final List<PetModel> pets = snapshot.data!;
                     List<PetModel> filteredPets = [];
 
@@ -293,13 +299,15 @@ class ShelterDetailPage extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: GridView.builder(
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 20,
                             mainAxisSpacing: 10.0,
                             childAspectRatio: 0.7,
                           ),
-                          itemCount: filteredPets.length, // Número de elementos en el grid
+                          itemCount: filteredPets
+                              .length, // Número de elementos en el grid
                           itemBuilder: (context, index) {
                             return PetItem(
                               data: filteredPets[index].toMap(),
@@ -318,11 +326,9 @@ class ShelterDetailPage extends StatelessWidget {
                           },
                         ),
                       ),
-
                     );
                   }
-                }
-            ),
+                }),
           ],
         ),
       ),
@@ -336,7 +342,8 @@ void _launchURL(String? url) async {
     await launchUrlString(url, mode: LaunchMode.externalApplication);
   }
 }
-_buildPets(BuildContext context,String shelterId) {
+
+_buildPets(BuildContext context, String shelterId) {
   double height = MediaQuery.of(context).size.height * 0.4;
   return FutureBuilder<List<PetModel>>(
     future: PetService().getPetsByShelterId(shelterId),
@@ -424,15 +431,16 @@ _buildPets(BuildContext context,String shelterId) {
     },
   );
 }
+
 class PetItemShelter extends StatelessWidget {
   const PetItemShelter(
       {super.key,
-        required this.data,
-        this.width = 150,
-        this.height = 200,
-        this.radius = 20,
-        this.onTap,
-        this.onFavoriteTap});
+      required this.data,
+      this.width = 150,
+      this.height = 200,
+      this.radius = 20,
+      this.onTap,
+      this.onFavoriteTap});
   final Map<String, dynamic> data;
   final double width;
   final double height;
@@ -456,7 +464,7 @@ class PetItemShelter extends StatelessWidget {
             _buildImageShelter(),
             Positioned(
               bottom:
-              -60, // Ajustar la posición del texto para que se vea centrado
+                  -60, // Ajustar la posición del texto para que se vea centrado
               left: 0, // Alinear el texto a la izquierda
               right: 0,
               child: _buildInfoGlassShelter(),
@@ -498,7 +506,7 @@ class PetItemShelter extends StatelessWidget {
               const SizedBox(
                 height: 1,
               ),
-],
+            ],
           ),
         ),
       ),
@@ -549,7 +557,7 @@ class PetItemShelter extends StatelessWidget {
       ),
       isShadow: false,
       width: width,
-      height: height - (height*0.1),
+      height: height - (height * 0.1),
     );
   }
 

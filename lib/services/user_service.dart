@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
-import 'package:firebase_storage/firebase_storage.dart'; 
+import 'package:firebase_storage/firebase_storage.dart';
 
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -24,8 +24,10 @@ class UserService {
     }
   }
 
-  Future<UserModel> createUser(String username, String email, String password, File? image, BuildContext context) async {
-    UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  Future<UserModel> createUser(String username, String email, String password,
+      File? image, BuildContext context) async {
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
@@ -34,7 +36,9 @@ class UserService {
       uid: userCredential.user!.uid,
       name: username,
       email: email,
-      profilePicURL: image != null ? await uploadProfilePic(image, userCredential.user!.uid) : null,
+      profilePicURL: image != null
+          ? await uploadProfilePic(image, userCredential.user!.uid)
+          : null,
     );
 
     // update current user data
@@ -49,7 +53,6 @@ class UserService {
     TaskSnapshot taskSnapshot = await uploadTask;
     return await taskSnapshot.ref.getDownloadURL();
   }
-
 
   Future<void> signInUser(context, String email, String password) async {
     UserModel? user = await getUserByEmail(email);
@@ -75,18 +78,19 @@ class UserService {
 
   // Método para obtener un usuario por su email
   Future<UserModel?> getUserByEmail(String email) async {
-    print(email);
+    debugPrint(email);
     QuerySnapshot userSnapshot = await _firestore
         .collection('users')
         .where('email', isEqualTo: email)
         .get();
-    print(userSnapshot.docs);
+    debugPrint(userSnapshot.docs as String?);
     if (userSnapshot.docs.isNotEmpty) {
       return UserModel.fromFirebase(userSnapshot.docs.first);
     } else {
       return null;
     }
   }
+
   // Método para agregar un nuevo usuario
   Future<void> addUser(UserModel user) async {
     await _firestore.collection('users').doc(user.uid).set(user.toMap());
@@ -96,5 +100,4 @@ class UserService {
   Future<void> updateUser(UserModel user) async {
     await _firestore.collection('users').doc(user.uid).update(user.toMap());
   }
-
 }
