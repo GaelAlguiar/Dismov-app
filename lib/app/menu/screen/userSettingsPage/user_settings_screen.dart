@@ -1,3 +1,5 @@
+import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
+import 'package:dismov_app/app/menu/screen/userSettingsPage/pet_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -26,7 +28,13 @@ class UserSettingsScreen extends StatelessWidget {
         backgroundColor: AppColor.blue,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => EditUserSettingsScreen(),
+                )
+              );
+            },
             icon: const Icon(
               Icons.edit,
               color: Colors.white,
@@ -203,7 +211,9 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: () {
-                          // Acción de editar preferencias
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PetPreferences(),
+                          ));
                         },
                       ),
                     ],
