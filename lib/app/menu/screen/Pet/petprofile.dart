@@ -148,50 +148,6 @@ class PetProfilePage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor:
-                                    const Color.fromRGBO(11, 96, 151, .7),
-                                child: IconButton(
-                                  icon: const Icon(Icons.chat),
-                                  color: Colors.white,
-                                  onPressed: () async {
-                                    goToChat(
-                                        context: context,
-                                        chatService: _chatService,
-                                        shelter: shelter,
-                                        pet: pet,
-                                        user:
-                                            FirebaseAuth.instance.currentUser!);
-                                  },
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  goToChat(
-                                      context: context,
-                                      chatService: _chatService,
-                                      shelter: shelter,
-                                      pet: pet,
-                                      user: FirebaseAuth.instance.currentUser!);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromRGBO(11, 96, 151, .7),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 50.0,
-                                  ),
-                                ],
-                              ),
                               const SizedBox(height: 20.0),
                               // Action buttons
                               Row(
@@ -213,7 +169,7 @@ class PetProfilePage extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(50.0),
                                       ),
-                                      minimumSize: Size(MediaQuery.of(context).size.width - 35, 50.0), // Set minimum width
+                                      minimumSize: Size(MediaQuery.of(context).size.width - 45, 50.0), // Set minimum width
                                     ),
                                     child: Row( // Use Row to arrange elements horizontally
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space them evenly
@@ -247,11 +203,9 @@ class PetProfilePage extends StatelessWidget {
                               ),
                             ],
                           ),
-                        ],
                       ),
                     ),
                   ),
-                ),
                 // Back button positioned on top left
                 Positioned(
                   top: 20.0,
