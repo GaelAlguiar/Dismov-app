@@ -135,52 +135,60 @@ class PetProfilePage extends StatelessWidget {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  _buildInfoContainer(
-                                    label: 'Sexo',
-                                    value: pet.sex,
-                                  ),
-                                  _buildInfoContainerColor(
-                                    label: 'Color',
-                                    value: colorsString,
+                                  const SizedBox(height: 5.0),
+                                  const Text(
+                                    'Propietario',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ],
                               ),
-                              // Owner information
-                              const SizedBox(height: 20.0),
-                              Row(
-                                children: [
-                                  ClipOval(
-                                    child: SizedBox(
-                                      height: 50.0,
-                                      width: 50.0,
-                                      child: Image.network(
-                                        shelter.imageURL,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CircleAvatar(
+                                backgroundColor:
+                                    const Color.fromRGBO(11, 96, 151, .7),
+                                child: IconButton(
+                                  icon: const Icon(Icons.chat),
+                                  color: Colors.white,
+                                  onPressed: () async {
+                                    goToChat(
+                                        context: context,
+                                        chatService: _chatService,
+                                        shelter: shelter,
+                                        pet: pet,
+                                        user:
+                                            FirebaseAuth.instance.currentUser!);
+                                  },
+                                ),
+                              ),
+                              ElevatedButton(
+                                onPressed: () async {
+                                  goToChat(
+                                      context: context,
+                                      chatService: _chatService,
+                                      shelter: shelter,
+                                      pet: pet,
+                                      user: FirebaseAuth.instance.currentUser!);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      const Color.fromRGBO(11, 96, 151, .7),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50.0),
                                   ),
-                                  const SizedBox(width: 10.0),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        shelterName,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5.0),
-                                      const Text(
-                                        'Propietario',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                    ],
+                                ),
+                                child: const Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 10.0,
+                                    horizontal: 50.0,
                                   ),
                                 ],
                               ),
@@ -236,60 +244,6 @@ class PetProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor:
-                                    const Color.fromRGBO(11, 96, 151, .7),
-                                child: IconButton(
-                                  icon: const Icon(Icons.chat),
-                                  color: Colors.white,
-                                  onPressed: () async {
-                                    goToChat(
-                                        context: context,
-                                        chatService: _chatService,
-                                        shelter: shelter,
-                                        pet: pet,
-                                        user:
-                                            FirebaseAuth.instance.currentUser!);
-                                  },
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  goToChat(
-                                      context: context,
-                                      chatService: _chatService,
-                                      shelter: shelter,
-                                      pet: pet,
-                                      user: FirebaseAuth.instance.currentUser!);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      const Color.fromRGBO(11, 96, 151, .7),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    vertical: 10.0,
-                                    horizontal: 50.0,
-                                  ),
-                                  child: Text(
-                                    'Adoptame',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
                               ),
                             ],
                           ),
