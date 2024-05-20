@@ -190,21 +190,77 @@ class PetProfilePage extends StatelessWidget {
                                     vertical: 10.0,
                                     horizontal: 50.0,
                                   ),
-                                  child: Text(
-                                    'Adoptame',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
+                                ],
+                              ),
+                              const SizedBox(height: 20.0),
+                              // Action buttons
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      goToChat(
+                                          context: context,
+                                          chatService: _chatService,
+                                          shelter: shelter,
+                                          pet: pet,
+                                          user: FirebaseAuth.instance.currentUser!
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color.fromRGBO(11, 96, 151, 0.7),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50.0),
+                                      ),
+                                      minimumSize: Size(MediaQuery.of(context).size.width - 35, 50.0), // Set minimum width
+                                    ),
+                                    child: Row( // Use Row to arrange elements horizontally
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space them evenly
+                                      children: [
+                                    IconButton(
+                                    icon: const Icon(Icons.chat),
+                      color: Colors.white,  onPressed: () async {
+                      goToChat(
+                          context: context,
+                          chatService: _chatService,
+                          shelter: shelter,
+                          pet: pet,
+                          user: FirebaseAuth.instance.currentUser!
+                      );
+                    }, // This button won't have a separate action (optional)
+                    )
+                                        ,
+                                        const Text(
+                                          'Adoptame',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+
+                                      ],
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
+                  ),
+                ),
+                // Back button positioned on top left
+                Positioned(
+                  top: 20.0,
+                  left: 20.0,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () => Navigator.pop(context),
+                    color: Colors.white
+                    ,
                   ),
                 ),
               ],
