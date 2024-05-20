@@ -54,7 +54,7 @@ class PetProfilePage extends StatelessWidget {
                   ),
                 ),
                 // AppBar transparente
-                Positioned(
+                /*Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
@@ -67,7 +67,7 @@ class PetProfilePage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                ),
+                ),*/
                 Positioned(
                   left: 0,
                   right: 0,
