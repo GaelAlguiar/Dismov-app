@@ -121,8 +121,8 @@ class _RegisterFormState extends State<_RegisterForm> {
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          const SizedBox(height: 20),
-           GestureDetector(
+          const SizedBox(height: 50),
+          GestureDetector(
             onTap: () async {
               image = await pickImage(context);
               setState(() {});
@@ -147,6 +147,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                     ),
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
           const Text(
             'Crear Cuenta',
             style: TextStyle(
@@ -157,7 +160,7 @@ class _RegisterFormState extends State<_RegisterForm> {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
 
           CustomTextFormField(
             label: 'Nombre completo',
@@ -272,27 +275,30 @@ class _RegisterFormState extends State<_RegisterForm> {
               ),
             ],
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 200),
         ],
       ),
     );
   }
 
   void registerUser() async {
-   try {
-     UserModel newUser = await UserService().createUser(username.text, email.text, password.text, image, context);
-     if (mounted) {
-      AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
-      authProvider.user = newUser;
-       showSuccessSnackbar(context, "Usuario registrado con éxito!");
-       context.go("/Root");
-     }
-   } catch (e) {
-     debugPrint("$e");
-     if (mounted) {
-       showErrorSnackbar(context, "Error al crear usuario. Inténtelo de nuevo.");
-     }
-   }
+    try {
+      UserModel newUser = await UserService()
+          .createUser(username.text, email.text, password.text, image, context);
+      if (mounted) {
+        AuthenticationProvider authProvider =
+            Provider.of<AuthenticationProvider>(context, listen: false);
+        authProvider.user = newUser;
+        showSuccessSnackbar(context, "Usuario registrado con éxito!");
+        context.go("/Root");
+      }
+    } catch (e) {
+      debugPrint("$e");
+      if (mounted) {
+        showErrorSnackbar(
+            context, "Error al crear usuario. Inténtelo de nuevo.");
+      }
+    }
   }
 
   bool areFieldsValid() {
