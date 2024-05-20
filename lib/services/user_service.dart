@@ -44,7 +44,7 @@ class UserService {
     // update current user data
     _auth.currentUser!.updateDisplayName(username);
     _auth.currentUser!.updatePhotoURL(user.profilePicURL!);
-    _firestore.collection('users').doc(user.uid).set(user.toMap());
+    await _firestore.collection('users').doc(user.uid).set(user.toMap());
     return user;
   }
 
