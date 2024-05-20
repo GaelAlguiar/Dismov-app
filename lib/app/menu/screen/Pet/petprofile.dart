@@ -44,7 +44,6 @@ class PetProfilePage extends StatelessWidget {
           var shelterName = shelter.name;
           String colorsString = pet.colors.join(',');
           return Scaffold(
-            appBar: AppBar(),
             body: Stack(
               children: [
                 // Background image
@@ -155,22 +154,7 @@ class PetProfilePage extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  CircleAvatar(
-                                    backgroundColor: const Color.fromRGBO(	11	,96,	151,.7),
-                                    child: IconButton(
-                                      icon: const Icon(Icons.chat),
-                                      color: Colors.white,
-                                      onPressed: () async {
-                                        goToChat(
-                                            context: context,
-                                            chatService: _chatService,
-                                            shelter: shelter,
-                                            pet: pet,
-                                            user: FirebaseAuth.instance.currentUser!);
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10.0),
+
                                   ElevatedButton(
                                     onPressed: () async {
                                       goToChat(
@@ -179,27 +163,41 @@ class PetProfilePage extends StatelessWidget {
                                           shelter: shelter,
                                           pet: pet,
                                           user: FirebaseAuth.instance.currentUser!
-                                          );
+                                      );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromRGBO(	11	,96,	151,.7),
+                                      backgroundColor: const Color.fromRGBO(11, 96, 151, 0.7),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(50.0),
                                       ),
+                                      minimumSize: Size(MediaQuery.of(context).size.width - 35, 50.0), // Set minimum width
                                     ),
-                                    child: const Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 10.0,
-                                        horizontal: 50.0,
-                                      ),
-                                      child: Text(
-                                        'Adoptame',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold,
+                                    child: Row( // Use Row to arrange elements horizontally
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space them evenly
+                                      children: [
+                                    IconButton(
+                                    icon: const Icon(Icons.chat),
+                      color: Colors.white,  onPressed: () async {
+                      goToChat(
+                          context: context,
+                          chatService: _chatService,
+                          shelter: shelter,
+                          pet: pet,
+                          user: FirebaseAuth.instance.currentUser!
+                      );
+                    }, // This button won't have a separate action (optional)
+                    )
+                                        ,
+                                        const Text(
+                                          'Adoptame',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
+
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -218,7 +216,8 @@ class PetProfilePage extends StatelessWidget {
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => Navigator.pop(context),
-                    color: Colors.white,
+                    color: Colors.white
+                    ,
                   ),
                 ),
               ],

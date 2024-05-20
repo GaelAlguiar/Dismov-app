@@ -145,6 +145,8 @@ class _LoginFormState extends State<_LoginForm> {
                     context.go('/Root');
                   }
                 } catch (e) {
+                  print(context);
+                  print(e);
                   debugPrint("$e");
                   if (context.mounted) {
                     showErrorSnackbar(context,

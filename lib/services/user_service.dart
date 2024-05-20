@@ -44,7 +44,7 @@ class UserService {
     // update current user data
     _auth.currentUser!.updateDisplayName(username);
     _auth.currentUser!.updatePhotoURL(user.profilePicURL!);
-    await _firestore.collection('users').doc(user.uid).set(user.toMap());
+    _firestore.collection('users').doc(user.uid).set(user.toMap());
     return user;
   }
 
@@ -83,7 +83,13 @@ class UserService {
         .collection('users')
         .where('email', isEqualTo: email)
         .get();
-    debugPrint(userSnapshot.docs as String?);
+    if (userSnapshot.docs.isNotEmpty) {
+      for (var doc in userSnapshot.docs) {
+        debugPrint(doc.data().toString());
+      }
+    } else {
+      debugPrint('No documents found or user not found.');
+    };
     if (userSnapshot.docs.isNotEmpty) {
       return UserModel.fromFirebase(userSnapshot.docs.first);
     } else {
