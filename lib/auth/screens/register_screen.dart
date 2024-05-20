@@ -279,7 +279,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   }
 
   void registerUser() async {
-   //try {
+   try {
      UserModel newUser = await UserService().createUser(username.text, email.text, password.text, image, context);
      if (mounted) {
       AuthenticationProvider authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
@@ -287,13 +287,13 @@ class _RegisterFormState extends State<_RegisterForm> {
        showSuccessSnackbar(context, "Usuario registrado con éxito!");
        context.go("/Root");
      }
-   } /*catch (e) {
+   } catch (e) {
      debugPrint("$e");
      if (mounted) {
        showErrorSnackbar(context, "Error al crear usuario. Inténtelo de nuevo.");
      }
    }
-  }*/
+  }
 
   bool areFieldsValid() {
     if (username.text.isEmpty) {
