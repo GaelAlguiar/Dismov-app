@@ -66,8 +66,7 @@ class LoginScreen extends StatelessWidget {
                     height: MediaQuery.of(context).size.height - 260,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).scaffoldBackgroundColor,
+                      color: Theme.of(context).scaffoldBackgroundColor,
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(60),
                         topRight: Radius.circular(60),
@@ -101,7 +100,7 @@ class _LoginFormState extends State<_LoginForm> {
       padding: const EdgeInsets.symmetric(horizontal: 50),
       child: Column(
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
           const Text(
             'Iniciar Sesión',
             style: TextStyle(
@@ -112,7 +111,7 @@ class _LoginFormState extends State<_LoginForm> {
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 50),
 
           //FORMS
           CustomTextFormField(
@@ -138,9 +137,13 @@ class _LoginFormState extends State<_LoginForm> {
               buttonColor: AppColor.blue,
               onPressed: () async {
                 try {
-                  await UserService().signInUser(context, email.text, password.text);
+                  await UserService()
+                      .signInUser(context, email.text, password.text);
                   if (context.mounted) {
-                    UserModel user = Provider.of<AuthenticationProvider>(context, listen: false).user!;
+                    UserModel user = Provider.of<AuthenticationProvider>(
+                            context,
+                            listen: false)
+                        .user!;
                     showSuccessSnackbar(context, "Bienvenido ${user.name}!");
                     context.go('/Root');
                   }
@@ -149,7 +152,8 @@ class _LoginFormState extends State<_LoginForm> {
                   print(e);
                   debugPrint("$e");
                   if (context.mounted) {
-                    showErrorSnackbar(context,
+                    showErrorSnackbar(
+                      context,
                       "Datos incorrectos",
                     );
                   }
