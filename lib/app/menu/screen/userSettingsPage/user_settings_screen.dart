@@ -146,22 +146,32 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     ),
                   ),
                   const SizedBox(height: 25),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 300,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: description.isEmpty
-                              ? Colors.grey[200]
-                              : Colors.white,
-                          border: Border.all(
-                            color: const Color.fromARGB(255, 52, 143, 217),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(15),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const _EditDescriptionDialog();
+                        },
+                      ).then((_) {
+                        setState(() {});
+                      });
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.85,
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      decoration: BoxDecoration(
+                        color: description.isEmpty
+                            ? Colors.grey[200]
+                            : Colors.white,
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 52, 143, 217),
+                          width: 2,
                         ),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Text(
@@ -177,24 +187,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.edit,
-                          color: AppColor.blue,
-                        ),
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return const _EditDescriptionDialog();
-                            },
-                          ).then((_) {
-                            // Trigger a rebuild after the dialog is closed
-                            setState(() {});
-                          });
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 25),
                   Row(
@@ -295,13 +288,16 @@ class __EditDescriptionDialogState extends State<_EditDescriptionDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Editar descripción'),
-      content: TextField(
-        controller: _descriptionController,
-        maxLines: 2,
+      content: SingleChildScrollView(
+        child: TextField(
+          controller: _descriptionController,
+          maxLines: null,
+        ),
       ),
       actions: [
         TextButton(
           onPressed: () {
+            Navigator.of(context).pop;
             Navigator.of(context).pop();
           },
           child: const Text('Cancelar'),

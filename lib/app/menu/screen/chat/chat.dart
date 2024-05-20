@@ -196,7 +196,7 @@ class ShelterDetailPage extends StatelessWidget {
                           children: [
                             const Icon(Icons.location_pin,
                                 color: AppColor.blue),
-                            Container(
+                            SizedBox(
                               width:
                                   195, // Set a fixed width or use MediaQuery to get the available width
                               child: Text(
