@@ -47,7 +47,7 @@ class MenuScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: const Color.fromRGBO(11, 96, 151, 1),
-        actions: const [],
+
       ),
       body: const _MenuView(),
     );
