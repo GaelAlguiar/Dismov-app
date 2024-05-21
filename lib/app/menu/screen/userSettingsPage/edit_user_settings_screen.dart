@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
@@ -8,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:dismov_app/utils/login_google_utils.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:hive/hive.dart';
+import 'package:dismov_app/utils/pick_image.dart';
 
 class EditUserSettingsScreen extends StatelessWidget {
   const EditUserSettingsScreen({super.key});
@@ -126,6 +129,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           String name = ap.user?.name ?? '';
           String? profilePhoto = ap.user?.profilePicURL;
           String description = userBox.get('description', defaultValue: '');
+          File? image;
 
           return SingleChildScrollView(
             child: Padding(
@@ -136,18 +140,30 @@ class __UserSettingsState extends State<_UserSettingsView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      colocarImagen(profilePhoto.toString()),
-                      const SizedBox(height: 4),
-                      IconButton(
-                        onPressed: () {
 
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () async {
+                          image = await pickImage(context);
+                          setState(() {});
                         },
-                        icon: const Icon(
-                          Icons.edit,
-                          color: Color.fromARGB(255, 0, 0, 0),
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundColor: AppColor.darkblue,
+                          child: image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.file(
+                                    image!,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : colocarImagen(profilePhoto.toString(),),
                         ),
                       ),
-                      const SizedBox(height: 7),
+                      const SizedBox(height: 20),
                       
                       TextFormField(
                         //controller: _nombreController,
@@ -172,7 +188,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 26),
                       TextFormField(
                         //controller: _nombreController,
                         decoration: InputDecoration(
@@ -189,13 +205,17 @@ class __UserSettingsState extends State<_UserSettingsView> {
                               width: 2,
                             ),
                           ),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
                             borderSide: BorderSide(
                               color: Colors.blue,
                             ),
                           ),
                         ),
+                        minLines: 3, // Número mínimo de líneas visibles
+                        maxLines: null, // Número máximo de líneas visibles (puedes poner null para ilimitadas)
                       ),
+
                       const SizedBox(height: 16),
                       TextFormField(
                         //controller: _correoController,
