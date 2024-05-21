@@ -39,7 +39,7 @@ class EditUserSettingsScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             ),
             child: Text(
-              'Guardar',
+              'Guardar ',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
