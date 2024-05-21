@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:dismov_app/utils/snackbar.dart'; 
 
-Future<File?> pickImage(context) async {
+Future<File?> pickImageEdit(context) async {
   File? image;
   try {
     final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);

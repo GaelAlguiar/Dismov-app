@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
+import 'package:dismov_app/app/menu/screen/userSettingsPage/pick_image_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -10,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:dismov_app/utils/login_google_utils.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:hive/hive.dart';
-import 'package:dismov_app/utils/pick_image.dart';
+//import 'package:dismov_app/utils/pick_image_edit.dart';
 
 class EditUserSettingsScreen extends StatelessWidget {
   const EditUserSettingsScreen({super.key});
@@ -144,7 +145,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () async {
-                          image = await pickImage(context);
+                          image = await pickImageEdit(context);
                           setState(() {});
                         },
                         child: CircleAvatar(
