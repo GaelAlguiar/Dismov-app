@@ -5,6 +5,8 @@ import 'package:dismov_app/utils/location_utils.dart';
 import 'package:dismov_app/services/shelter_service.dart'; // Import your shelter service
 import 'package:dismov_app/models/shelter_model.dart';
 import 'package:dismov_app/shared/widgets/custom_image.dart';
+import 'package:geolocator/geolocator.dart';
+import 'dart:math';
 
 import '../chat/chat.dart';
 
@@ -42,17 +44,44 @@ class _SheltersView extends StatefulWidget {
 
 class __SheltersViewState extends State<_SheltersView> {
   String ubicacion = "Ubicacion Desconocida";
-
+  Position? ubication = null;
   void obtenerYActualizarUbicacion() async {
     String ubi = await LocationUtils().obtenerLocalizacion();
+    ubication =  await LocationUtils().getCurrentLocation();
     setState(() {
       ubicacion = ubi;
     });
   }
 
-  @override
+  static const double R = 6371000; // Radio de la Tierra en metros
+
+  static double _degToRad(double degrees) {
+    return degrees * pi / 180;
+  }
+
+  static String calcularKilometros(double lat1, double lon1, double lat2, double lon2) {
+    double dLat = _degToRad(lat2 - lat1);
+    double dLon = _degToRad(lon2 - lon1);
+
+    double a = sin(dLat / 2) * sin(dLat / 2) +
+        cos(_degToRad(lat1)) * cos(_degToRad(lat2)) *
+            sin(dLon / 2) * sin(dLon / 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    double distanceInMeters = R * c; // Distancia en metros
+
+    if (distanceInMeters < 1000) {
+      return distanceInMeters.toStringAsFixed(2) + 'm';
+    } else {
+      double distanceInKm = distanceInMeters / 1000;
+      return distanceInKm.toStringAsFixed(2) + 'Km';
+    }
+  }
+
+    @override
   void initState() {
     super.initState();
+
     obtenerYActualizarUbicacion();
   }
 
@@ -162,7 +191,7 @@ class __SheltersViewState extends State<_SheltersView> {
     return FutureBuilder<List<ShelterModel>>(
       future: ShelterService().getAllShelters(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting ||(ubicacion != "Ubicacion Desconocida" && ubication==null)) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
@@ -170,6 +199,26 @@ class __SheltersViewState extends State<_SheltersView> {
           return const Center(child: Text('No shelters available'));
         } else {
           final List<ShelterModel> shelters = snapshot.data!;
+          if(ubication != null)
+          {
+            shelters.sort((a, b) {
+              double distanceA = Geolocator.distanceBetween(
+                ubication!.latitude,
+                ubication!.longitude,
+                a.latitude,
+                a.longitude,
+              );
+              double distanceB = Geolocator.distanceBetween(
+                ubication!.latitude,
+                ubication!.longitude,
+                b.latitude,
+                b.longitude,
+              );
+              print(distanceA);
+              return distanceA.compareTo(distanceB);
+            });
+          }
+
           return Align(
             alignment: Alignment.center,
             child: Column(
@@ -212,14 +261,32 @@ class __SheltersViewState extends State<_SheltersView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                shelter.name,
-                                textAlign: TextAlign.left,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: AppColor.blue,
-                                ),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      shelter.name,
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: AppColor.blue,
+                                      ),
+                                    ),
+                                  ),
+
+                                  Text(
+                                      (ubication!=null)?calcularKilometros(shelter.latitude, shelter.longitude, ubication!.latitude, ubication!.longitude):"NA",
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColor.blue,
+                                    ),
+                                  ),
+                                ],
                               ),
+
                               Text(
                                 shelter.address,
                                 textAlign: TextAlign.left,
