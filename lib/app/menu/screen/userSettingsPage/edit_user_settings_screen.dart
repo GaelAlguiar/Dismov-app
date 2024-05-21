@@ -142,7 +142,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
 
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 40),
                       GestureDetector(
                         onTap: () async {
                           image = await pickImageEdit(context);
@@ -164,7 +164,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                               : colocarImagen(profilePhoto.toString(),),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 34),
                       
                       TextFormField(
                         //controller: _nombreController,
@@ -189,7 +189,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 26),
+                      const SizedBox(height: 46),
                       TextFormField(
                         //controller: _nombreController,
                         decoration: InputDecoration(
@@ -218,7 +218,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       ),
 
                       const SizedBox(height: 16),
-                      TextFormField(
+                      /*TextFormField(
                         //controller: _correoController,
                         keyboardType: TextInputType
                             .emailAddress, // Establece el tipo de teclado como email
@@ -269,7 +269,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                             ),
                           ),
                         ),
-                      ),
+                      ),*/
 
                       const SizedBox(height: 50),
                       Padding(
