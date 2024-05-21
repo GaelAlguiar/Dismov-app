@@ -9,6 +9,7 @@ class CustomTextBox extends StatelessWidget {
     this.suffix,
     this.controller,
     this.readOnly = false,
+    this.onChanged,
   });
 
   final String hint;
@@ -16,6 +17,7 @@ class CustomTextBox extends StatelessWidget {
   final Widget? suffix;
   final bool readOnly;
   final TextEditingController? controller;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class CustomTextBox extends StatelessWidget {
       child: TextField(
         readOnly: readOnly,
         controller: controller,
+        onChanged: onChanged,
         decoration: InputDecoration(
           prefixIcon: prefix,
           suffixIcon: suffix,

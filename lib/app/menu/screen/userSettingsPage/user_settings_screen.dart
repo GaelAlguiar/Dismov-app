@@ -1,5 +1,6 @@
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/pet_preferences.dart';
+import 'package:dismov_app/utils/ask_confirmation_to_continue.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -244,6 +245,9 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         text: "Cerrar Sesión",
                         buttonColor: AppColor.blue,
                         onPressed: () async {
+
+                          bool answer = await askConfirmationToContinue(context, '¿Estás seguro de que quieres cerrar sesión?');
+                          if (!answer) return;
                           await LoginGoogleUtils().signOutGoogle();
                           await LoginGoogleUtils().singOutWithEmail();
                           if (FirebaseAuth.instance.currentUser == null) {
@@ -254,6 +258,9 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         },
                       ),
                     ),
+                  ),
+                  const SizedBox(
+                    height: 50,
                   ),
                 ],
               ),
