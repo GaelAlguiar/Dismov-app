@@ -81,6 +81,7 @@ class __SheltersViewState extends State<_SheltersView> {
     @override
   void initState() {
     super.initState();
+
     obtenerYActualizarUbicacion();
   }
 
@@ -213,6 +214,7 @@ class __SheltersViewState extends State<_SheltersView> {
                 b.latitude,
                 b.longitude,
               );
+              print(distanceA);
               return distanceA.compareTo(distanceB);
             });
           }
