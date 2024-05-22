@@ -83,7 +83,13 @@ class UserService {
         .collection('users')
         .where('email', isEqualTo: email)
         .get();
-    print(userSnapshot.docs);
+    if (userSnapshot.docs.isNotEmpty) {
+      for (var doc in userSnapshot.docs) {
+        debugPrint(doc.data().toString());
+      }
+    } else {
+      debugPrint('No documents found or user not found.');
+    };
     if (userSnapshot.docs.isNotEmpty) {
       return UserModel.fromFirebase(userSnapshot.docs.first);
     } else {

@@ -23,9 +23,50 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  // instance of chat serviice
   final ChatService _chatService = ChatService();
   List<ChatModel> chats = [];
+  List<ChatModel> filteredChats = [];
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadChats();
+    _searchController.addListener(() {
+      updateFilteredChats(_searchController.text);
+    });
+  }
+
+  Future<void> _loadChats() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      _chatService.getChatsByUserIdStream(currentUser.uid).listen((data) {
+        setState(() {
+          chats = data;
+          filteredChats = chats;
+        });
+      });
+    }
+  }
+
+  void updateFilteredChats(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredChats = chats;
+      } else {
+        filteredChats = chats.where((chat) => isQueryRelatedToChat(chat, query)).toList();
+      }
+    });
+  }
+
+  bool isQueryRelatedToChat(ChatModel chat, String query) {
+    String normalizedQuery = query.trim().toLowerCase();
+    for (String word in normalizedQuery.split(" ")) {
+      String chatValuesStringified = chat.toMap().values.join(" ").toLowerCase();
+      if (chatValuesStringified.contains(word)) return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,43 +78,24 @@ class _ChatPageState extends State<ChatPage> {
         ),
       );
     }
-    return StreamBuilder(
-        stream: _chatService.getChatsByUserIdStream(currentUser.uid),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (snapshot.hasError) {
-            return const Center(
-              child: Text("Error cargando los chats del usuario"),
-            );
-          }
-          chats = snapshot.data as List<ChatModel>;
-          return Scaffold(
-            body: getBody(context),
-          );
-        });
-  }
-
-  getBody(context) {
-    return SingleChildScrollView(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
           _buildHeader(),
-          _buildChats(context),
+          Expanded(
+            child: _buildChats(context),
+          ),
         ],
       ),
     );
   }
 
-  _buildHeader() {
-    return const Padding(
-      padding: EdgeInsets.fromLTRB(15, 60, 15, 5),
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(15, 60, 15, 5),
       child: Column(
         children: [
-          Text(
+          const Text(
             "Chats",
             style: TextStyle(
               fontSize: 28,
@@ -81,34 +103,36 @@ class _ChatPageState extends State<ChatPage> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           CustomTextBox(
+            controller: _searchController,
             hint: "Buscar",
-            prefix: Icon(Icons.search, color: Colors.grey),
+            readOnly: false,
+            prefix: const Icon(Icons.search, color: Colors.grey),
           ),
         ],
       ),
     );
   }
 
-  _buildChats(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.all(10),
-      shrinkWrap: true,
-      children: List.generate(
-        chats.length,
-        (index) => ChatItem(
-          chats[index],
+  Widget _buildChats(BuildContext context) {
+    return ListView.builder(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 80),
+      itemCount: filteredChats.length,
+      itemBuilder: (context, index) {
+        return ChatItem(
+          filteredChats[index],
           onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => ChatDetailPage(chatData: chats[index]),
+              builder: (context) => ChatDetailPage(chatData: filteredChats[index]),
             ));
           },
-        ),
-      ),
+        );
+      },
     );
   }
 }
+
 
 class ShelterDetailPage extends StatelessWidget {
   final ShelterModel shelter;
@@ -196,7 +220,7 @@ class ShelterDetailPage extends StatelessWidget {
                           children: [
                             const Icon(Icons.location_pin,
                                 color: AppColor.blue),
-                            Container(
+                            SizedBox(
                               width:
                                   195, // Set a fixed width or use MediaQuery to get the available width
                               child: Text(

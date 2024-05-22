@@ -63,6 +63,7 @@ dependencies:
   #Hive for user_settings description
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  relative_time: ^5.0.0
 
 dev_dependencies:
   flutter_test:

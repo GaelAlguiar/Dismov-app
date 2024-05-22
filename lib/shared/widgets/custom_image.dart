@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class CustomImage extends StatelessWidget {
+
   const CustomImage(this.image,
       {super.key,
       this.width = 100,
@@ -13,6 +15,7 @@ class CustomImage extends StatelessWidget {
       this.trBackground = false,
       this.fit = BoxFit.cover,
       this.isNetwork = true,
+      this.onPressed,
       this.radius = 50,
       this.borderRadius,
       this.isShadow = true});
@@ -28,9 +31,17 @@ class CustomImage extends StatelessWidget {
   final double radius;
   final BorderRadiusGeometry? borderRadius;
   final BoxFit fit;
+  final Function? onPressed;
 
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed as void Function()?,
+      child: _buildImage(),
+    );
+  }
+
+  Widget _buildImage() {
     return Container(
       width: width,
       height: height,

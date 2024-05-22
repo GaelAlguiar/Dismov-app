@@ -1,5 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dismov_app/models/shelter_model.dart'; // Asegúrate de importar el modelo aquí
+import 'package:dismov_app/models/shelter_model.dart';
+import 'package:geolocator/geolocator.dart';
+
+import '../app/utils/location.dart'; // Asegúrate de importar el modelo aquí
 
 class ShelterService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -39,6 +42,26 @@ class ShelterService {
   Future<List<ShelterModel>> getAllShelters() async {
     QuerySnapshot sheltersSnapshot = await _firestore.collection('shelters').get();
     return sheltersSnapshot.docs.map((doc) => ShelterModel.fromFirebase(doc)).toList();
+  }
+  Future<List<ShelterModel>> getSheltersByPosition() async {
+    Position ubication = await LocationUtils().getCurrentLocation();
+    List<ShelterModel> sheltersList = await getAllShelters();
+    sheltersList.sort((a, b) {
+      double distanceA = Geolocator.distanceBetween(
+        ubication.latitude,
+        ubication.longitude,
+        a.latitude,
+        a.longitude,
+      );
+      double distanceB = Geolocator.distanceBetween(
+        ubication.latitude,
+        ubication.longitude,
+        b.latitude,
+        b.longitude,
+      );
+      return distanceA.compareTo(distanceB);
+    });
+    return sheltersList;
   }
 
   // Método para buscar los refugios de acuerdo a la cercanía a una ubicación

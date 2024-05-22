@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:dismov_app/models/chat_model.dart';
 import 'package:flutter/material.dart';
+import 'package:relative_time/relative_time.dart';
 import 'custom_image.dart';
 
 class ChatItem extends StatelessWidget {
@@ -74,27 +76,13 @@ class ChatItem extends StatelessWidget {
 
   Widget _buildPhoto() {
     return CustomImage(
-      chatData.shelterImageURL,
+      chatData.petImageURL,
       width: profileSize,
       height: profileSize,
     );
   }
 
   Widget buildNameAndTime() {
-    String timeAgoString = '';
-
-    if (chatData.recentMessageTime != null) {
-      final timeAgo = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(chatData.recentMessageTime!));
-
-      timeAgoString = timeAgo.inDays > 0
-          ? '${timeAgo.inDays}d'
-          : timeAgo.inHours > 0
-              ? '${timeAgo.inHours}h'
-              : timeAgo.inMinutes > 0
-                  ? '${timeAgo.inMinutes}m'
-                  : 'now';
-    }
-
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -107,16 +95,27 @@ class ChatItem extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 5),
-        Text(
-          timeAgoString,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontSize: 11,
-            color: Colors.grey,
-          ),
-        )
+        StreamBuilder(
+          stream: Stream.periodic(const Duration(minutes: 1)),
+          builder: (context, snapshot) {
+            return Text(
+              _getTimeAgo(chatData.recentMessageTime),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 11,
+                color: Colors.grey,
+              ),
+            );
+          },
+        ),
       ],
     );
+  }
+
+  String _getTimeAgo(int? timestamp) {
+    if (timestamp == null) return '';
+    final timeAgo = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return RelativeTime.locale(const Locale('es')).format(timeAgo);
   }
 }
