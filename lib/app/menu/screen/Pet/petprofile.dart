@@ -202,7 +202,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
                               _buildInfoContainer(
                                 label: 'Edad',
                                 value:
-                                    '${widget.pet.ageInYears ?? 'Unknown Age'}',
+                                    '${widget.pet.ageInYears ?? 'Unknown Age'} años',
                               ),
                               const SizedBox(width: 20),
                               _buildInfoContainer(
