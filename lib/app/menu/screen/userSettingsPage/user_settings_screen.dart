@@ -30,11 +30,9 @@ class UserSettingsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EditUserSettingsScreen(),
-                )
-              );
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const EditUserSettingsScreen(),
+              ));
             },
             icon: const Icon(
               Icons.edit,
@@ -245,8 +243,8 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         text: "Cerrar Sesión",
                         buttonColor: AppColor.blue,
                         onPressed: () async {
-
-                          bool answer = await askConfirmationToContinue(context, '¿Estás seguro de que quieres cerrar sesión?');
+                          bool answer = await askConfirmationToContinue(context,
+                              '¿Estás seguro de que quieres cerrar sesión?');
                           if (!answer) return;
                           await LoginGoogleUtils().signOutGoogle();
                           await LoginGoogleUtils().singOutWithEmail();

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 //import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/pick_image_edit.dart';
@@ -34,9 +33,9 @@ class EditUserSettingsScreen extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColor.blue,
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             ),
-            child: Text(
+            child: const Text(
               'Guardar ',
               style: TextStyle(
                 color: Colors.white,
@@ -139,7 +138,6 @@ class __UserSettingsState extends State<_UserSettingsView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-
                       const SizedBox(height: 40),
                       GestureDetector(
                         onTap: () async {
@@ -159,28 +157,29 @@ class __UserSettingsState extends State<_UserSettingsView> {
                                     fit: BoxFit.cover,
                                   ),
                                 )
-                              : colocarImagen(profilePhoto.toString(),),
+                              : colocarImagen(
+                                  profilePhoto.toString(),
+                                ),
                         ),
                       ),
                       const SizedBox(height: 34),
-                      
                       TextFormField(
                         //controller: _nombreController,
                         decoration: InputDecoration(
                           labelText: 'Nombre',
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             color: Color.fromARGB(255, 57, 57, 57),
                             fontSize: 17,
                             fontWeight: FontWeight.w400,
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color.fromARGB(255, 52, 143, 217),
                               width: 2,
                             ),
                           ),
-                          enabledBorder: UnderlineInputBorder(
+                          enabledBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.blue,
                             ),
@@ -192,29 +191,29 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         //controller: _nombreController,
                         decoration: InputDecoration(
                           labelText: 'Descripcion',
-                          labelStyle: TextStyle(
+                          labelStyle: const TextStyle(
                             color: Color.fromARGB(255, 57, 57, 57),
                             fontSize: 17,
                             fontWeight: FontWeight.w400,
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color.fromARGB(255, 52, 143, 217),
                               width: 2,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Colors.blue,
                             ),
                           ),
                         ),
                         minLines: 3, // Número mínimo de líneas visibles
-                        maxLines: null, // Número máximo de líneas visibles (puedes poner null para ilimitadas)
+                        maxLines:
+                            null, // Número máximo de líneas visibles (puedes poner null para ilimitadas)
                       ),
-
                       const SizedBox(height: 16),
                       /*TextFormField(
                         //controller: _correoController,
@@ -278,9 +277,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           child: CustomFilledButton(
                             text: "Eliminar Cuenta",
                             buttonColor: const Color.fromARGB(255, 228, 14, 39),
-                            onPressed: () async {
-
-                            },
+                            onPressed: () async {},
                           ),
                         ),
                       ),
