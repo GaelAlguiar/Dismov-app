@@ -33,17 +33,6 @@ class LocationUtils {
       debugPrint("$e");
     }
   }
-  getAdressFromLatLong(double latitude, double longitud) async {
-    try {
-      List<Placemark> placemark = await placemarkFromCoordinates(
-          latitude, longitud);
-      Placemark place = placemark[0];
-      String currentAdress = "${place.locality}, ${place.country}";
-      return currentAdress;
-    } catch (e) {
-      debugPrint("$e");
-    }
-  }
 
   Future<String> obtenerLocalizacion() async {
     String ubicacion = "";
