@@ -1,14 +1,16 @@
 
 import 'dart:math';
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
 import 'package:dismov_app/models/chat_model.dart';
 import 'package:dismov_app/models/pet_model.dart';
 import 'package:dismov_app/models/shelter_model.dart';
+import 'package:dismov_app/models/user_model.dart';
+import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import '../../../../services/shelter_service.dart';
@@ -20,10 +22,17 @@ import '../chat/chat.dart';
 
 
 class PetProfilePage extends StatefulWidget {
+
+import 'package:provider/provider.dart';
+import '../../../../services/shelter_service.dart';
+import 'package:dismov_app/services/chat_service.dart';
+
+class PetProfilePage extends StatelessWidget {
+
   final PetModel pet;
 
 
-  PetProfilePage({required Key key, required this.pet}) : super(key: key);
+  PetProfilePage({super.key, required this.pet});
 
   @override
   _PetProfilePageState createState() => _PetProfilePageState();
@@ -83,7 +92,9 @@ class _PetProfilePageState extends State<PetProfilePage> {
   Widget build(BuildContext context) {
     String imgFondo = widget.pet.imageURLs[0];
     return FutureBuilder<ShelterModel?>(
+
       future: ShelterService().getShelterById(widget.pet.shelterId),
+
       builder: (context, AsyncSnapshot<ShelterModel?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
@@ -99,7 +110,6 @@ class _PetProfilePageState extends State<PetProfilePage> {
             ),
           );
         } else {
-
           var shelter = snapshot.data!;
           var shelterName = shelter.name;
           String colorsString = widget.pet.colors.join(',');
@@ -414,8 +424,6 @@ class _PetProfilePageState extends State<PetProfilePage> {
                       ),
                     ),
                   ),
-
-
                 ],
               ),
             ),
@@ -431,13 +439,8 @@ class _PetProfilePageState extends State<PetProfilePage> {
       required ShelterModel shelter,
       required PetModel pet,
       required User user}) async {
-  // if exists, navigate to the chat screen
-  // if not, create a new chat room and navigate to the chat screen
-  ChatModel? chatRoom = await _chatService.checkChat(
-    FirebaseAuth.instance.currentUser!.uid,
-    pet.shelterId,
-    pet.id
-  );
+    ChatModel? chatRoom = await _chatService.checkChat(
+        FirebaseAuth.instance.currentUser!.uid, pet.shelterId, pet.id);
 
   if (chatRoom != null && context.mounted) {
     Navigator.push(
@@ -476,11 +479,13 @@ class _PetProfilePageState extends State<PetProfilePage> {
       );
     }
   }
-      }
 
   Widget _buildInfoContainer({required String label, required String value}) {
     return Container(
-      margin: const EdgeInsets.only(right: 10.0),
+      width: 100,
+      margin: const EdgeInsets.symmetric(
+        vertical: 5.0,
+      ),
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 0.32),
@@ -512,7 +517,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
             style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(	11	,96,	151,.99),
+              color: Color.fromRGBO(11, 96, 151, .99),
             ),
             textAlign: TextAlign.center,
           ),
@@ -520,10 +525,14 @@ class _PetProfilePageState extends State<PetProfilePage> {
       ),
     );
   }
-  Widget _buildInfoContainerColor({required String label, required String value}) {
+
+  Widget _buildInfoContainerColor(
+      {required String label, required String value}) {
     return Container(
-      width: 150,
-      margin: const EdgeInsets.only(right: 10.0),
+      width: 150, // Ajustar el ancho del contenedor
+      margin: const EdgeInsets.symmetric(
+        vertical: 5.0,
+      ),
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 0.32),
@@ -548,6 +557,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
               fontSize: 16,
               fontWeight: FontWeight.normal,
               color: Colors.grey,
+
             ),
           ),
           const SizedBox(height: 5.0),
