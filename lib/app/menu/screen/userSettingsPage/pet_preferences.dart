@@ -26,7 +26,6 @@ class PetPreferences extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: AppColor.blue,
-        actions: [],
       ),
       body: const _UserSettingsView(),
     );
@@ -55,13 +54,6 @@ class __UserSettingsState extends State<_UserSettingsView> {
       backgroundColor: AppColor.appBgColor,
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            backgroundColor: AppColor.appBarColor,
-            pinned: true,
-            snap: true,
-            floating: true,
-            title: _buildAppBar(),
-          ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) => _buildBody(),
