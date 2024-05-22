@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
+//import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/pick_image_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
