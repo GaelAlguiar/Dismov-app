@@ -189,7 +189,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
                                     color: Color.fromRGBO(11, 96, 151, 1), // Color azul personalizado
                                   ),
                                   Text(
-                                      (ubicacion!=null)?calcularKilometros(shelter.latitude, shelter.longitude, ubicacion!.latitude, ubicacion!.longitude):"NA",
+                                    (ubicacion!=null)?calcularKilometros(shelter.latitude, shelter.longitude, ubicacion!.latitude, ubicacion!.longitude):"NA",
 
                                     style: const TextStyle(
                                       fontSize: 20,
@@ -427,20 +427,20 @@ class _PetProfilePageState extends State<PetProfilePage> {
 
   void goToChat(
       {required BuildContext context,
-      required ChatService chatService,
-      required ShelterModel shelter,
-      required PetModel pet,
-      required User user}) async {
+        required ChatService chatService,
+        required ShelterModel shelter,
+        required PetModel pet,
+        required User user}) async {
     ChatModel? chatRoom = await _chatService.checkChat(
         FirebaseAuth.instance.currentUser!.uid, pet.shelterId, pet.id);
 
     if (chatRoom != null && context.mounted) {
       Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChatDetailPage(chatData: chatRoom!)
+          context,
+          MaterialPageRoute(
+              builder: (context) => ChatDetailPage(chatData: chatRoom!)
           )
-        );
+      );
     } else {
       User user = FirebaseAuth.instance.currentUser!;
       chatRoom = ChatModel(
@@ -463,11 +463,11 @@ class _PetProfilePageState extends State<PetProfilePage> {
       DocumentReference newChatDoc = await _chatService.createChat(chatRoom);
       chatRoom.id = newChatDoc.id;
       if (context.mounted) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChatDetailPage(chatData: chatRoom!)
-          )
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChatDetailPage(chatData: chatRoom!)
+            )
         );
       }
     }
