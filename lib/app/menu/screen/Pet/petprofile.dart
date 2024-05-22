@@ -22,16 +22,7 @@ import '../chat/chat.dart';
 
 
 class PetProfilePage extends StatefulWidget {
-
-import 'package:provider/provider.dart';
-import '../../../../services/shelter_service.dart';
-import 'package:dismov_app/services/chat_service.dart';
-
-class PetProfilePage extends StatelessWidget {
-
   final PetModel pet;
-
-
   PetProfilePage({super.key, required this.pet});
 
   @override
@@ -83,6 +74,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
       ubicacion = location;
     });
   }
+
 
 
 
@@ -442,90 +434,44 @@ class _PetProfilePageState extends State<PetProfilePage> {
     ChatModel? chatRoom = await _chatService.checkChat(
         FirebaseAuth.instance.currentUser!.uid, pet.shelterId, pet.id);
 
-  if (chatRoom != null && context.mounted) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChatDetailPage(chatData: chatRoom!)
-        )
+    if (chatRoom != null && context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatDetailPage(chatData: chatRoom!)
+          )
+        );
+    } else {
+      User user = FirebaseAuth.instance.currentUser!;
+      chatRoom = ChatModel(
+        id: '',
+        userId: user.uid,
+        userImageURL: user.photoURL ?? '',
+        userName: user.displayName ?? '',
+        shelterImageURL: shelter.imageURL,
+        shelterName: shelter.name,
+        shelterId: pet.shelterId,
+        petId: pet.id,
+        petName: pet.name,
+        petImageURL: pet.imageURLs[0],
+        recentMessageContent: null,
+        recentMessageTime: null,
+        recentMessageSenderId: null,
+        conversationStatus: 'intento de adopción',
       );
-  } else {
-    User user = FirebaseAuth.instance.currentUser!;
-    chatRoom = ChatModel(
-      id: '',
-      userId: user.uid,
-      userImageURL: user.photoURL ?? '',
-      userName: user.displayName ?? '',
-      shelterImageURL: shelter.imageURL,
-      shelterName: shelter.name,
-      shelterId: pet.shelterId,
-      petId: pet.id,
-      petName: pet.name,
-      petImageURL: pet.imageURLs[0],
-      recentMessageContent: null,
-      recentMessageTime: null,
-      recentMessageSenderId: null,
-      conversationStatus: 'intento de adopción',
-    );
 
-    DocumentReference newChatDoc = await _chatService.createChat(chatRoom);
-    chatRoom.id = newChatDoc.id;
-    if (context.mounted) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ChatDetailPage(chatData: chatRoom!)
-        )
-      );
+      DocumentReference newChatDoc = await _chatService.createChat(chatRoom);
+      chatRoom.id = newChatDoc.id;
+      if (context.mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatDetailPage(chatData: chatRoom!)
+          )
+        );
+      }
     }
   }
-
-  Widget _buildInfoContainer({required String label, required String value}) {
-    return Container(
-      width: 100,
-      margin: const EdgeInsets.symmetric(
-        vertical: 5.0,
-      ),
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey, width: 0.32),
-        borderRadius: BorderRadius.circular(7.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.07),
-            offset: const Offset(2.0, 2.0),
-            blurRadius: 4.0,
-            spreadRadius: 0.0,
-          )
-        ],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-
-
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              color: Colors.grey,
-            ),
-          ),const SizedBox(height: 5.0),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(11, 96, 151, .99),
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildInfoContainerColor(
       {required String label, required String value}) {
     return Container(
@@ -567,6 +513,51 @@ class _PetProfilePageState extends State<PetProfilePage> {
               fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Color.fromRGBO(	11	,96,	151,.99),
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+  Widget _buildInfoContainer({required String label, required String value}) {
+    return Container(
+      width: 100,
+      margin: const EdgeInsets.symmetric(
+        vertical: 5.0,
+      ),
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey, width: 0.32),
+        borderRadius: BorderRadius.circular(7.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.07),
+            offset: const Offset(2.0, 2.0),
+            blurRadius: 4.0,
+            spreadRadius: 0.0,
+          )
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: Colors.grey,
+            ),
+          ),const SizedBox(height: 5.0),
+          Text(
+            value,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(11, 96, 151, .99),
             ),
             textAlign: TextAlign.center,
           ),
