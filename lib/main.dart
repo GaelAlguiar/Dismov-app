@@ -1,4 +1,6 @@
 import 'package:dismov_app/provider/auth_provider.dart';
+import 'package:dismov_app/provider/location_provider.dart';
+import 'package:dismov_app/services/location_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/config/router/app_router.dart';
@@ -29,11 +31,13 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => AuthenticationProvider())
+        ChangeNotifierProvider(create: (_) => AuthenticationProvider()),
+        ChangeNotifierProvider(create: (_) => LocationProvider())
       ],
       child: MaterialApp.router(
         title: 'Pawtner Up',

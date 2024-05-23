@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 
 import 'package:dismov_app/app/menu/screen/Pet/shelters_page.dart';
 
+import '../../../services/location_service.dart';
+
 class RootApp extends StatefulWidget {
   const RootApp({super.key});
 
@@ -17,6 +19,7 @@ class RootApp extends StatefulWidget {
 }
 
 class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
+
   int _activeTab = 0;
 
   final List barItems = [
