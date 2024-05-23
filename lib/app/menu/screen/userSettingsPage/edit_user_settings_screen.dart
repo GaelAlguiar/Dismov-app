@@ -1,14 +1,20 @@
 import 'dart:io';
 //import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/pick_image_edit.dart';
+import 'package:dismov_app/config/router/app_router.dart';
+import 'package:dismov_app/models/user_model.dart';
+import 'package:dismov_app/services/user_service.dart';
+import 'package:dismov_app/utils/ask_confirmation_to_continue.dart';
+import 'package:dismov_app/utils/show_error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:dismov_app/utils/login_google_utils.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:hive/hive.dart';
-//import 'package:dismov_app/utils/pick_image_edit.dart';
+import 'package:dismov_app/utils/pick_image.dart';
 
 class EditUserSettingsScreen extends StatelessWidget {
   const EditUserSettingsScreen({super.key});
@@ -117,13 +123,14 @@ class __UserSettingsState extends State<_UserSettingsView> {
   Widget _buildBody() {
     AuthenticationProvider ap =
         Provider.of<AuthenticationProvider>(context, listen: false);
+    TextEditingController nameController = TextEditingController(text: ap.user!.name);
+    TextEditingController descriptionController = TextEditingController(text: userBox.get('description', defaultValue: ''));
     return FutureBuilder(
       future: LoginGoogleUtils().isUserLoggedIn(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
         } else {
-          String email = ap.user?.email ?? '';
           String name = ap.user?.name ?? '';
           String? profilePhoto = ap.user?.profilePicURL;
           String description = userBox.get('description', defaultValue: '');
@@ -142,7 +149,35 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       GestureDetector(
                         onTap: () async {
                           image = await pickImageEdit(context);
-                          setState(() {});
+                          // change the image 
+                          if (image == null) return ;
+                          if (!context.mounted) return;
+                          if (ap.user == null) return;
+                          late String? imageURL;
+                          // save the image
+                          try {
+                            imageURL = await UserService().updateProfilePic(
+                              image!,
+                              ap.user!.uid,
+                            );
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            imageURL = null;
+                            showErrorSnackbar(context, e.toString());
+                            return;
+                          }
+                          if (!context.mounted) return;
+                          if (imageURL == null) return;
+                          if (ap.user == null) return;
+                          ap.user = UserModel(
+                            uid: ap.user!.uid,
+                            name: ap.user!.name,
+                            email: ap.user!.email,
+                            profilePicURL: imageURL,
+                          );
+                          setState(() {
+                            profilePhoto = imageURL;
+                          });
                         },
                         child: CircleAvatar(
                           radius: 80,
@@ -164,7 +199,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       ),
                       const SizedBox(height: 34),
                       TextFormField(
-                        //controller: _nombreController,
+                        controller: nameController,
                         decoration: InputDecoration(
                           labelText: 'Nombre',
                           labelStyle: const TextStyle(
@@ -188,7 +223,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       ),
                       const SizedBox(height: 46),
                       TextFormField(
-                        //controller: _nombreController,
+                        controller: descriptionController,
                         decoration: InputDecoration(
                           labelText: 'Descripcion',
                           labelStyle: const TextStyle(
@@ -277,7 +312,16 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           child: CustomFilledButton(
                             text: "Eliminar Cuenta",
                             buttonColor: const Color.fromARGB(255, 228, 14, 39),
-                            onPressed: () async {},
+                            onPressed: () async {
+                              bool confirm = await askConfirmationToContinue(
+                                context,
+                                '¿Estás seguro de que deseas eliminar tu cuenta?',
+                              );
+                              if (confirm) {
+                                if (!context.mounted) return;
+                                await UserService().signOutUser(context);
+                              }
+                            },
                           ),
                         ),
                       ),

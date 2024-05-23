@@ -24,6 +24,15 @@ class UserService {
     }
   }
 
+  Future<String?> updateProfilePic(File image, String uid) async {
+    String profilePicURL = await uploadProfilePic(image, uid);
+    await _firestore
+        .collection('users')
+        .doc(uid)
+        .update({'profilePicURL': profilePicURL});
+    return profilePicURL;
+  }
+
   Future<UserModel> createUser(String username, String email, String password,
       File? image, BuildContext context) async {
     UserCredential userCredential =
