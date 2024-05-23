@@ -1,20 +1,19 @@
+import 'dart:ui';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
 import 'package:dismov_app/models/chat_model.dart';
 import 'package:dismov_app/models/pet_model.dart';
 import 'package:dismov_app/models/shelter_model.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'package:geolocator/geolocator.dart';
-import '../../../../services/shelter_service.dart';
+import 'package:dismov_app/provider/location_provider.dart';
+import 'package:dismov_app/services/shelter_service.dart';
 import 'package:dismov_app/services/chat_service.dart';
-
-import '../../../../shared/widgets/custom_image.dart';
-import '../../../../utils/location_utils.dart';
-import '../chat/chat.dart';
+import 'package:dismov_app/shared/widgets/custom_image.dart';
+import 'package:dismov_app/utils/location_utils.dart';
+import 'package:dismov_app/app/menu/screen/chat/chat.dart';
+import 'package:provider/provider.dart';
 
 class PetProfilePage extends StatefulWidget {
   final PetModel pet;
@@ -26,57 +25,20 @@ class PetProfilePage extends StatefulWidget {
 
 class _PetProfilePageState extends State<PetProfilePage> {
   final ChatService _chatService = ChatService();
-  String petAdress = "";
-  Position? ubicacion = null;
-  @override
-  void initState() {
-    super.initState();
-    obtenerYActualizarUbicacion();
-  }
-
-  String getAdress(double lat, double long) {
-    petAdress = LocationUtils().getAdressFromLatLong(lat, long);
-    return petAdress;
-  }
-
-  static const double R = 6371000; // Radio de la Tierra en metros
-
-  static double _degToRad(double degrees) {
-    return degrees * pi / 180;
-  }
-
-  static String calcularKilometros(
-      double lat1, double lon1, double lat2, double lon2) {
-    double dLat = _degToRad(lat2 - lat1);
-    double dLon = _degToRad(lon2 - lon1);
-
-    double a = sin(dLat / 2) * sin(dLat / 2) +
-        cos(_degToRad(lat1)) *
-            cos(_degToRad(lat2)) *
-            sin(dLon / 2) *
-            sin(dLon / 2);
-    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-
-    double distanceInMeters = R * c; // Distancia en metros
-
-    if (distanceInMeters < 1000) {
-      return distanceInMeters.toStringAsFixed(2) + 'm';
-    } else {
-      double distanceInKm = distanceInMeters / 1000;
-      return distanceInKm.toStringAsFixed(2) + 'Km';
-    }
-  }
-
-  void obtenerYActualizarUbicacion() async {
-    var location = await LocationUtils().getCurrentLocation();
-    setState(() {
-      ubicacion = location;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     String imgFondo = widget.pet.imageURLs[0];
+    int providerBool = 0;
+    double prueba = 0;
+    //Comprueba si se puede acceder el provider, es decir, si sí se puede usar el gps.
+    LocationProvider lp = Provider.of<LocationProvider>(context, listen: false);
+    try {
+      prueba = lp.location!.ubicacion!.latitude;
+      providerBool = 3;
+    } catch (e) {
+      providerBool = 2;
+    }
     return FutureBuilder<ShelterModel?>(
       future: ShelterService().getShelterById(widget.pet.shelterId),
       builder: (context, AsyncSnapshot<ShelterModel?> snapshot) {
@@ -94,10 +56,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
           );
         } else {
           var shelter = snapshot.data!;
-          // var shelterName = shelter.name;
           String colorsString = widget.pet.colors.join(',');
-          //petAdress = getAdress(shelter.latitude, shelter.longitude);
-
           return Scaffold(
             backgroundColor: Colors.white,
             body: SingleChildScrollView(
@@ -171,28 +130,22 @@ class _PetProfilePageState extends State<PetProfilePage> {
                             ),
                             Row(
                               children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  color: Color.fromRGBO(11, 96, 151, 1),
+                                Icon(
+                                  Icons.location_on, // Icono de ubicación
+                                  color: Color.fromRGBO(11, 96, 151, 1), // Color azul personalizado
                                 ),
                                 Text(
-                                  (ubicacion != null)
-                                      ? calcularKilometros(
-                                          shelter.latitude,
-                                          shelter.longitude,
-                                          ubicacion!.latitude,
-                                          ubicacion!.longitude)
-                                      : "NA",
+                                  (providerBool == 3)?LocationUtils().calcularKilometros(shelter.latitude, shelter.longitude, lp.location!.ubicacion!.latitude,lp.location!.ubicacion!.longitude):"NA",
                                   style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
-                                    color: Color.fromRGBO(11, 96, 151,
-                                        1), // Color azul personalizado
+                                    color: Color.fromRGBO(11, 96, 151, 1), // Color azul personalizado
                                   ),
                                 ),
+
                               ],
                             ),
-                          ],
+                          ]
                         ),
                         const SizedBox(height: 20),
                         SingleChildScrollView(
@@ -204,6 +157,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
                                 value:
                                     '${widget.pet.ageInYears ?? 'Unknown Age'} años',
                               ),
+
                               const SizedBox(width: 20),
                               _buildInfoContainer(
                                 label: 'Sexo',

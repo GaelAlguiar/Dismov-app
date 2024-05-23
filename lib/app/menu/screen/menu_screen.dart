@@ -10,9 +10,14 @@ import 'package:dismov_app/utils/location_utils.dart';
 import 'package:dismov_app/app/utils/data.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:dismov_app/services/pet_service.dart';
+import 'package:geolocator/geolocator.dart';
+import '../../../models/location_model.dart';
 import '../../../models/pet_model.dart';
 import 'package:dismov_app/app/menu/screen/Pet/petprofile.dart';
 import 'package:provider/provider.dart';
+
+import '../../../provider/location_provider.dart';
+import '../../../services/location_service.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({super.key});
@@ -55,6 +60,7 @@ class MenuScreen extends StatelessWidget {
 }
 
 class _MenuView extends StatefulWidget {
+
   const _MenuView();
   @override
   __MenuViewState createState() => __MenuViewState();
@@ -63,23 +69,34 @@ class _MenuView extends StatefulWidget {
 class __MenuViewState extends State<_MenuView> {
   //Comprueba Ubicacion
   String ubicacion = "Ubicacion Desconocida";
+  Position? location = null;
+  LocationProvider? lp = null;
   void obtenerYActualizarUbicacion() async {
-    String ubi = await LocationUtils().obtenerLocalizacion();
+    await LocationService().defineLocation(context);
+
+    LocationModel loc = Provider.of<LocationProvider>(
+        context,
+        listen: false)
+        .location!;
+    String ubi = await LocationUtils().getAdressFromCoordinates(loc.ubicacion);
     setState(() {
-      ubicacion =
-          ubi; // Actualiza la ubicación una vez que se resuelve el Future
+      location = loc.ubicacion;
+      ubicacion = ubi;
     });
+    //Forma inicial de obtener ubicación
+    //String ubi = await LocationUtils().obtenerLocalizacion();
   }
 
   @override
   void initState() {
     super.initState();
-    // Llama al método para actualizar la ubicación al entrar en el menu screen
     obtenerYActualizarUbicacion();
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(

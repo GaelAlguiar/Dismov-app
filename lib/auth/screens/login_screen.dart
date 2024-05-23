@@ -139,6 +139,7 @@ class _LoginFormState extends State<_LoginForm> {
                 try {
                   await UserService()
                       .signInUser(context, email.text, password.text);
+
                   if (context.mounted) {
                     UserModel user = Provider.of<AuthenticationProvider>(
                             context,
