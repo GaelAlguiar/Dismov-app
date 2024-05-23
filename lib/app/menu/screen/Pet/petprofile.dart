@@ -6,6 +6,7 @@ import 'package:dismov_app/models/chat_model.dart';
 import 'package:dismov_app/models/pet_model.dart';
 import 'package:dismov_app/models/shelter_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/provider/location_provider.dart';
 import 'package:dismov_app/services/shelter_service.dart';
@@ -13,6 +14,7 @@ import 'package:dismov_app/services/chat_service.dart';
 import 'package:dismov_app/shared/widgets/custom_image.dart';
 import 'package:dismov_app/utils/location_utils.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 class PetProfilePage extends StatefulWidget {
@@ -119,7 +121,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.pet.name,
+                                  widget.pet.name ,
                                   style: const TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -259,66 +261,79 @@ class _PetProfilePageState extends State<PetProfilePage> {
                     ),
                   ),
                   //Info del refugio
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ShelterDetailPage(shelter: shelter),
-                                ),
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CustomImage(
-                                  shelter.imageURL,
-                                  borderRadius: BorderRadius.circular(50),
-                                  isShadow: true,
-                                  width: 60,
-                                  height: 60,
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      shelter.name,
-                                      style: const TextStyle(
-                                        fontSize: 20, // Tamaño de letra 20
-                                        fontWeight: FontWeight.bold, // Negrita
-                                        color:
-                                            Color(0xFF084065), // Color #084065
-                                      ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          ShelterDetailPage(shelter: shelter),
                                     ),
-                                    const Text(
-                                      "Ver Perfil",
-                                      style: TextStyle(
-                                        fontSize: 16, // Tamaño de letra 16
-                                        color: Colors.blue, // Color azul
+                                  );
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    CustomImage(
+                                      shelter.imageURL,
+                                      borderRadius: BorderRadius.circular(50),
+                                      isShadow: true,
+                                      width: 60,
+                                      height: 60,
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            shelter.name,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF084065),
+                                            ),
+                                          ),
+                                          const Text(
+                                            "Ver Perfil",
+                                            style: TextStyle(
+                                              fontSize: 16, // Tamaño de letra 16
+                                              color: Colors.blue, // Color azul
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                          ElevatedButton.icon(
+                          ],
+                        ),
+                        SizedBox(height: 10,),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
                             onPressed: () async {
                               goToChat(
-                                  context: context,
-                                  chatService: _chatService,
-                                  shelter: shelter,
-                                  pet: widget.pet,
-                                  user: FirebaseAuth.instance.currentUser!);
+                                context: context,
+                                chatService: _chatService,
+                                shelter: shelter,
+                                pet: widget.pet,
+                                user: FirebaseAuth.instance.currentUser!,
+                              );
                             },
                             icon: const Icon(
                               Icons.chat,
@@ -333,16 +348,15 @@ class _PetProfilePageState extends State<PetProfilePage> {
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromRGBO(11, 96, 151, .7),
+                              backgroundColor: const Color.fromRGBO(11, 96, 151, .7),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50.0),
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
