@@ -121,7 +121,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.pet.name,
+                                  widget.pet.name ,
                                   style: const TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,

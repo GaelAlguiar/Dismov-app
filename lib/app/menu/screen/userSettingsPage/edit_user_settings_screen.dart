@@ -32,7 +32,25 @@ class EditUserSettingsScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: AppColor.blue,
-
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              // Acción a realizar cuando se presiona el botón
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.blue,
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            ),
+            child: const Text(
+              'Guardar ',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+              ),
+            ),
+          )
+        ],
       ),
       body: const _UserSettingsView(),
     );
@@ -127,70 +145,11 @@ class __UserSettingsState extends State<_UserSettingsView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              String name = nameController.text;
-                              String description = descriptionController.text;
-
-                              if (name.trim().isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('El nombre no puede estar vacío'),
-                                  ),
-                                );
-                                return;
-                              }
-
-                              if (description.trim().isEmpty) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('La descripción no puede estar vacía'),
-                                  ),
-                                );
-                                return;
-                              }
-
-                              try
-                              {
-                                UserModel updateUser = UserModel(
-                                  uid: ap.user!.uid,
-                                  name: name,
-                                  email: ap.user!.email ,
-                                  profilePicURL: image != null
-                                      ? await UserService().uploadProfilePic(image!, ap.user!.uid)
-                                      : null,
-                                );
-                                UserService().updateUser(updateUser);
-
-                              }catch(e)
-                              {
-
-                              }
-
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColor.blue,
-                              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-                            ),
-                            child: const Text(
-                              'Guardar ',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                       const SizedBox(height: 40),
                       GestureDetector(
                         onTap: () async {
                           image = await pickImageEdit(context);
-                          // change the image
+                          // change the image 
                           if (image == null) return ;
                           if (!context.mounted) return;
                           if (ap.user == null) return;
