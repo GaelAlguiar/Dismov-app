@@ -52,6 +52,21 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 curve: Curves.easeOut,
               );
             });
+
+            if (_messages.isEmpty) {
+              return Column(
+                children: [
+                  _buildTopBar(),
+                  Expanded(
+                    child: Center(
+                      child: Text("Buenas, puedes iniciar un chat", style: TextStyle(fontSize: 16, color: Colors.grey),),
+                    ),
+                  ),
+                  _buildInput(),
+                ],
+              );
+            }
+
             return getBody(context);
           } else {
             return const Center(
