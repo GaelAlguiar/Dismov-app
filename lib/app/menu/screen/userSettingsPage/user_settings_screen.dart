@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/pet_preferences.dart';
+import 'package:dismov_app/app/menu/screen/userSettingsPage/pick_image_edit.dart';
+import 'package:dismov_app/models/user_model.dart';
+import 'package:dismov_app/services/user_service.dart';
 import 'package:dismov_app/utils/ask_confirmation_to_continue.dart';
+import 'package:dismov_app/utils/show_error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -28,19 +34,6 @@ class UserSettingsScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: AppColor.blue,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const EditUserSettingsScreen(),
-              ));
-            },
-            icon: const Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-          )
-        ],
       ),
       body: const _UserSettingsView(),
     );
@@ -130,6 +123,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           String name = ap.user?.name ?? '';
           String? profilePhoto = ap.user?.profilePicURL;
           String description = userBox.get('description', defaultValue: '');
+          File? image;
 
           return SingleChildScrollView(
             child: Padding(
@@ -137,7 +131,58 @@ class __UserSettingsState extends State<_UserSettingsView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  colocarImagen(profilePhoto.toString()),
+                      const SizedBox(height: 34),
+                      GestureDetector(
+                        onTap: () async {
+                          image = await pickImageEdit(context);
+                          // change the image 
+                          if (image == null) return ;
+                          if (!context.mounted) return;
+                          if (ap.user == null) return;
+                          late String? imageURL;
+                          // save the image
+                          try {
+                            imageURL = await UserService().updateProfilePic(
+                              image!,
+                              ap.user!.uid,
+                            );
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            imageURL = null;
+                            showErrorSnackbar(context, 'Error al subir la imagen.');
+                            return;
+                          }
+                          if (!context.mounted) return;
+                          if (imageURL == null) return;
+                          if (ap.user == null) return;
+                          ap.user = UserModel(
+                            uid: ap.user!.uid,
+                            name: ap.user!.name,
+                            email: ap.user!.email,
+                            profilePicURL: imageURL,
+                          );
+                          setState(() {
+                            profilePhoto = imageURL;
+                          });
+                        },
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundColor: AppColor.darkblue,
+                          child: image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.file(
+                                    image,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : colocarImagen(
+                                  profilePhoto.toString(),
+                                ),
+                        ),
+                      ),
                   const SizedBox(height: 10),
                   Text(
                     name,
@@ -329,7 +374,6 @@ class __EditDescriptionDialogState extends State<_EditDescriptionDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
           child: const Text('Cancelar'),
