@@ -114,7 +114,7 @@ class __MenuViewState extends State<_MenuView> {
             ],
           ),
           FutureBuilder<List<PetModel>>(
-              future: PetService().getAllPets(),
+              future: PetService().getAvailablePets(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(

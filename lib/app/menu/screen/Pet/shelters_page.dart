@@ -294,6 +294,8 @@ class __SheltersViewState extends State<_SheltersView> {
                                   fontSize: 16,
                                   color: Colors.black,
                                 ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ],
                           ),
