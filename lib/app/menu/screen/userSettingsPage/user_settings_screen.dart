@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:dismov_app/utils/login_google_utils.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:hive/hive.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserSettingsScreen extends StatelessWidget {
   const UserSettingsScreen({super.key});
@@ -77,7 +78,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildBody(),
+                  (context, index) => _buildBody(),
               childCount: 1,
             ),
           ),
@@ -118,7 +119,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
 
   Widget _buildBody() {
     AuthenticationProvider ap =
-        Provider.of<AuthenticationProvider>(context, listen: false);
+    Provider.of<AuthenticationProvider>(context, listen: false);
     return FutureBuilder(
       future: LoginGoogleUtils().isUserLoggedIn(),
       builder: (context, snapshot) {
@@ -137,7 +138,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   colocarImagen(profilePhoto.toString()),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
                   Text(
                     name,
                     style: const TextStyle(
@@ -145,14 +146,14 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 7),
+                  const SizedBox(height: 5),
                   Text(
                     email,
                     style: const TextStyle(
                       color: Colors.grey,
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 12),
                   GestureDetector(
                     onTap: () {
                       showDialog(
@@ -166,7 +167,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.85,
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.12,
                       decoration: BoxDecoration(
                         color: description.isEmpty
                             ? Colors.grey[200]
@@ -196,7 +197,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -217,23 +218,39 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       ),
                     ],
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Chip(
-                        label: Text('Pequeño'),
-                      ),
-                      SizedBox(width: 8),
-                      Chip(
-                        label: Text('Activo'),
-                      ),
-                      SizedBox(width: 8),
-                      Chip(
-                        label: Text('Perro'),
-                      ),
-                    ],
+                  FutureBuilder<QuerySnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collection('preferences')
+                        .where('useruid', isEqualTo: ap.user!.uid)
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text('Error al cargar preferencias');
+                      } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return const SizedBox.shrink();
+                      } else {
+                        var preferences = snapshot.data!.docs[0].data() as Map<String, dynamic>;
+                        String type = preferences['type'] ?? '';
+                        List<dynamic> features = preferences['features'] ?? [];
+                        String size = preferences['size'] ?? '';
+
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            if (type.isNotEmpty)
+                              Chip(label: Text(type)),
+                            if (features.isNotEmpty)
+                              Chip(label: Text(features[0])),
+                            if (size.isNotEmpty)
+                              Chip(label: Text(size)),
+                          ],
+                        );
+                      }
+                    },
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 25),
                     child: SizedBox(
@@ -312,7 +329,7 @@ class __EditDescriptionDialogState extends State<_EditDescriptionDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop;
+            Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
           child: const Text('Cancelar'),

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
+import 'package:dismov_app/services/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -41,11 +43,41 @@ class _UserSettingsView extends StatefulWidget {
 
 class __UserSettingsState extends State<_UserSettingsView> {
   late Box userBox;
+  bool isCatSelected = false;
+  bool isDogSelected = true;
+  int selectedAge = 1; // 1 for 1-6m, 2 for 6-12m, 3 for 1+ years
+  int selectedSize = 1; // 1 for small, 2 for medium, 3 for large
+  List<String> selectedPersonality = [];
+  String? documentId;
 
   @override
   void initState() {
     super.initState();
     userBox = Hive.box('userBox');
+    loadPreferences();
+  }
+
+  Future<void> loadPreferences() async {
+    AuthenticationProvider ap = Provider.of<AuthenticationProvider>(context, listen: false);
+    String useruid = ap.user!.uid;
+
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('preferences')
+        .where('useruid', isEqualTo: useruid)
+        .get();
+
+    if (snapshot.docs.isNotEmpty) {
+      var data = snapshot.docs.first.data() as Map<String, dynamic>;
+      documentId = snapshot.docs.first.id;
+
+      setState(() {
+        isCatSelected = data['type'] == 'cat';
+        isDogSelected = data['type'] == 'dog';
+        selectedAge = data['age'] == 0.5 ? 1 : data['age'] == 1 ? 2 : 3;
+        selectedSize = data['size'] == 'small' ? 1 : data['size'] == 'medium' ? 2 : 3;
+        selectedPersonality = List<String>.from(data['features']);
+      });
+    }
   }
 
   @override
@@ -56,7 +88,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
         slivers: [
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildBody(),
+                  (context, index) => _buildBody(),
               childCount: 1,
             ),
           ),
@@ -95,13 +127,6 @@ class __UserSettingsState extends State<_UserSettingsView> {
     );
   }
 
-
-  bool isCatSelected = false;
-  bool isDogSelected = true;
-  int selectedAge = 1; // 1 for 1-6m, 2 for 6-12m, 3 for 1+ years
-  int selectedSize = 1; // 1 for small, 2 for medium, 3 for large
-  List<String> selectedPersonality = [];
-
   void togglePersonality(String personality) {
     setState(() {
       if (selectedPersonality.contains(personality)) {
@@ -112,8 +137,6 @@ class __UserSettingsState extends State<_UserSettingsView> {
     });
   }
 
-
-
   Widget buildChip(String label) {
     final isSelected = selectedPersonality.contains(label);
     return ChoiceChip(
@@ -123,9 +146,6 @@ class __UserSettingsState extends State<_UserSettingsView> {
     );
   }
 
-
-
-
   Widget _buildBody() {
     return SingleChildScrollView(
       child: Padding(
@@ -134,11 +154,11 @@ class __UserSettingsState extends State<_UserSettingsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Tipo de mascota', 
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                )
+              Text('Tipo de mascota',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )
               ),
               Row(
                 children: [
@@ -166,11 +186,11 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 ],
               ),
               SizedBox(height: 20),
-              Text('Edad', 
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                )
+              Text('Edad',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )
               ),
               Row(
                 children: [
@@ -206,11 +226,11 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 ],
               ),
               SizedBox(height: 20),
-              Text('Tamaño', 
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                )
+              Text('Tamaño',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )
               ),
               Row(
                 children: [
@@ -246,11 +266,11 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 ],
               ),
               SizedBox(height: 20),
-              Text('Personalidad', 
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                )
+              Text('Personalidad',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  )
               ),
               Wrap(
                 spacing: 10.0,
@@ -275,14 +295,74 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     child: CustomFilledButton(
                       text: "Guardar cambios",
                       buttonColor: AppColor.blue,
-                      onPressed: () async {},
+                      onPressed: () async {
+                        AuthenticationProvider ap =
+                        Provider.of<AuthenticationProvider>(context, listen: false);
+                        String useruid = ap.user!.uid;
+
+                        String petType = isCatSelected ? 'cat' : 'dog';
+                        double age;
+                        switch (selectedAge) {
+                          case 1:
+                            age = 0.5;
+                            break;
+                          case 2:
+                            age = 1;
+                            break;
+                          case 3:
+                            age = 1.5;
+                            break;
+                          default:
+                            age = 0.5;
+                        }
+                        String size;
+                        switch (selectedSize) {
+                          case 1:
+                            size = 'small';
+                            break;
+                          case 2:
+                            size = 'medium';
+                            break;
+                          case 3:
+                            size = 'big';
+                            break;
+                          default:
+                            size = 'medium';
+                        }
+
+                        Map<String, dynamic> preferencesData = {
+                          'useruid': useruid,
+                          'type': petType,
+                          'age': age,
+                          'size': size,
+                          'features': selectedPersonality,
+                        };
+
+                        try {
+                          if (documentId != null) {
+                            // Update existing document
+                            await FirebaseFirestore.instance
+                                .collection('preferences')
+                                .doc(documentId)
+                                .update(preferencesData);
+                          } else {
+                            // Create a new document
+                            await FirebaseFirestore.instance.collection('preferences').add(preferencesData);
+                          }
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Preferences saved successfully')),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to save preferences: $e')),
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),
               ),
-
-
-
             ],
           ),
         ),
@@ -290,8 +370,6 @@ class __UserSettingsState extends State<_UserSettingsView> {
     );
   }
 }
-
-
 
 class _EditDescriptionDialog extends StatefulWidget {
   const _EditDescriptionDialog();
@@ -383,3 +461,4 @@ colocarImagen(String url) {
     );
   }
 }
+
