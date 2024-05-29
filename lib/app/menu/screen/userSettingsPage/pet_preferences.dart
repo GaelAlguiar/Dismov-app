@@ -291,7 +291,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Tipo de mascota', 
+              const Text('¿Qué tipo de mascota prefieres?',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -319,7 +319,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 ),
             
               ),
-              const Text('Género de la mascota', 
+              const Text('¿Qué género prefieres en tu mascota?',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -347,7 +347,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text('Tamaño', 
+              const Text('¿De qué tamaño prefieres a tu mascota?',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -375,7 +375,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 )
               ),
               const SizedBox(height: 20),
-              const Text('Raza',
+              const Text('¿Hay alguna raza de mascota que te interese?',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -401,7 +401,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
 
               ),
               const SizedBox(height: 20),
-              const Text('Colores', 
+              const Text('¿Qué colores prefieres en tu mascota?',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -428,7 +428,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text('Personalidad', 
+              const Text('¿Con qué personalidad prefieres a tu mascota?',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
