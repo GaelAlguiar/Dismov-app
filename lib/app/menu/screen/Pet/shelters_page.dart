@@ -169,7 +169,8 @@ class __SheltersViewState extends State<_SheltersView> {
         if (snapshot.connectionState == ConnectionState.waiting ||(ubicacion != "Ubicacion Desconocida" && ubication==null)) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          print(snapshot);
+          return Center(child: Text('Error in getting Shelters: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No shelters available'));
         } else {
