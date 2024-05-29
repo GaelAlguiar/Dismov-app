@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
+import 'package:dismov_app/models/user_preferences_model.dart';
 import 'package:dismov_app/services/user_service.dart';
 import 'package:dismov_app/services/user_preferences_service.dart';
+import 'package:dismov_app/utils/show_error_snackbar.dart';
+import 'package:dismov_app/utils/show_success_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -50,13 +53,14 @@ class __UserSettingsState extends State<_UserSettingsView> {
   int selectedSize = 1; // 1 for small, 2 for medium, 3 for large
   List<String> selectedPersonality = [];
   String? documentId;
+  final TextEditingController breedController = TextEditingController();
   
   final UserPreferencesService userPreferencesService = UserPreferencesService();
   late final AuthenticationProvider authProvider;
   Map<String, dynamic> userPreferences = {
     'type': {
       'cat': {
-        'isSelected': true,
+        'isSelected': false,
         'display': 'Gato',
       },
       'dog': {
@@ -109,7 +113,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
         'isSelected': false,
       },
       {
-        'value': 'curioso',
+        'value': 'obediente',
         'isSelected': false
       },
       {
@@ -131,6 +135,17 @@ class __UserSettingsState extends State<_UserSettingsView> {
         'isSelected': false
       },
     },
+    'sex': {
+      'male': {
+        'displayName': 'macho',
+        'isSelected': false,
+      },
+      'female': {
+        'displayName': 'hembra',
+        'isSelected': false,
+      }
+    },
+    'breed': '',
   };
 
   @override
@@ -145,22 +160,39 @@ class __UserSettingsState extends State<_UserSettingsView> {
   Future<void> loadPreferences() async {
     AuthenticationProvider ap = Provider.of<AuthenticationProvider>(context, listen: false);
     String useruid = ap.user!.uid;
+    UserPreferencesModel? preferences = await UserPreferencesService().getUserPreferencesById(useruid);
 
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('preferences')
-        .where('useruid', isEqualTo: useruid)
-        .get();
-
-    if (snapshot.docs.isNotEmpty) {
-      var data = snapshot.docs.first.data() as Map<String, dynamic>;
-      documentId = snapshot.docs.first.id;
+    if (preferences != null) {
+      var data = preferences;
+      documentId = preferences.id;
 
       setState(() {
-        isCatSelected = data['type'] == 'cat';
-        isDogSelected = data['type'] == 'dog';
-        selectedAge = data['age'] == 0.5 ? 1 : data['age'] == 1 ? 2 : 3;
-        selectedSize = data['size'] == 'small' ? 1 : data['size'] == 'medium' ? 2 : 3;
-        selectedPersonality = List<String>.from(data['features']);
+        isCatSelected = data.type == 'cat';
+        isDogSelected = data.type == 'dog';
+        selectedSize = data.size == 'small' ? 1 : data.size == 'medium' ? 2 : 3;
+        selectedPersonality = data.features != null ? data.features! : [];
+
+        userPreferences['type']['cat']['isSelected'] = data.type == 'cat';
+        userPreferences['type']['dog']['isSelected'] = data.type == 'dog';
+        userPreferences['sex']['female']['isSelected'] = data.sex == 'female';
+        userPreferences['sex']['male']['isSelected'] = data.sex == 'male';
+
+        userPreferences['size']['small']['isSelected'] = selectedSize == 1;
+        userPreferences['size']['medium']['isSelected'] = selectedSize == 2;
+        userPreferences['size']['large']['isSelected'] = selectedSize == 3;
+
+       
+        userPreferences['breed'] = data.breed;
+        breedController.text = data.breed ?? '';
+
+        userPreferences['colors'].forEach((element) {
+          element['isSelected'] = data.colors != null && data.colors!.contains(element['name']);
+        });
+
+        userPreferences['features'].forEach((element) {
+          element['isSelected'] = selectedPersonality.contains(element['value']);
+        });
+
       });
     }
   }
@@ -250,6 +282,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
 
 
 
+
   Widget _buildBody() {
     return SingleChildScrollView(
       child: Padding(
@@ -265,6 +298,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 )
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
                   userPreferences['type'].length,
                   (index) {
@@ -285,94 +319,33 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 ),
             
               ),
-// <<<<<<< Updated upstream
-//               SizedBox(height: 20),
-//               Text('Edad',
-//                   style: TextStyle(
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.bold,
-//                   )
-//               ),
-//               Row(
-//                 children: [
-//                   ChoiceChip(
-//                     label: Text('1 - 6 m'),
-//                     selected: selectedAge == 1,
-//                     onSelected: (selected) {
-//                       setState(() {
-//                         selectedAge = 1;
-//                       });
-//                     },
-//                   ),
-//                   SizedBox(width: 10),
-//                   ChoiceChip(
-//                     label: Text('6 - 12 m'),
-//                     selected: selectedAge == 2,
-//                     onSelected: (selected) {
-//                       setState(() {
-//                         selectedAge = 2;
-//                       });
-//                     },
-//                   ),
-//                   SizedBox(width: 10),
-//                   ChoiceChip(
-//                     label: Text('1+ años'),
-//                     selected: selectedAge == 3,
-//                     onSelected: (selected) {
-//                       setState(() {
-//                         selectedAge = 3;
-//                       });
-//                     },
-//                   ),
-//                 ],
-//               ),
-//               SizedBox(height: 20),
-//               Text('Tamaño',
-//                   style: TextStyle(
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.bold,
-//                   )
-//               ),
-//               Row(
-//                 children: [
-//                   ChoiceChip(
-//                     label: Text('Pequeño'),
-//                     selected: selectedSize == 1,
-//                     onSelected: (selected) {
-//                       setState(() {
-//                         selectedSize = 1;
-//                       });
-//                     },
-//                   ),
-//                   SizedBox(width: 10),
-//                   ChoiceChip(
-//                     label: Text('Mediano'),
-//                     selected: selectedSize == 2,
-//                     onSelected: (selected) {
-//                       setState(() {
-//                         selectedSize = 2;
-//                       });
-//                     },
-//                   ),
-//                   SizedBox(width: 10),
-//                   ChoiceChip(
-//                     label: Text('Grande'),
-//                     selected: selectedSize == 3,
-//                     onSelected: (selected) {
-//                       setState(() {
-//                         selectedSize = 3;
-//                       });
-//                     },
-//                   ),
-//                 ],
-//               ),
-//               SizedBox(height: 20),
-//               Text('Personalidad',
-//                   style: TextStyle(
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.bold,
-//                   )
-// =======
+              const Text('Género de la mascota', 
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                )
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: List.generate(
+                  userPreferences['sex'].length,
+                  (index) {
+                    final sex = userPreferences['sex'].values.elementAt(index);
+                    return ChoiceChip(
+                      label: Text(sex['displayName']),
+                      selected: sex['isSelected'],
+                      onSelected: (selected) {
+                        setState((){
+                          userPreferences['sex'].values.forEach((element) {
+                            element['isSelected'] = false;
+                          });
+                          sex['isSelected'] = true;
+                        });
+                      },
+                    );
+                  }
+                ),
+              ),
               const SizedBox(height: 20),
               const Text('Tamaño', 
               style: TextStyle(
@@ -381,6 +354,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 )
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: List.generate(
                   userPreferences['size'].length,
                   (index) {
@@ -401,6 +375,59 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 )
               ),
               const SizedBox(height: 20),
+              const Text('Raza',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                )
+              ),
+              // Allow breed to be entered manually with a text field
+              TextField(
+                controller: breedController,
+                decoration: const InputDecoration(
+                  hintText: 'Raza de la mascota',
+                  border: OutlineInputBorder(),
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    userPreferences['breed'] = value;
+                  });
+                },
+
+              ),
+              const SizedBox(height: 20),
+              const Text('Colores', 
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                )
+              ),
+
+              Wrap(
+                spacing: 10.0,
+                runSpacing: 10.0,
+                children: List.generate(
+                  userPreferences['colors'].length,
+                  (index) {
+                    final color = userPreferences['colors'].elementAt(index);
+                    return ChoiceChip(
+                      label: Text(color['name']),
+                      selected: color['isSelected'],
+                      onSelected: (selected) {
+                        setState(() {
+                          color['isSelected'] = !color['isSelected'];
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
               const Text('Personalidad', 
               style: TextStyle(
                 fontSize: 18,
@@ -411,13 +438,8 @@ class __UserSettingsState extends State<_UserSettingsView> {
                 spacing: 10.0,
                 runSpacing: 10.0,
                 children: [
-                  buildChip('Activo'),
-                  buildChip('Perezoso'),
-                  buildChip('Curioso'),
-                  buildChip('Inteligente'),
-                  buildChip('Cariñoso'),
-                  buildChip('Independiente'),
-                  buildChip('Juguetón'),
+                  for (final feature in userPreferences['features'])
+                    buildChip(feature['value']),
                 ],
               ),
               const SizedBox(height: 40),
@@ -435,21 +457,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                         Provider.of<AuthenticationProvider>(context, listen: false);
                         String useruid = ap.user!.uid;
 
-                        String petType = isCatSelected ? 'cat' : 'dog';
-                        double age;
-                        switch (selectedAge) {
-                          case 1:
-                            age = 0.5;
-                            break;
-                          case 2:
-                            age = 1;
-                            break;
-                          case 3:
-                            age = 1.5;
-                            break;
-                          default:
-                            age = 0.5;
-                        }
+                        String? petType = userPreferences['type']['cat']['isSelected'] ? 'cat' : userPreferences['type']['dog']['isSelected'] ? 'dog' : null;
                         String size;
                         switch (selectedSize) {
                           case 1:
@@ -465,33 +473,43 @@ class __UserSettingsState extends State<_UserSettingsView> {
                             size = 'medium';
                         }
 
-                        Map<String, dynamic> preferencesData = {
-                          'useruid': useruid,
-                          'type': petType,
-                          'age': age,
-                          'size': size,
-                          'features': selectedPersonality,
-                        };
+                        bool isFemaleSelected = userPreferences['sex']['female']['isSelected'];
+                        bool isMaleSelected = userPreferences['sex']['male']['isSelected'];
+                        String? selectedSex = isFemaleSelected ? 'female' : isMaleSelected ? 'male' : null;
+                        List<String> selectedColors = userPreferences.entries
+                            .where((element) => element.key == 'colors')
+                            .map((e) => e.value)
+                            .expand((element) => element)
+                            .where((element) => element['isSelected'])
+                            .map((e) => e['name'] as String)
+                            .toList();
+                        
+
+                        UserPreferencesModel preferencesData = UserPreferencesModel(
+                          userId: useruid,
+                          type: petType,
+                          size: size,
+                          features: selectedPersonality,
+                          breed: breedController.text,
+                        colors: selectedColors,
+                          sex: selectedSex
+                            
+                        );
 
                         try {
                           if (documentId != null) {
                             // Update existing document
-                            await FirebaseFirestore.instance
-                                .collection('preferences')
-                                .doc(documentId)
-                                .update(preferencesData);
+                            await UserPreferencesService().updateUserPreferences(preferencesData);
                           } else {
                             // Create a new document
-                            await FirebaseFirestore.instance.collection('preferences').add(preferencesData);
+                            await UserPreferencesService().addUserPreferences(preferencesData);
                           }
+                          if (!mounted) return;
                           Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Preferences saved successfully')),
-                          );
+                          showSuccessSnackbar(context, 'Preferencias guardadas');
                         } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Failed to save preferences: $e')),
-                          );
+                          if (!mounted) return;
+                          showErrorSnackbar(context, 'Error guardando las preferencias');
                         }
                       },
                     ),

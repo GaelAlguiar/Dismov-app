@@ -186,7 +186,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(50),
                                   child: Image.file(
-                                    image!,
+                                    image,
                                     width: 100,
                                     height: 100,
                                     fit: BoxFit.cover,
