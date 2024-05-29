@@ -93,7 +93,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
                             },
                             child: Image.network(
                               widget.pet.imageURLs[index],
-                              fit: BoxFit.fitHeight,
+                              fit: BoxFit.fitWidth,
                             ),
                           );
                         },
