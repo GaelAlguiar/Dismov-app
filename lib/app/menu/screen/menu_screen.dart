@@ -83,8 +83,7 @@ class __MenuViewState extends State<_MenuView> {
       location = loc.ubicacion;
       ubicacion = ubi;
     });
-    //Forma inicial de obtener ubicación
-    //String ubi = await LocationUtils().obtenerLocalizacion();
+
   }
 
   @override

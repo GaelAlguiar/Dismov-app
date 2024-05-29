@@ -59,6 +59,9 @@ class PetItem extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      SizedBox(
+                        width: width * 0.6,
+                        child:
                       Text(
                         data['name'],
                         style: const TextStyle(
@@ -66,6 +69,8 @@ class PetItem extends StatelessWidget {
                           color: Color.fromRGBO(11, 96, 151, 1),
                           fontWeight: FontWeight.bold,
                         ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       ),
                       (data['sex'] == "male")
                           ? const Icon(

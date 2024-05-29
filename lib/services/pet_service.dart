@@ -1,5 +1,8 @@
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:dismov_app/models/pet_model.dart";
+import "package:dismov_app/models/user_preferences_model.dart";
+import "package:dismov_app/provider/recommendations_api.dart";
+import "package:flutter/material.dart";
 
 class PetService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -14,6 +17,26 @@ class PetService {
     } else {
       return null;
     }
+  }
+
+  // Método para obtener las recomendaciones de mascotas para un usuario que escucha los cambios en las preferencias del usuario
+  Stream<List<PetModel>> getStreamRecommendations(String userId) {
+    return _firestore
+        .collection('preferences')
+        .doc(userId)
+        .snapshots()
+        .asyncMap((preferencesSnap) async {
+      print('Preferences snapshot: $preferencesSnap' );
+      print(preferencesSnap.exists);
+      if (preferencesSnap.exists) {
+        List<PetModel> recommendations =
+            await RecommendationsApi.getRecommendations(userId);
+        print('Recommendations: $recommendations');
+        return recommendations;
+      } else {
+        return [];
+      }
+    });
   }
 
   // Método para agregar una nueva mascota

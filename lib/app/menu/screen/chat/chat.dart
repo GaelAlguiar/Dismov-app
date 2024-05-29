@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dismov_app/app/menu/screen/chat/chat_detail.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/shared/widgets/chat_item.dart';
+import 'package:dismov_app/utils/show_error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:dismov_app/services/chat_service.dart';
@@ -116,7 +117,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildChats(BuildContext context) {
-    return ListView.builder(
+    const TextStyle centeredGrayText = TextStyle(
+      color: Colors.grey,
+      fontSize: 16,
+    );
+    return filteredChats.length > 0 ? ListView.builder(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 80),
       itemCount: filteredChats.length,
       itemBuilder: (context, index) {
@@ -129,6 +134,28 @@ class _ChatPageState extends State<ChatPage> {
           },
         );
       },
+    ) : 
+    const Padding(
+      padding: EdgeInsets.all(30),
+      child: Column(
+
+        mainAxisAlignment: MainAxisAlignment.start,
+        children:      [
+
+
+      Text(
+      'No hay chats a mostrar.', style: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),),
+      Text('¡Empieza a chatear con los refugios!', textAlign: TextAlign.center, style: centeredGrayText,),
+      Text('Ve a la sección de mascotas y selecciona una para iniciar un chat con su refugio.', textAlign: TextAlign.center, style:centeredGrayText,),
+    
+
+      ]
+      
+      )
     );
   }
 }
@@ -164,12 +191,16 @@ class ShelterDetailPage extends StatelessWidget {
                   children: [
                     const SizedBox(height: 20),
                     IntrinsicWidth(
-                      child: Row(
+                      child: Wrap(
                         children: [
+                          shelter.website != null ? 
                           ElevatedButton(
                             onPressed: () {
-                              if (shelter.website != null) {
-                                _launchURL(shelter.website!);
+                              try {
+                                print('Opening website: ${shelter.website}');
+                                _launchURL(shelter.website);
+                              } catch (e) {
+                                showErrorSnackbar(context, 'No se pudo abrir el sitio web');
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -186,13 +217,15 @@ class ShelterDetailPage extends StatelessWidget {
                               style:
                                   TextStyle(color: Colors.white, fontSize: 14),
                             ),
-                          ),
+                          ): Container(),
                           const SizedBox(
                               width: 10), // Add spacing between buttons
-                          ElevatedButton(
+                          shelter.adoptionFormURL!= null ? ElevatedButton(
                             onPressed: () {
-                              if (shelter.adoptionFormURL != null) {
-                                _launchURL(shelter.adoptionFormURL!);
+                              try {
+                                _launchURL(shelter.adoptionFormURL);
+                              } catch (e) {
+                                showErrorSnackbar(context, 'No se pudo abrir el link de adopción');
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -209,7 +242,7 @@ class ShelterDetailPage extends StatelessWidget {
                               style: TextStyle(
                                   color: Colors.white, fontSize: 13.5),
                             ),
-                          ),
+                          ) : Container(),
                         ],
                       ),
                     ),
@@ -221,16 +254,15 @@ class ShelterDetailPage extends StatelessWidget {
                             const Icon(Icons.location_pin,
                                 color: AppColor.blue),
                             SizedBox(
-                              width:
-                                  195, // Set a fixed width or use MediaQuery to get the available width
+                              width: 150,
                               child: Text(
                                 shelter.address,
                                 style: const TextStyle(color: Colors.black),
                                 softWrap: true,
-                                maxLines: 2,
+                                maxLines: 5,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                            ),
+                            )
                           ],
                         ),
                       ],
