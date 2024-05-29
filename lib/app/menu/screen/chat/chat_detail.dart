@@ -15,6 +15,7 @@ import 'package:dismov_app/services/pet_service.dart';
 import 'package:dismov_app/shared/widgets/custom_image.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/scheduler.dart';
 
 class ChatDetailPage extends StatefulWidget {
   const ChatDetailPage({super.key, required this.chatData});
@@ -37,6 +38,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   List<MessageModel> _messages = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,12 +47,14 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             _messages = snapshot.data!;
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              _scrollController.animateTo(
-                _scrollController.position.maxScrollExtent,
-                duration: const Duration(milliseconds: 100),
-                curve: Curves.easeOut,
-              );
+            SchedulerBinding.instance.addPostFrameCallback((_) { // Usar SchedulerBinding
+              if (_scrollController.hasClients) { // Verificar si tiene clientes
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeOut,
+                );
+              }
             });
 
             if (_messages.isEmpty) {
@@ -77,7 +81,6 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       ),
     );
   }
-
   getMessages() async {
     List<MessageModel> messages =
         await chatService.getMessagesByChatId(widget.chatData.id);

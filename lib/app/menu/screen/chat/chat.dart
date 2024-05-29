@@ -117,7 +117,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildChats(BuildContext context) {
-    return ListView.builder(
+    const TextStyle centeredGrayText = TextStyle(
+      color: Colors.grey,
+      fontSize: 16,
+    );
+    return filteredChats.length > 0 ? ListView.builder(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 80),
       itemCount: filteredChats.length,
       itemBuilder: (context, index) {
@@ -130,6 +134,28 @@ class _ChatPageState extends State<ChatPage> {
           },
         );
       },
+    ) : 
+    const Padding(
+      padding: EdgeInsets.all(30),
+      child: Column(
+
+        mainAxisAlignment: MainAxisAlignment.start,
+        children:      [
+
+
+      Text(
+      'No hay chats a mostrar.', style: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+        fontWeight: FontWeight.w600,
+      ),),
+      Text('¡Empieza a chatear con los refugios!', textAlign: TextAlign.center, style: centeredGrayText,),
+      Text('Ve a la sección de mascotas y selecciona una para iniciar un chat con su refugio.', textAlign: TextAlign.center, style:centeredGrayText,),
+    
+
+      ]
+      
+      )
     );
   }
 }
