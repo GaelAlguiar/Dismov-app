@@ -43,9 +43,9 @@ class UserPreferencesModel {
       type: map['type'],
       sex: map['sex'],
       size: map['size'],
-      breed: map['breed'],
-      features: List<String>.from(map['features']),
-      colors: List<String>.from(map['colors']),
+      breed: map['breed'] ,
+      features: List<String>.from(map['features'] ?? []),
+      colors: List<String>.from(map['colors'] ?? []),
     );
   }
 }

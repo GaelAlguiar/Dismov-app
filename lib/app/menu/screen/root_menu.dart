@@ -1,5 +1,6 @@
 import 'package:dismov_app/app/menu/screen/chat/chat.dart';
 import 'package:dismov_app/app/menu/screen/menu_screen.dart';
+import 'package:dismov_app/app/menu/screen/recommendations/recommendations_page.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/user_settings_screen.dart';
 import 'package:dismov_app/app/utils/animation_duration.dart';
 import 'package:dismov_app/config/config.dart';
@@ -37,6 +38,11 @@ class _RootAppState extends State<RootApp> with TickerProviderStateMixin {
       "icon": "assets/icons/chat-border.svg",
       "active_icon": "assets/icons/chat.svg",
       "page": const ChatPage(),
+    },
+    {
+      "icon": "assets/icons/heart-border.svg",
+      "active_icon": "assets/icons/heart.svg",
+      "page": const RecommendationsPage(),
     },
     {
       "icon": "assets/icons/user-border.svg",

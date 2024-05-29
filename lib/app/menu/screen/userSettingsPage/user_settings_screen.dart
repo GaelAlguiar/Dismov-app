@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/pet_preferences.dart';
+import 'package:dismov_app/app/menu/screen/userSettingsPage/pick_image_edit.dart';
+import 'package:dismov_app/models/user_model.dart';
+import 'package:dismov_app/services/user_service.dart';
 import 'package:dismov_app/utils/ask_confirmation_to_continue.dart';
+import 'package:dismov_app/utils/show_error_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -10,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'package:dismov_app/utils/login_google_utils.dart';
 import 'package:dismov_app/provider/auth_provider.dart';
 import 'package:hive/hive.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserSettingsScreen extends StatelessWidget {
   const UserSettingsScreen({super.key});
@@ -27,19 +34,6 @@ class UserSettingsScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: AppColor.blue,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const EditUserSettingsScreen(),
-              ));
-            },
-            icon: const Icon(
-              Icons.edit,
-              color: Colors.white,
-            ),
-          )
-        ],
       ),
       body: const _UserSettingsView(),
     );
@@ -77,7 +71,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (context, index) => _buildBody(),
+                  (context, index) => _buildBody(),
               childCount: 1,
             ),
           ),
@@ -118,7 +112,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
 
   Widget _buildBody() {
     AuthenticationProvider ap =
-        Provider.of<AuthenticationProvider>(context, listen: false);
+    Provider.of<AuthenticationProvider>(context, listen: false);
     return FutureBuilder(
       future: LoginGoogleUtils().isUserLoggedIn(),
       builder: (context, snapshot) {
@@ -129,6 +123,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
           String name = ap.user?.name ?? '';
           String? profilePhoto = ap.user?.profilePicURL;
           String description = userBox.get('description', defaultValue: '');
+          File? image;
 
           return SingleChildScrollView(
             child: Padding(
@@ -136,8 +131,59 @@ class __UserSettingsState extends State<_UserSettingsView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  colocarImagen(profilePhoto.toString()),
-                  const SizedBox(height: 12),
+                      const SizedBox(height: 34),
+                      GestureDetector(
+                        onTap: () async {
+                          image = await pickImageEdit(context);
+                          // change the image 
+                          if (image == null) return ;
+                          if (!context.mounted) return;
+                          if (ap.user == null) return;
+                          late String? imageURL;
+                          // save the image
+                          try {
+                            imageURL = await UserService().updateProfilePic(
+                              image!,
+                              ap.user!.uid,
+                            );
+                          } catch (e) {
+                            if (!context.mounted) return;
+                            imageURL = null;
+                            showErrorSnackbar(context, 'Error al subir la imagen.');
+                            return;
+                          }
+                          if (!context.mounted) return;
+                          if (imageURL == null) return;
+                          if (ap.user == null) return;
+                          ap.user = UserModel(
+                            uid: ap.user!.uid,
+                            name: ap.user!.name,
+                            email: ap.user!.email,
+                            profilePicURL: imageURL,
+                          );
+                          setState(() {
+                            profilePhoto = imageURL;
+                          });
+                        },
+                        child: CircleAvatar(
+                          radius: 80,
+                          backgroundColor: AppColor.darkblue,
+                          child: image != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: Image.file(
+                                    image,
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : colocarImagen(
+                                  profilePhoto.toString(),
+                                ),
+                        ),
+                      ),
+                  const SizedBox(height: 10),
                   Text(
                     name,
                     style: const TextStyle(
@@ -145,14 +191,14 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 7),
+                  const SizedBox(height: 5),
                   Text(
                     email,
                     style: const TextStyle(
                       color: Colors.grey,
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 12),
                   GestureDetector(
                     onTap: () {
                       showDialog(
@@ -166,7 +212,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.85,
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.12,
                       decoration: BoxDecoration(
                         color: description.isEmpty
                             ? Colors.grey[200]
@@ -196,7 +242,7 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -217,23 +263,39 @@ class __UserSettingsState extends State<_UserSettingsView> {
                       ),
                     ],
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Chip(
-                        label: Text('Pequeño'),
-                      ),
-                      SizedBox(width: 8),
-                      Chip(
-                        label: Text('Activo'),
-                      ),
-                      SizedBox(width: 8),
-                      Chip(
-                        label: Text('Perro'),
-                      ),
-                    ],
+                  FutureBuilder<QuerySnapshot>(
+                    future: FirebaseFirestore.instance
+                        .collection('preferences')
+                        .where('useruid', isEqualTo: ap.user!.uid)
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text('Error al cargar preferencias');
+                      } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                        return const SizedBox.shrink();
+                      } else {
+                        var preferences = snapshot.data!.docs[0].data() as Map<String, dynamic>;
+                        String type = preferences['type'] ?? '';
+                        List<dynamic> features = preferences['features'] ?? [];
+                        String size = preferences['size'] ?? '';
+
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            if (type.isNotEmpty)
+                              Chip(label: Text(type)),
+                            if (features.isNotEmpty)
+                              Chip(label: Text(features[0])),
+                            if (size.isNotEmpty)
+                              Chip(label: Text(size)),
+                          ],
+                        );
+                      }
+                    },
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 8),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(15, 0, 15, 25),
                     child: SizedBox(
@@ -312,7 +374,6 @@ class __EditDescriptionDialogState extends State<_EditDescriptionDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            Navigator.of(context).pop;
             Navigator.of(context).pop();
           },
           child: const Text('Cancelar'),

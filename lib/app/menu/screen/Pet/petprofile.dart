@@ -397,7 +397,7 @@ class _PetProfilePageState extends State<PetProfilePage> {
         recentMessageContent: null,
         recentMessageTime: null,
         recentMessageSenderId: null,
-        conversationStatus: 'En Proceso',
+        conversationStatus: 'EN CURSO',
       );
 
       DocumentReference newChatDoc = await _chatService.createChat(chatRoom);
