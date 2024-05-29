@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
 import 'package:dismov_app/utils/location_utils.dart';
-import 'package:dismov_app/services/shelter_service.dart'; // Import your shelter service
+import 'package:dismov_app/services/shelter_service.dart';
 import 'package:dismov_app/models/shelter_model.dart';
 import 'package:dismov_app/shared/widgets/custom_image.dart';
 import 'package:geolocator/geolocator.dart';
-import 'dart:math';
 
 import '../chat/chat.dart';
 
@@ -45,9 +44,13 @@ class _SheltersView extends StatefulWidget {
 class __SheltersViewState extends State<_SheltersView> {
   String ubicacion = "Ubicacion Desconocida";
   Position? ubication = null;
+  List<ShelterModel> _shelters = [];
+  List<ShelterModel> _filteredShelters = [];
+  String _searchText = "";
+
   void obtenerYActualizarUbicacion() async {
     String ubi = await LocationUtils().obtenerLocalizacion();
-    ubication =  await LocationUtils().getCurrentLocation();
+    ubication = await LocationUtils().getCurrentLocation();
     setState(() {
       ubicacion = ubi;
     });
@@ -56,8 +59,17 @@ class __SheltersViewState extends State<_SheltersView> {
   @override
   void initState() {
     super.initState();
-
     obtenerYActualizarUbicacion();
+  }
+
+  void _filterShelters(String searchText) {
+    setState(() {
+      _searchText = searchText;
+      _filteredShelters = _shelters
+          .where((shelter) =>
+          shelter.name.toLowerCase().contains(searchText.toLowerCase()))
+          .toList();
+    });
   }
 
   @override
@@ -149,9 +161,10 @@ class __SheltersViewState extends State<_SheltersView> {
               ],
             ),
             const SizedBox(height: 10),
-            const CustomTextBox(
+            CustomTextBox(
               hint: "Search",
               prefix: Icon(Icons.search, color: Colors.grey),
+              onChanged: (text) => _filterShelters(text),
             ),
             const SizedBox(height: 10),
             _buildShelters(),
@@ -161,23 +174,31 @@ class __SheltersViewState extends State<_SheltersView> {
     );
   }
 
-  //Widget to build list of shelters
-  _buildShelters() {
+  Widget _buildShelters() {
     return FutureBuilder<List<ShelterModel>>(
       future: ShelterService().getAllShelters(),
       builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting ||(ubicacion != "Ubicacion Desconocida" && ubication==null)) {
+        if (snapshot.connectionState == ConnectionState.waiting ||
+            (ubicacion != "Ubicacion Desconocida" && ubication == null)) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           print(snapshot);
-          return Center(child: Text('Error in getting Shelters: ${snapshot.error}'));
+          return Center(
+              child: Text('Error in getting Shelters: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No shelters available'));
         } else {
-          final List<ShelterModel> shelters = snapshot.data!;
-          if(ubication != null)
-          {
-            shelters.sort((a, b) {
+          _shelters = snapshot.data!;
+          _filteredShelters = _searchText.isEmpty
+              ? _shelters
+              : _shelters
+              .where((shelter) => shelter.name
+              .toLowerCase()
+              .contains(_searchText.toLowerCase()))
+              .toList();
+
+          if (ubication != null) {
+            _filteredShelters.sort((a, b) {
               double distanceA = Geolocator.distanceBetween(
                 ubication!.latitude,
                 ubication!.longitude,
@@ -190,7 +211,6 @@ class __SheltersViewState extends State<_SheltersView> {
                 b.latitude,
                 b.longitude,
               );
-              print(distanceA);
               return distanceA.compareTo(distanceB);
             });
           }
@@ -198,7 +218,7 @@ class __SheltersViewState extends State<_SheltersView> {
           return Align(
             alignment: Alignment.center,
             child: Column(
-              children: shelters.map((shelter) {
+              children: _filteredShelters.map((shelter) {
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -237,9 +257,9 @@ class __SheltersViewState extends State<_SheltersView> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Flexible(
                                     child: Text(
@@ -251,9 +271,14 @@ class __SheltersViewState extends State<_SheltersView> {
                                       ),
                                     ),
                                   ),
-
                                   Text(
-                                      (ubication!=null)?LocationUtils().calcularKilometros(shelter.latitude, shelter.longitude, ubication!.latitude, ubication!.longitude):"NA",
+                                    (ubication != null)
+                                        ? LocationUtils().calcularKilometros(
+                                        shelter.latitude,
+                                        shelter.longitude,
+                                        ubication!.latitude,
+                                        ubication!.longitude)
+                                        : "NA",
                                     textAlign: TextAlign.left,
                                     style: const TextStyle(
                                       fontSize: 16,
@@ -262,7 +287,6 @@ class __SheltersViewState extends State<_SheltersView> {
                                   ),
                                 ],
                               ),
-
                               Text(
                                 shelter.address,
                                 textAlign: TextAlign.left,
@@ -285,5 +309,4 @@ class __SheltersViewState extends State<_SheltersView> {
       },
     );
   }
-
 }
