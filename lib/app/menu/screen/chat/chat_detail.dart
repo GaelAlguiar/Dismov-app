@@ -52,14 +52,21 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 curve: Curves.easeOut,
               );
             });
-
             if (_messages.isEmpty) {
               return Column(
                 children: [
                   _buildTopBar(),
                   Expanded(
                     child: Center(
-                      child: Text("Buenas, puedes iniciar un chat", style: TextStyle(fontSize: 16, color: Colors.grey),),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0), // Añadir padding horizontal
+                        child: Text(
+                          "Adelante, puedes mandar un mensaje para conocer a tu nueva mascota",
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          textAlign: TextAlign.center, // Centrar el texto
+                          softWrap: true, // Permitir que el texto se envuelva
+                        ),
+                      ),
                     ),
                   ),
                   _buildInput(),
