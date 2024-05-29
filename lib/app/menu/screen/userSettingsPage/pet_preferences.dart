@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dismov_app/app/menu/screen/userSettingsPage/edit_user_settings_screen.dart';
 import 'package:dismov_app/services/user_service.dart';
+import 'package:dismov_app/services/user_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:dismov_app/shared/shared.dart';
 import 'package:dismov_app/config/config.dart';
@@ -49,10 +50,94 @@ class __UserSettingsState extends State<_UserSettingsView> {
   int selectedSize = 1; // 1 for small, 2 for medium, 3 for large
   List<String> selectedPersonality = [];
   String? documentId;
+  
+  final UserPreferencesService userPreferencesService = UserPreferencesService();
+  late final AuthenticationProvider authProvider;
+  Map<String, dynamic> userPreferences = {
+    'type': {
+      'cat': {
+        'isSelected': true,
+        'display': 'Gato',
+      },
+      'dog': {
+        'isSelected': false,
+        'display': 'Perro',
+      }
+    },
+    'colors': [
+      {
+        'name': 'Blanco',
+        'isSelected': false,
+      },
+      {
+        'name': 'Negro',
+        'isSelected': false,
+      },
+      {
+        'name': 'Café',
+        'isSelected': false
+      },
+      {
+        'name': 'Dorado',
+        'isSelected': false
+      }
+    ],
+    'features': [
+      // hardcoded features set to isSelected false
+      {
+        'value': 'activo',
+        'isSelected': false
+      },
+      {
+        'value': 'tranquilo',
+        'isSelected': false
+      },
+      {
+        'value': 'sereno',
+        'isSelected': false,
+      },
+      {
+        'value': 'curioso',
+        'isSelected': false
+      },
+      {
+        'value': 'amoroso',
+        'isSelected': false,
+      },
+      {
+        'value': 'inteligente',
+        'isSelected': false,
+      },
+      {
+        'value': 'curioso',
+        'isSelected': false
+      },
+      {
+        'value': 'protector',
+        'isSelected': false,
+      },
+    ],
+    'size': {
+      'small': {
+        'displayName': 'pequeño',
+        'isSelected': false
+      },
+      'medium': {
+        'displayName': 'mediano',
+        'isSelected': false
+      },
+      'large': {
+        'displayName': 'grande',
+        'isSelected': false
+      },
+    },
+  };
 
   @override
   void initState() {
     super.initState();
+    authProvider = Provider.of<AuthenticationProvider>(context, listen: false);
+    getUserPreferences();
     userBox = Hive.box('userBox');
     loadPreferences();
   }
@@ -78,6 +163,17 @@ class __UserSettingsState extends State<_UserSettingsView> {
         selectedPersonality = List<String>.from(data['features']);
       });
     }
+  }
+
+
+  void getUserPreferences() async {
+    print('User preferences: >>>>>>>.');
+    if (authProvider.user == null) {
+      debugPrint('User is null in preferences screen');
+      return;
+    }
+    final userPreferences = await userPreferencesService.getUserPreferencesById(authProvider.user!.uid);
+    print('User preferences: $userPreferences>>>>>>>.');
   }
 
   @override
@@ -146,6 +242,14 @@ class __UserSettingsState extends State<_UserSettingsView> {
     );
   }
 
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
+
+
+
   Widget _buildBody() {
     return SingleChildScrollView(
       child: Padding(
@@ -154,123 +258,154 @@ class __UserSettingsState extends State<_UserSettingsView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Tipo de mascota',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )
+              const Text('Tipo de mascota', 
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                )
               ),
               Row(
-                children: [
-                  ChoiceChip(
-                    label: Text('Gato'),
-                    selected: isCatSelected,
-                    onSelected: (selected) {
-                      setState(() {
-                        isCatSelected = selected;
-                        isDogSelected = !selected;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10),
-                  ChoiceChip(
-                    label: Text('Perro'),
-                    selected: isDogSelected,
-                    onSelected: (selected) {
-                      setState(() {
-                        isDogSelected = selected;
-                        isCatSelected = !selected;
-                      });
-                    },
-                  ),
-                ],
+                children: List.generate(
+                  userPreferences['type'].length,
+                  (index) {
+                    final type = userPreferences['type'].values.elementAt(index);
+                    return ChoiceChip(
+                      label: Text(type['display']),
+                      selected: type['isSelected'],
+                      onSelected: (selected) {
+                        setState(() {
+                          userPreferences['type'].values.forEach((element) {
+                            element['isSelected'] = false;
+                          });
+                          type['isSelected'] = true;
+                        });
+                      },
+                    );
+                  },
+                ),
+            
               ),
-              SizedBox(height: 20),
-              Text('Edad',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )
+// <<<<<<< Updated upstream
+//               SizedBox(height: 20),
+//               Text('Edad',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.bold,
+//                   )
+//               ),
+//               Row(
+//                 children: [
+//                   ChoiceChip(
+//                     label: Text('1 - 6 m'),
+//                     selected: selectedAge == 1,
+//                     onSelected: (selected) {
+//                       setState(() {
+//                         selectedAge = 1;
+//                       });
+//                     },
+//                   ),
+//                   SizedBox(width: 10),
+//                   ChoiceChip(
+//                     label: Text('6 - 12 m'),
+//                     selected: selectedAge == 2,
+//                     onSelected: (selected) {
+//                       setState(() {
+//                         selectedAge = 2;
+//                       });
+//                     },
+//                   ),
+//                   SizedBox(width: 10),
+//                   ChoiceChip(
+//                     label: Text('1+ años'),
+//                     selected: selectedAge == 3,
+//                     onSelected: (selected) {
+//                       setState(() {
+//                         selectedAge = 3;
+//                       });
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 20),
+//               Text('Tamaño',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.bold,
+//                   )
+//               ),
+//               Row(
+//                 children: [
+//                   ChoiceChip(
+//                     label: Text('Pequeño'),
+//                     selected: selectedSize == 1,
+//                     onSelected: (selected) {
+//                       setState(() {
+//                         selectedSize = 1;
+//                       });
+//                     },
+//                   ),
+//                   SizedBox(width: 10),
+//                   ChoiceChip(
+//                     label: Text('Mediano'),
+//                     selected: selectedSize == 2,
+//                     onSelected: (selected) {
+//                       setState(() {
+//                         selectedSize = 2;
+//                       });
+//                     },
+//                   ),
+//                   SizedBox(width: 10),
+//                   ChoiceChip(
+//                     label: Text('Grande'),
+//                     selected: selectedSize == 3,
+//                     onSelected: (selected) {
+//                       setState(() {
+//                         selectedSize = 3;
+//                       });
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 20),
+//               Text('Personalidad',
+//                   style: TextStyle(
+//                     fontSize: 18,
+//                     fontWeight: FontWeight.bold,
+//                   )
+// =======
+              const SizedBox(height: 20),
+              const Text('Tamaño', 
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                )
               ),
               Row(
-                children: [
-                  ChoiceChip(
-                    label: Text('1 - 6 m'),
-                    selected: selectedAge == 1,
-                    onSelected: (selected) {
-                      setState(() {
-                        selectedAge = 1;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10),
-                  ChoiceChip(
-                    label: Text('6 - 12 m'),
-                    selected: selectedAge == 2,
-                    onSelected: (selected) {
-                      setState(() {
-                        selectedAge = 2;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10),
-                  ChoiceChip(
-                    label: Text('1+ años'),
-                    selected: selectedAge == 3,
-                    onSelected: (selected) {
-                      setState(() {
-                        selectedAge = 3;
-                      });
-                    },
-                  ),
-                ],
+                children: List.generate(
+                  userPreferences['size'].length,
+                  (index) {
+                    final size = userPreferences['size'].values.elementAt(index);
+                    return ChoiceChip(
+                      label: Text(size['displayName']),
+                      selected: size['isSelected'],
+                      onSelected: (selected) {
+                        setState(() {
+                          userPreferences['size'].values.forEach((element) {
+                            element['isSelected'] = false;
+                          });
+                          size['isSelected'] = true;
+                        });
+                      },
+                    );
+                  },
+                )
               ),
-              SizedBox(height: 20),
-              Text('Tamaño',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )
-              ),
-              Row(
-                children: [
-                  ChoiceChip(
-                    label: Text('Pequeño'),
-                    selected: selectedSize == 1,
-                    onSelected: (selected) {
-                      setState(() {
-                        selectedSize = 1;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10),
-                  ChoiceChip(
-                    label: Text('Mediano'),
-                    selected: selectedSize == 2,
-                    onSelected: (selected) {
-                      setState(() {
-                        selectedSize = 2;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 10),
-                  ChoiceChip(
-                    label: Text('Grande'),
-                    selected: selectedSize == 3,
-                    onSelected: (selected) {
-                      setState(() {
-                        selectedSize = 3;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Text('Personalidad',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  )
+              const SizedBox(height: 20),
+              const Text('Personalidad', 
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                )
               ),
               Wrap(
                 spacing: 10.0,
@@ -460,5 +595,10 @@ colocarImagen(String url) {
       ),
     );
   }
+
+
+
+  
+
 }
 

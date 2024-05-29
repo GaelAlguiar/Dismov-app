@@ -302,29 +302,6 @@ class __UserSettingsState extends State<_UserSettingsView> {
                           ),
                         ),
                       ),*/
-
-                      const SizedBox(height: 50),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 25),
-                        child: SizedBox(
-                          width: 200,
-                          height: 47,
-                          child: CustomFilledButton(
-                            text: "Eliminar Cuenta",
-                            buttonColor: const Color.fromARGB(255, 228, 14, 39),
-                            onPressed: () async {
-                              bool confirm = await askConfirmationToContinue(
-                                context,
-                                '¿Estás seguro de que deseas eliminar tu cuenta?',
-                              );
-                              if (confirm) {
-                                if (!context.mounted) return;
-                                await UserService().signOutUser(context);
-                              }
-                            },
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
